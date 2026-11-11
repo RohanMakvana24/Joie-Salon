@@ -1,0 +1,38 @@
+{
+  "name": "classic-cut-salon-next",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/data/barbershopData.test.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.0.12",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "next": "^15.2.1",
+    "postcss": "^8.5.23",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.12",
+    "three": "^0.187.0"
+  },
+  "overrides": {
+    "postcss": "$postcss"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/three": "^0.183.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.2"
+  }
+}
