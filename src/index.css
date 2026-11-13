@@ -71,7 +71,7 @@
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--color-canvas);
     color: var(--color-main-text);
-    scroll-padding-top: 5rem;
+    scroll-padding-top: calc(var(--salon-header-h, 60px) + 16px);
   }
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,10 +89,30 @@
   }
 }
 
-/* Skip layout/paint work for long sections until they approach the viewport. */
-main > section:not(:first-child) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 760px;
+/* Anchor targets need their real layout height before jumping across the page. */
+main > section[id] {
+  scroll-margin-top: 0;
+}
+
+/*
+ * The products stage needs visible overflow for its sticky canvas.
+ * `overflow: hidden` makes the section a
+ * scroll container, so the sticky stage would pin to a box that never scrolls
+ * and would simply ride away with the page.
+ */
+main > section#products {
+  content-visibility: visible;
+  overflow: visible;
+}
+
+/* Height of the fixed site header — the product stage pins just below it. */
+:root {
+  --salon-header-h: 60px;
+}
+@media (max-width: 767px) {
+  :root {
+    --salon-header-h: 56px;
+  }
 }
 
 /* Prevent scroll chaining and keep touch scrolling on the compositor. */
@@ -466,9 +486,10 @@ html[data-theme="light"] body {
   color: #1A130E;
 }
 
-/* Non-Hero sections & Footer adapt to Warm Ivory Daylight palette */
-html[data-theme="light"] main section:not(#top),
-html[data-theme="light"] footer.salon-footer {
+/* Non-Hero sections & Footer adapt to Warm Ivory Daylight palette.
+   The footer is excluded: it is a deliberately dark, cinematic sign-off in
+   both themes. */
+html[data-theme="light"] main section:not(#top) {
   background-color: #FAF6EE !important;
   color: #1A130E !important;
   border-color: rgba(184, 130, 53, 0.28) !important;

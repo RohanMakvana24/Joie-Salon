@@ -1,5 +1,5 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ArrowUpRight, Calendar, MousePointerClick, Sparkles } from 'lucide-react';
 import { DishOrbitCarousel } from './ui/dish-orbit-carousel';
 import {
   PRODUCT_ITEMS,
@@ -16,23 +16,91 @@ const CATEGORY_TABS: { id: ProductCategoryFilter; label: string }[] = [
 ];
 
 const PRODUCT_CUTOUT: Record<string, string> = {
-  'matte-molding-hair-clay': '/assets/products/cutout/matte-molding-hair-clay.webp',
-  'royal-oud-argan-beard-oil': '/assets/products/cutout/royal-oud-argan-beard-oil.webp',
-  'charcoal-detan-face-scrub': '/assets/products/cutout/charcoal-detan-face-scrub.webp',
-  'sea-salt-volume-spray': '/assets/products/cutout/sea-salt-volume-spray.webp',
-  'sandalwood-cooling-aftershave': '/assets/products/cutout/sandalwood-cooling-aftershave.webp',
-  'keratin-repair-hair-serum': '/assets/products/cutout/keratin-repair-hair-serum.webp',
+  'matte-molding-hair-clay': '/assets/products/ai-v2/matte-molding-hair-clay.webp',
+  'royal-oud-argan-beard-oil': '/assets/products/ai-v2/royal-oud-argan-beard-oil.webp',
+  'charcoal-detan-face-scrub': '/assets/products/ai-v2/charcoal-detan-face-scrub.webp',
+  'sea-salt-volume-spray': '/assets/products/ai-v2/sea-salt-volume-spray.webp',
+  'sandalwood-cooling-aftershave': '/assets/products/ai-v2/sandalwood-cooling-aftershave.webp',
+  'keratin-repair-hair-serum': '/assets/products/ai-v2/keratin-repair-hair-serum.webp',
 };
 
-const FALLBACK_PHOTO = '/assets/products/cutout/matte-molding-hair-clay.webp';
+/** Warm metallics so the orbit band morphs between visibly distinct, on-brand tones. */
+const PRODUCT_ACCENT: Record<string, string> = {
+  'matte-molding-hair-clay': '#D9A34B',
+  'royal-oud-argan-beard-oil': '#C2874A',
+  'charcoal-detan-face-scrub': '#B3703F',
+  'sea-salt-volume-spray': '#E0B36B',
+  'sandalwood-cooling-aftershave': '#A9722F',
+  'keratin-repair-hair-serum': '#CE9A5E',
+};
+
+const WISHLIST_STORAGE_KEY = 'classic-cut-product-wishlist';
+
+function readWishlist(): string[] {
+  try {
+    const saved: unknown = JSON.parse(localStorage.getItem(WISHLIST_STORAGE_KEY) ?? '[]');
+    return Array.isArray(saved)
+      ? [...new Set(saved.filter((id): id is string =>
+          typeof id === 'string' && PRODUCT_ITEMS.some((product) => product.id === id)
+        ))]
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+const FALLBACK_PHOTO = '/assets/products/ai-v2/matte-molding-hair-clay.webp';
+
+/**
+ * Split a product name into the two title weights the carousel renders:
+ * a thin qualifier line and a heavy product line. A dangling "&" always
+ * joins the thin line so the heavy line never opens on a stray symbol.
+ */
+function splitProductName(name: string): { title: string; subtitle: string } {
+  const words = name.split(' ').filter(Boolean);
+  if (words.length <= 2) return { title: words[0] ?? name, subtitle: words[1] ?? '' };
+
+  let cut = Math.min(2, words.length - 1);
+  if (words[cut]?.startsWith('&')) cut += 1;
+  return {
+    title: words.slice(0, cut).join(' '),
+    subtitle: words.slice(cut).join(' '),
+  };
+}
 
 export const ProductsSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategoryFilter>('all');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [wishlistIds, setWishlistIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setWishlistIds(readWishlist());
+    const syncWishlist = (event: StorageEvent) => {
+      if (event.key === WISHLIST_STORAGE_KEY || event.key === null) {
+        setWishlistIds(readWishlist());
+      }
+    };
+    window.addEventListener('storage', syncWishlist);
+    return () => window.removeEventListener('storage', syncWishlist);
+  }, []);
+
+  const toggleWishlist = useCallback((id: string) => {
+    setWishlistIds((current) => {
+      const next = current.includes(id)
+        ? current.filter((savedId) => savedId !== id)
+        : [...current, id];
+      try {
+        localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Keep the wishlist usable for this visit if storage is unavailable.
+      }
+      return next;
+    });
+  }, []);
 
   const visibleProducts = useMemo(
     () => filterProductsByCategory(PRODUCT_ITEMS, selectedCategory),
-    [selectedCategory],
+    [selectedCategory]
   );
 
   useEffect(() => {
@@ -41,94 +109,184 @@ export const ProductsSection: React.FC = () => {
 
   const dishes = useMemo(
     () =>
-      visibleProducts.map((product, index) => ({
-        title: product.name.split(' ').slice(0, 2).join(' '),
-        subtitle: product.name.split(' ').slice(2).join(' ') || 'Salon formula',
-        image: PRODUCT_CUTOUT[product.id] || FALLBACK_PHOTO,
-        alt: product.name,
-        eyebrow: `#${String(index + 1).padStart(2, '0')} Most loved`,
-        label: `${product.name} · ${product.volume}`,
-        rating: 4.9,
-        chef: product.categoryLabel,
-        kitchen: product.holdOrFinish,
-        description: product.description,
-        likes: 420 + index * 79,
-        ingredients: product.keyBenefits,
-        accent: index % 2 === 0 ? '#d9a34b' : '#b98356',
-      })),
-    [visibleProducts],
+      visibleProducts.map((product) => {
+        const { title, subtitle } = splitProductName(product.name);
+        return {
+          id: product.id,
+          title,
+          subtitle,
+          image: PRODUCT_CUTOUT[product.id] ?? FALLBACK_PHOTO,
+          alt: `${product.name} — ${product.volume}`,
+          eyebrow: `#${product.indexLabel} · ${product.categoryLabel}`,
+          label: `${product.name} · ${product.volume}`,
+          chef: product.categoryLabel,
+          kitchen: product.holdOrFinish,
+          description: product.description,
+          ingredients: product.keyBenefits,
+          accent: PRODUCT_ACCENT[product.id] ?? '#D9A34B',
+        };
+      }),
+    [visibleProducts]
   );
 
   const activeProduct = visibleProducts[activeIndex] ?? visibleProducts[0];
-  const orderUrl = activeProduct
-    ? buildProductWhatsAppUrl([`${activeProduct.name} — ${activeProduct.priceInr}`])
-    : buildProductWhatsAppUrl([]);
+
+  const openWhatsApp = useCallback((productName: string, price: string) => {
+    if (typeof window === 'undefined') return;
+    window.open(
+      buildProductWhatsAppUrl([`${productName} — ${price}`]),
+      '_blank',
+      'noopener,noreferrer'
+    );
+  }, []);
+
+  const orderActiveProduct = useCallback(
+    (index: number) => {
+      const product = visibleProducts[index];
+      if (!product) return;
+      openWhatsApp(product.name, product.priceInr);
+    },
+    [openWhatsApp, visibleProducts]
+  );
+
+  const scrollToGallery = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
 
   return (
-    <section id="products" className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(217,163,75,0.18),_transparent_35%),linear-gradient(180deg,_rgba(12,9,7,0.92),_rgba(18,13,10,1))]" />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex flex-col gap-5 sm:gap-6 lg:flex-row lg:items-end lg:justify-between">
+    <section
+      id="products"
+      className="relative border-b border-[#B88235]/28 bg-[var(--color-background)] py-16 text-[var(--color-foreground)] sm:py-20"
+    >
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d9a34b]">
-              salon essentials
-            </p>
-            <h2 className="mt-3 font-display text-4xl tracking-[-0.08em] text-[#f7f1e8] sm:text-5xl">
-              Our Products
+            <div className="mb-3 inline-flex items-center gap-2.5">
+              <span className="h-[1px] w-7 bg-[#B88235]" />
+              <p className="font-mono text-xs uppercase tracking-[0.26em] text-[#D9A34B]">
+                SALON ESSENTIALS · RAJKOT, GUJARAT
+              </p>
+            </div>
+            <h2
+              id="products-heading"
+              className="font-display text-4xl uppercase leading-none tracking-[-0.01em] text-[var(--color-foreground)] sm:text-5xl md:text-[3.5rem]"
+            >
+              OUR{' '}
+              <span className="bg-gradient-to-b from-[#D9A34B] via-[#B45309] to-[#78350F] bg-clip-text text-transparent">
+                PRODUCTS
+              </span>
             </h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+              Counter-sold grooming formulas used on every chair at Classic Cut. Explore
+              the collection and find your everyday essentials.
+            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {CATEGORY_TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setSelectedCategory(tab.id)}
-                className={[
-                  'rounded-full border px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] transition',
-                  selectedCategory === tab.id
-                    ? 'border-[#d9a34b]/40 bg-[#d9a34b]/10 text-[#f7f1e8]'
-                    : 'border-white/10 bg-white/[0.02] text-[#cbbba7] hover:border-white/20 hover:text-[#f7f1e8]',
-                ].join(' ')}
-              >
-                {tab.label}
-              </button>
-            ))}
+          <div className="flex flex-col items-start gap-4 lg:items-end">
+            <div
+              role="tablist"
+              aria-label="Filter salon products by category"
+              className="grid w-full grid-cols-2 items-center gap-1.5 rounded-2xl border border-[#B88235]/28 bg-[var(--color-card)] p-1.5 sm:inline-flex sm:w-auto sm:rounded-full"
+            >
+              {CATEGORY_TABS.map((tab) => {
+                const isActive = selectedCategory === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    role="tab"
+                    aria-selected={isActive}
+                    type="button"
+                    onClick={() => setSelectedCategory(tab.id)}
+                    className={`cursor-pointer rounded-xl px-3 py-2.5 text-center text-[11px] font-semibold tracking-[0.03em] transition-all focus-ring sm:rounded-full sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.06em] ${
+                      isActive
+                        ? 'bg-[#F59E0B] text-[#1A130E] shadow-[0_4px_16px_rgba(245,158,11,0.3)]'
+                        : 'text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#D9A34B]">
+              <MousePointerClick className="h-3.5 w-3.5" aria-hidden="true" />
+              Scroll or tap to browse
+            </p>
           </div>
         </div>
 
         <DishOrbitCarousel
+          key={selectedCategory}
           dishes={dishes}
+          wishlistIds={wishlistIds}
+          onToggleWishlist={toggleWishlist}
+          /* The reference carousel loops forever, which is right for a standalone
+             page but wrong for an embedded section: the wrap-back fires the moment
+             the last product is reached and yanks the visitor back to the first,
+             so the sections below the carousel become unreachable. */
+          loop={false}
+          height="calc(100svh - var(--salon-header-h))"
+          stickyTop="var(--salon-header-h)"
+          style={
+            {
+              '--dsh-surface': 'var(--color-background)',
+              '--dsh-fg': 'var(--color-foreground)',
+              '--dsh-muted': 'var(--color-muted-foreground)',
+              '--dsh-ring': 'var(--color-primary)',
+            } as React.CSSProperties
+          }
+          itemNoun="product"
+          ariaLabel="Classic Cut Salon product collection"
+          primaryActionLabel="See the result"
+          secondaryActionLabel="Order on WhatsApp"
+          overviewLabel="Overview"
+          detailsLabel="Benefits"
+          onPlay={scrollToGallery}
+          onOrder={(_dish, index) => orderActiveProduct(index)}
+          onMenu={() => orderActiveProduct(activeIndex)}
           onChange={(index) => setActiveIndex(index)}
-          onOrder={() => {
-            if (typeof window !== 'undefined') {
-              window.open(orderUrl, '_blank', 'noopener,noreferrer');
-            }
-          }}
-          className="min-h-[620px]"
         />
 
-        <div className="mt-8 flex items-center justify-between gap-4 rounded-[24px] border border-white/10 bg-[#17110d]/80 p-4 sm:p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#d9a34b]/12 text-[#f6d7a0]">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[#d2b998]">Featured</p>
-              <p className="mt-1 text-lg font-semibold text-[#f7f1e8]">
-                {activeProduct?.name ?? 'Signature collection'}
-              </p>
+        {/* Bottom Featured & Booking Strip */}
+        <div className="mt-10 flex flex-col justify-between gap-6 rounded-2xl border border-[#B88235]/28 bg-[var(--color-card)] p-6 shadow-sm sm:mt-12 sm:p-8 lg:flex-row lg:items-center">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F59E0B]/12 text-[#D9A34B]">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#D9A34B]">
+                  Featured · {activeProduct?.categoryLabel ?? 'Signature collection'}
+                </p>
+                <p className="mt-1 text-lg font-semibold text-[var(--color-foreground)]">
+                  {activeProduct?.name ?? 'Signature collection'}
+                  {activeProduct ? (
+                    <span className="ml-2 font-mono text-sm font-normal text-[var(--color-muted-foreground)]">
+                      {activeProduct.priceInr} · {activeProduct.volume}
+                    </span>
+                  ) : null}
+                </p>
+              </div>
             </div>
           </div>
 
           <a
-            href={orderUrl}
+            href={
+              activeProduct
+                ? buildProductWhatsAppUrl([
+                    `${activeProduct.name} — ${activeProduct.priceInr}`,
+                  ])
+                : buildProductWhatsAppUrl([])
+            }
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-[#d9a34b]/40 bg-[#d9a34b]/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#f7f1e8] transition hover:bg-[#d9a34b]/16"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F59E0B] via-[#B45309] to-[#78350F] px-6 py-3 text-xs font-bold uppercase tracking-[0.08em] text-[#1A130E] shadow-[0_8px_24px_rgba(180,83,9,0.28)] transition-all hover:brightness-110 focus-ring sm:rounded-full"
           >
-            Chat on WhatsApp
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            <Calendar className="w-4 h-4 shrink-0" />
+            <span className="truncate">Chat on WhatsApp</span>
+            <ArrowUpRight className="w-4 h-4 shrink-0" />
           </a>
         </div>
       </div>

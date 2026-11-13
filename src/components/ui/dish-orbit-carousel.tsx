@@ -1,296 +1,897 @@
-'use client'
+'use client';
 
-import * as React from 'react';
-import { motion } from 'motion/react';
-import { ArrowLeft, ArrowRight, Sparkles, Star } from 'lucide-react';
+/**
+ * Dish Orbit Carousel: a smart-kitchen-display menu, reused here as a scroll-driven
+ * product showcase. The plated item sits on the left; changing item swings it out over
+ * the top on a wide orbit while the next plate swings in from the other side. The
+ * two-weight title wipes out and back in (thin line from the right, heavy line from
+ * the left), the detail card and its coloured rating badge cross-fade, and a pastel
+ * arc behind the scene turns and takes the item's colour. The page scroll drives it:
+ * the section pins and each stretch of scroll brings the next item, endlessly both
+ * ways. Arrows, thumbnails, the side pager, arrow keys and swipes jump too.
+ *
+ * Adapted from the reference implementation for this codebase:
+ * - GSAP ScrollTrigger is registered client-side only (safe for Next.js SSR).
+ * - Inline SVGs replaced with lucide-react icons.
+ * - Copy (aria labels, action labels, item noun) is configurable.
+ * - Surface / foreground / muted colours are overridable so the stage can match a
+ *   host section that does not use the default shadcn theme tokens.
+ */
+
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {
+  Menu as MenuIcon,
+  Play,
+  Search,
+  ShoppingBag,
+  Heart,
+  Triangle,
+} from 'lucide-react';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export type Dish = {
+  id: string;
+  /** The thin first title line, e.g. "Char grill". */
   title: string;
+  /** The heavy second title line, e.g. "Ribeye". */
   subtitle: string;
+  /** Plate photo, ideally a top-down cut-out (transparent PNG/WebP), square. */
   image: string;
   alt?: string;
+  /** Small line above the title. Defaults to "#n Most loved <itemNoun>". */
   eyebrow?: string;
+  /** Two-line label under the thumbnail. Defaults to title + subtitle. */
   label?: string;
-  rating: number;
+  /** Optional rating. Omitted where no verified rating exists, so no badge is shown. */
+  rating?: number;
   chef: string;
+  /** Kitchen or restaurant, under the chef's name. */
   kitchen?: string;
   description: string;
-  likes: number;
   ingredients?: string[];
+  /** Badge and band colour: hex or rgb(), so the band can morph between dishes. */
   accent: string;
 };
 
 export type DishOrbitCarouselProps = {
   dishes: Dish[];
-  className?: string;
-  onChange?: (index: number) => void;
+  wishlistIds?: string[];
+  onToggleWishlist?: (id: string) => void;
+  /** Root height. A definite length: percentages collapse on a host page. */
+  height?: string;
+  /** Optional photo behind the display, e.g. a kitchen wall. Washed by the theme background. */
+  backdrop?: string;
+  /** Scroll on forever: past the last dish comes the first again, and up from the first, the last. */
+  loop?: boolean;
+  /** Embedded display face (Outfit, OFL). Pass null to use the host's font. */
+  fontSrc?: string | null;
+  /** Font stack for the whole stage. Defaults to the host `--font-display`. */
+  fontFamily?: string;
+  /** Distance from the viewport top where the stage pins. Use this to clear a fixed header. */
+  stickyTop?: string;
+  /** Inline styles applied to the stage root — use for `--dsh-surface` / `--dsh-fg` / `--dsh-muted`. */
+  style?: CSSProperties;
+  /** Noun used in generated copy, e.g. "product". */
+  itemNoun?: string;
+  /** Accessible name for the carousel region. */
+  ariaLabel?: string;
+  /** Label for the first action button. */
+  primaryActionLabel?: string;
+  /** Label for the second action button. */
+  secondaryActionLabel?: string;
+  /** Label for the first tab of the detail card. */
+  overviewLabel?: string;
+  /** Label for the second tab of the detail card. */
+  detailsLabel?: string;
+  onPlay?: (dish: Dish, index: number) => void;
   onOrder?: (dish: Dish, index: number) => void;
+  /** Fired by the auxiliary search button in the top-right cluster. */
+  onSearch?: () => void;
+  /** Fired by the auxiliary menu button in the top-right cluster. */
+  onMenu?: () => void;
+  onChange?: (index: number) => void;
+  className?: string;
 };
 
-const cn = (...values: Array<string | undefined | false>) =>
-  values.filter(Boolean).join(' ');
+// #region carousel
+export function wrapIndex(i: number, n: number): number {
+  if (n <= 0) return 0;
+  return ((Math.round(i) % n) + n) % n;
+}
+
+/** Which way to swing when jumping from one dish to another: the shorter way round. */
+export function stepDirection(from: number, to: number, n: number): 1 | -1 {
+  if (n <= 0) return 1;
+  const fwd = (((to - from) % n) + n) % n;
+  return fwd <= n - fwd ? 1 : -1;
+}
+
+/** Scroll stretches in the section: one per dish change, plus one back round to the first when looping. */
+export function scrollSteps(n: number, loop: boolean): number {
+  return Math.max(0, loop ? n : n - 1);
+}
+
+/** The scroll stretch for dish `i` nearest the current one (when looping, dish 0 is also the last stretch). */
+export function segmentFor(i: number, current: number, n: number, loop: boolean): number {
+  return loop && i === 0 && current > n / 2 ? n : i;
+}
+
+/** First thumbnail shown in the strip window, keeping the current one in view. */
+export function stripStart(index: number, n: number, visible: number): number {
+  if (n <= visible) return 0;
+  return Math.max(0, Math.min(index - 1, n - visible));
+}
+
+/** Title font size so a line of `chars` characters fits `width` px at `em` average glyph width. */
+export function fitSize(chars: number, max: number, width: number, em: number): number {
+  return Math.min(max, width / (Math.max(1, chars) * em));
+}
+
+/**
+ * Average advance width of one character, in em, for the two title weights.
+ * Measured against the loaded Outfit face at the tracking used below: uppercase
+ * runs wider than the reference estimate, so these are sized to guarantee the
+ * line fits its box rather than spilling onto the detail card.
+ */
+const EM_THIN = 0.65;
+const EM_HEAVY = 0.7;
+/**
+ * The pastel band: a thick stroke along the plates' orbit circle, tapering at
+ * both ends. Angles in degrees, screen space (0 = right, 90 = straight down).
+ */
+export function arcPath(
+  a0: number,
+  a1: number,
+  cx: number,
+  cy: number,
+  r: number,
+  w: number,
+  steps = 48
+): string {
+  const outer: string[] = [];
+  const inner: string[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const a = ((a0 + (a1 - a0) * t) * Math.PI) / 180;
+    const h = (w / 2) * Math.pow(Math.sin(Math.PI * t), 0.45);
+    const c = Math.cos(a);
+    const s = Math.sin(a);
+    outer.push((cx + c * (r + h)).toFixed(1) + ' ' + (cy + s * (r + h)).toFixed(1));
+    inner.push((cx + c * (r - h)).toFixed(1) + ' ' + (cy + s * (r - h)).toFixed(1));
+  }
+  return 'M' + outer.join('L') + 'L' + inner.reverse().join('L') + 'Z';
+}
+
+/** Where the band rests for each dish, as [start, end] angles along the orbit. Measured off the reference. */
+export const ARC_REST = [
+  [50, 98],
+  [46, 124],
+  [60, 126],
+  [40, 100],
+];
+export function arcRest(index: number): number[] {
+  return ARC_REST[((index % ARC_REST.length) + ARC_REST.length) % ARC_REST.length];
+}
+
+/** The band mid-swap: it stretches to trail between the outgoing and incoming plate. */
+export const ARC_SWEEP = [38, 146];
+// #endregion
+
+// The plates' orbit: its pivot sits above the canvas (the .dsh-orbit transform-origin).
+const ORBIT_X = 299;
+const ORBIT_Y = -450;
+const ORBIT_R = 650;
+const SCROLL_PER_DISH = 0.7; // stage heights of scroll per dish
+const SWING = 50; // degrees the plate travels round the orbit's pivot
+const ITEM = 118; // thumbnail pitch in canvas px
+const VISIBLE = 4;
+
+const FONT = 'dsh-face';
+
+const CSS =
+  '.dsh-trk{position:relative;width:100%}' +
+  '.dsh-root{position:sticky;top:var(--dsh-sticky,0px);overflow:hidden;width:100%;' +
+  'background:var(--dsh-surface,var(--color-background));color:var(--dsh-fg,var(--color-foreground));' +
+  'font-family:var(--dsh-font,var(--font-display,ui-sans-serif)),ui-sans-serif,system-ui,sans-serif;' +
+  'container-type:inline-size;-webkit-tap-highlight-color:transparent}' +
+  '.dsh-root *{box-sizing:border-box}' +
+  '.dsh-bd{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;pointer-events:none}' +
+  '.dsh-wash{position:absolute;inset:0;background:color-mix(in oklab,var(--dsh-surface,var(--color-background)) 38%,transparent);pointer-events:none}' +
+  // multiply by the background: a no-op on a light theme, lights-off on a dark one
+  '.dsh-dim{position:absolute;inset:0;background:var(--dsh-surface,var(--color-background));mix-blend-mode:multiply;opacity:.72;pointer-events:none}' +
+  '.dsh-root:focus-visible{outline:2px solid var(--dsh-ring,var(--color-primary));outline-offset:-4px}' +
+  '.dsh-canvas{position:absolute;left:50%;top:50%;width:960px;height:520px;transform:translate(-50%,-50%) scale(var(--dsh-s,1));transform-origin:50% 50%}' +
+  '.dsh-arc{position:absolute;left:0;top:0;width:960px;height:520px;overflow:visible;pointer-events:none}' +
+  '.dsh-btn{appearance:none;border:0;background:none;color:inherit;font:inherit;padding:0;margin:0;cursor:pointer}' +
+  '.dsh-btn:focus-visible{outline:2px solid var(--dsh-ring,var(--color-primary));outline-offset:3px;border-radius:10px}' +
+  '.dsh-btn:disabled{opacity:.25;cursor:default}' +
+  '.dsh-ico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}' +
+  '.dsh-ico-fill{fill:currentColor;stroke:none}' +
+  '.dsh-top{position:absolute;left:800px;top:52px;display:flex;gap:14px}' +
+  '.dsh-top .dsh-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:10px}' +
+  '.dsh-pager{position:absolute;left:76px;top:172px;display:flex;flex-direction:column;align-items:center;gap:7px}' +
+  '.dsh-dot{width:14px;height:10px;display:grid;place-items:center}' +
+  '.dsh-dot i{display:block;width:3px;height:3px;border-radius:3px;background:var(--dsh-fg,var(--color-foreground));opacity:.45;transition:height .45s cubic-bezier(.3,.7,.2,1),opacity .3s}' +
+  '.dsh-dot[aria-current] i{height:22px;opacity:.9}' +
+  '.dsh-dot[aria-current]{height:26px}' +
+  '.dsh-dot{transition:height .45s cubic-bezier(.3,.7,.2,1)}' +
+  '.dsh-plates{position:absolute;left:130px;top:82px;width:245px;height:245px;touch-action:pan-y}' +
+  '.dsh-orbit{position:absolute;inset:0;transform-origin:69% -217%;visibility:hidden;will-change:transform}' +
+  '.dsh-orbit>img{display:block;width:245px;height:245px;max-width:none;object-fit:contain;user-select:none;-webkit-user-drag:none;' +
+  'filter:drop-shadow(0 16px 22px rgba(0,0,0,.2)) drop-shadow(0 3px 5px rgba(0,0,0,.12))}' +
+  '.dsh-head{position:absolute;left:388px;top:96px;width:330px;height:150px;overflow:hidden}' +
+  '.dsh-hd{position:absolute;inset:0;visibility:hidden}' +
+  '.dsh-eye{font-size:12.5px;font-weight:600;letter-spacing:.01em;margin:0 0 4px 2px}' +
+  '.dsh-t1,.dsh-t2{display:block;white-space:nowrap;line-height:1;text-transform:uppercase;margin:0}' +
+  '.dsh-t1{font-weight:200;letter-spacing:-.015em;margin-top:6px}' +
+  '.dsh-t2{font-weight:800;letter-spacing:-.025em;margin-top:6px;color:color-mix(in oklab,var(--dsh-fg,var(--color-foreground)) 86%,transparent)}' +
+  '.dsh-acts{position:absolute;left:396px;top:280px;display:flex;gap:44px;font-size:12.5px;font-weight:500}' +
+  '.dsh-acts .dsh-btn{display:flex;align-items:center;gap:9px;padding:4px 0}' +
+  '.dsh-acts .dsh-ico{width:13px;height:13px}' +
+  '.dsh-card{position:absolute;left:722px;top:137px;width:223px;padding:18px 20px 20px;border-radius:20px;' +
+  'background:color-mix(in oklab,var(--dsh-surface,var(--color-background)) 72%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);' +
+  'box-shadow:0 1px 0 color-mix(in oklab,var(--dsh-fg,var(--color-foreground)) 6%,transparent) inset,0 18px 40px -24px rgba(0,0,0,.25)}' +
+  '.dsh-tabs{display:flex;justify-content:space-between;padding:0 6px 0 20px;font-size:12px;margin-bottom:20px}' +
+  '.dsh-tab{color:var(--dsh-muted,var(--color-muted-foreground));font-weight:500;padding:3px 0}' +
+  '.dsh-tab[aria-selected=true]{color:var(--dsh-fg,var(--color-foreground));font-weight:600}' +
+  '.dsh-bodies{display:grid}' +
+  '.dsh-body{grid-area:1/1;visibility:hidden}' +
+  '.dsh-rate{position:relative;height:62px;margin:0 0 14px 6px}' +
+  '.dsh-badge{position:absolute;left:0;top:0;width:46px;height:62px;border-radius:10px}' +
+  '.dsh-badge svg{position:absolute;left:17px;bottom:9px;width:12px;height:12px;fill:var(--dsh-fg,var(--color-foreground));opacity:.8;stroke:none}' +
+  '.dsh-num{position:absolute;left:10px;top:4px;font-size:36px;font-weight:700;letter-spacing:-.04em;line-height:1}' +
+  '.dsh-chef{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0}' +
+  '.dsh-kit{font-size:10.5px;color:var(--dsh-muted,var(--color-muted-foreground));margin:3px 0 12px}' +
+  '.dsh-desc{font-size:12.5px;line-height:1.38;margin:0;min-height:52px}' +
+  '.dsh-ing{display:flex;flex-wrap:wrap;gap:5px;margin:0;padding:0;list-style:none;min-height:52px}' +
+  '.dsh-ing li{font-size:11px;padding:4px 9px;border-radius:99px;background:color-mix(in oklab,var(--dsh-fg,var(--color-foreground)) 7%,transparent)}' +
+  '.dsh-react{display:flex;gap:12px;margin-top:20px}' +
+  '.dsh-wishlist{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:99px;font-size:12px;' +
+  'background:color-mix(in oklab,var(--dsh-fg,var(--color-foreground)) 6%,transparent);transition:background .25s}' +
+  '.dsh-wishlist[aria-pressed=true]{color:var(--color-primary);background:color-mix(in oklab,var(--color-primary) 12%,transparent)}' +
+  '.dsh-react .dsh-ico{width:16px;height:16px}' +
+  '.dsh-react [aria-pressed=true] .dsh-ico{fill:currentColor}' +
+  '.dsh-strip{position:absolute;left:130px;top:362px;width:550px;height:122px;display:flex;align-items:center}' +
+  '.dsh-arrow{width:36px;height:36px;display:grid;place-items:center;flex:none}' +
+  '.dsh-arrow svg{width:15px;height:15px;fill:currentColor;stroke:none}' +
+  '.dsh-arrow .dsh-caret-l{transform:rotate(-90deg)}' +
+  '.dsh-arrow .dsh-caret-r{transform:rotate(90deg)}' +
+  '.dsh-arrow svg{transform-box:fill-box;transform-origin:center}' +
+  '.dsh-win{position:relative;width:' +
+  ITEM * VISIBLE +
+  'px;height:122px;overflow:hidden;flex:none;margin:0 2px;' +
+  '-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}' +
+  '.dsh-track{position:absolute;left:0;top:0;display:flex;transition:transform .6s cubic-bezier(.65,0,.35,1)}' +
+  '.dsh-th{width:' +
+  ITEM +
+  'px;height:122px;display:flex;justify-content:center;padding-top:3px}' +
+  '.dsh-th .dsh-btn{width:80px;height:116px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:7px;padding-top:9px;transition:background .45s}' +
+  '.dsh-th .dsh-btn[aria-current]{background:color-mix(in oklab,var(--dsh-surface,var(--color-background)) 62%,transparent);box-shadow:0 10px 24px -16px rgba(0,0,0,.3)}' +
+  '.dsh-th img{width:56px;height:56px;max-width:none;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18));transition:transform .45s}' +
+  '.dsh-th .dsh-btn[aria-current] img{transform:scale(1.06)}' +
+  '.dsh-th span{font-size:10px;line-height:1.25;text-align:center;font-weight:500;color:color-mix(in oklab,var(--dsh-fg,var(--color-foreground)) 78%,transparent);max-width:78px}' +
+  '.dsh-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}' +
+  '@container (max-width:639px){' +
+  '.dsh-canvas{position:relative;left:auto;top:auto;width:100%;height:auto;transform:none;display:flex;flex-direction:column;align-items:center;padding:14px 16px 18px}' +
+  '.dsh-arc{width:200%;height:auto;left:-60%;top:-30px}' +
+  '.dsh-top{position:relative;left:auto;top:auto;align-self:flex-end}' +
+  '.dsh-pager{left:14px;top:150px}' +
+  '.dsh-plates{position:relative;left:auto;top:auto;width:min(52vw,32svh);height:min(52vw,32svh);margin-top:0}' +
+  '.dsh-orbit>img{width:100%;height:100%}' +
+  '.dsh-head{position:relative;left:auto;top:auto;width:100%;height:132px;margin-top:10px}' +
+  '.dsh-hd{text-align:center}' +
+  '.dsh-t1{font-size:clamp(18px,5cqi,30px)!important}' +
+  '.dsh-t2{font-size:clamp(20px,5.5cqi,34px)!important}' +
+  '.dsh-eye{font-size:11px}' +
+  '.dsh-head{height:108px}' +
+  '.dsh-acts{position:relative;left:auto;top:auto;margin-top:4px}' +
+  '.dsh-card{position:relative;left:auto;top:auto;width:100%;max-width:420px;margin-top:12px}' +
+  '.dsh-strip{position:relative;left:auto;top:auto;width:100%;height:112px;margin-top:14px}' +
+  '.dsh-win{flex:1;min-width:0;width:auto;height:112px}' +
+  '.dsh-arrow{width:32px;height:44px}' +
+  '.dsh-th{width:118px;height:112px}' +
+  '.dsh-th .dsh-btn{height:108px}' +
+  '}' +
+  '@media(max-width:639px){.dsh-root{height:auto!important;overflow:clip}}' +
+  '@media (prefers-reduced-motion:reduce){.dsh-track,.dsh-dot,.dsh-dot i,.dsh-th .dsh-btn,.dsh-th img,.dsh-wishlist{transition:none}}';
+
+const HIDE_1 = 'inset(0% 0% 0% 100%)'; // thin line: wipes in from the right
+const HIDE_2 = 'inset(0% 100% 0% 0%)'; // heavy line: wipes in from the left
+const SHOW = 'inset(0% 0% 0% 0%)';
 
 export function DishOrbitCarousel({
   dishes,
-  className,
-  onChange,
+  wishlistIds = [],
+  onToggleWishlist,
+  height = '100svh',
+  backdrop,
+  loop = true,
+  fontSrc = null,
+  fontFamily,
+  stickyTop = '0px',
+  style,
+  itemNoun = 'dish',
+  ariaLabel,
+  primaryActionLabel = 'Play video',
+  secondaryActionLabel = 'Order',
+  overviewLabel = 'Overview',
+  detailsLabel = 'Ingredients',
+  onPlay,
   onOrder,
+  onSearch,
+  onMenu,
+  onChange,
+  className,
 }: DishOrbitCarouselProps) {
-  const [index, setIndex] = React.useState(0);
-  const [tab, setTab] = React.useState<'overview' | 'ingredients'>('overview');
-  const activeDish = dishes[index] ?? dishes[0];
+  const n = dishes.length;
+  const [index, setIndex] = useState(0);
+  const [scrollDriven, setScrollDriven] = useState(false);
+  const [visibleThumbnails, setVisibleThumbnails] = useState(VISIBLE);
+  const [tab, setTab] = useState('overview');
 
-  React.useEffect(() => {
-    if (!dishes.length) return;
-    setIndex((current) => (current >= dishes.length ? 0 : current));
-  }, [dishes]);
+  const trackRef = useRef(null as HTMLDivElement | null);
+  const rootRef = useRef(null as HTMLDivElement | null);
+  const stRef = useRef(null as ScrollTrigger | null);
+  const segRef = useRef(0);
+  const indexRef = useRef(0);
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+  const orbits = useRef([] as (HTMLDivElement | null)[]);
+  const heads = useRef([] as (HTMLDivElement | null)[]);
+  const bodies = useRef([] as (HTMLDivElement | null)[]);
+  const arcRef = useRef(null as SVGPathElement | null);
+  const arc = useRef({ a0: 0, a1: 0 });
+  const shown = useRef(-1);
+  const dirRef = useRef(1 as 1 | -1);
+  const tlRef = useRef(null as gsap.core.Timeline | null);
+  const reducedRef = useRef(false);
+  const swipe = useRef(null as { x: number; y: number } | null);
 
-  React.useEffect(() => {
-    onChange?.(index);
-  }, [index, onChange]);
+  const fontStack = fontFamily
+    ? fontFamily
+    : fontSrc
+      ? `"${FONT}", ${'var(--font-display, ui-sans-serif)'}, ui-sans-serif, system-ui, sans-serif`
+      : 'var(--font-display, ui-sans-serif), ui-sans-serif, system-ui, sans-serif';
 
-  React.useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        setIndex((current) => (current + 1) % dishes.length);
-      }
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        setIndex((current) => (current - 1 + dishes.length) % dishes.length);
-      }
+  // Fit the 960 x 520 design canvas to the root. Measured on resize only.
+  useIsomorphicLayoutEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const fit = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      el.style.setProperty('--dsh-s', String(Math.min(w / 960, h / 520, 1.6)));
+      setVisibleThumbnails(w < 640 ? Math.max(1, Math.floor((w - 100) / ITEM)) : VISIBLE);
     };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [dishes.length]);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const desktop = window.matchMedia('(min-width: 640px)');
+    const on = () => {
+      reducedRef.current = mq.matches;
+      setScrollDriven(desktop.matches && !mq.matches);
+    };
+    on();
+    mq.addEventListener('change', on);
+    desktop.addEventListener('change', on);
+    return () => {
+      mq.removeEventListener('change', on);
+      desktop.removeEventListener('change', on);
+    };
+  }, []);
 
-  if (!dishes.length || !activeDish) {
-    return null;
-  }
-
-  const step = (direction: 1 | -1) => {
-    setIndex((current) => {
-      const next = (current + direction + dishes.length) % dishes.length;
-      return next;
+  // The swap. Every dish is in the DOM; GSAP only moves the outgoing and incoming ones.
+  useIsomorphicLayoutEffect(() => {
+    const from = shown.current;
+    const to = index;
+    const parts = (i: number) => {
+      const head = heads.current[i];
+      return {
+        orbit: orbits.current[i],
+        head,
+        eye: head && head.querySelector('.dsh-eye'),
+        t1: head && head.querySelector('.dsh-t1'),
+        t2: head && head.querySelector('.dsh-t2'),
+        body: bodies.current[i],
+      };
+    };
+    // Writes the band's path only; no layout is read.
+    const drawArc = () =>
+      arcRef.current?.setAttribute(
+        'd',
+        arcPath(arc.current.a0, arc.current.a1, ORBIT_X, ORBIT_Y, ORBIT_R, 118)
+      );
+    const rest = arcRest(to);
+    const tint = dishes[to] ? dishes[to].accent : 'transparent';
+    if (tlRef.current) tlRef.current.progress(1).kill();
+    const b = parts(to);
+    if (from === -1 || from === to || reducedRef.current) {
+      for (let i = 0; i < n; i++)
+        if (i !== to) {
+          const p = parts(i);
+          gsap.set([p.orbit, p.head, p.body], { autoAlpha: 0 });
+        }
+      gsap.set([b.orbit, b.head, b.body, b.eye], { autoAlpha: 1, rotation: 0, y: 0 });
+      gsap.set(b.t1, { clipPath: SHOW });
+      gsap.set(b.t2, { clipPath: SHOW });
+      arc.current.a0 = rest[0];
+      arc.current.a1 = rest[1];
+      drawArc();
+      if (arcRef.current) gsap.set(arcRef.current, { fill: tint });
+      shown.current = to;
+      return;
+    }
+    const a = parts(from);
+    const d = dirRef.current;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        tlRef.current = null;
+      },
     });
+    tlRef.current = tl;
+    // plate: out over the top on the orbit, the next one swings in from the far side
+    tl.to(a.orbit, { rotation: SWING * d, duration: 0.62, ease: 'power2.in' }, 0)
+      .set(a.orbit, { autoAlpha: 0, rotation: 0 }, 0.62)
+      .fromTo(
+        b.orbit,
+        { autoAlpha: 1, rotation: -SWING * d },
+        { rotation: 0, duration: 0.95, ease: 'power3.out' },
+        0.3
+      );
+    // title: thin line clips away to the right, heavy line to the left, then the next wipes in
+    tl.to(a.t1, { clipPath: HIDE_1, duration: 0.42, ease: 'power2.in' }, 0)
+      .to(a.t2, { clipPath: HIDE_2, duration: 0.42, ease: 'power2.in' }, 0.06)
+      .to(a.eye, { autoAlpha: 0, duration: 0.25 }, 0)
+      .set(a.head, { autoAlpha: 0 }, 0.5)
+      .set(b.head, { autoAlpha: 1 }, 0.5)
+      .fromTo(
+        b.eye,
+        { autoAlpha: 0, y: 6 },
+        { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        0.55
+      )
+      .fromTo(b.t1, { clipPath: HIDE_1 }, { clipPath: SHOW, duration: 0.7, ease: 'power3.out' }, 0.55)
+      .fromTo(b.t2, { clipPath: HIDE_2 }, { clipPath: SHOW, duration: 0.7, ease: 'power3.out' }, 0.62);
+    // card: cross-fade, the incoming rows rise in turn
+    tl.to(a.body, { autoAlpha: 0, y: -6, duration: 0.3, ease: 'power1.in' }, 0.05).set(
+      b.body,
+      { autoAlpha: 1, y: 0 },
+      0.4
+    );
+    if (b.body)
+      tl.fromTo(
+        b.body.children,
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out' },
+        0.4
+      );
+    // the band stretches along the orbit with the plates, then settles into the next dish's span, morphing colour
+    tl.to(
+      arc.current,
+      {
+        a0: ARC_SWEEP[0],
+        a1: ARC_SWEEP[1],
+        duration: 0.6,
+        ease: 'power2.inOut',
+        onUpdate: drawArc,
+      },
+      0
+    ).to(
+      arc.current,
+      { a0: rest[0], a1: rest[1], duration: 0.85, ease: 'power3.out', onUpdate: drawArc },
+      0.6
+    );
+    if (arcRef.current)
+      tl.to(arcRef.current, { fill: tint, duration: 1.1, ease: 'power1.inOut' }, 0.1);
+    shown.current = to;
+  }, [index, n, dishes]);
+
+  useEffect(() => () => void tlRef.current?.kill(), []);
+
+  const select = (next: number, dir: 1 | -1) => {
+    if (next === indexRef.current) return;
+    dirRef.current = dir;
+    indexRef.current = next;
+    setIndex(next);
+    onChangeRef.current?.(next);
   };
+
+  // The page scroll drives the dish: the stage pins, one stretch of scroll per dish, snapping between them.
+  const steps = scrollSteps(n, loop);
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || steps < 1 || !scrollDriven) return;
+    const trigger = ScrollTrigger.create({
+      trigger: track,
+      start: () => `top ${getComputedStyle(rootRef.current!).top}`,
+      end: 'bottom bottom',
+      snap: loop ? {
+        snapTo: 1 / steps,
+        duration: { min: 0.3, max: 0.8 },
+        delay: 0.08,
+        ease: 'power2.inOut',
+      } : undefined,
+      onUpdate: (self) => {
+        // Looping: the last stretch shows the first dish, so jump back to the top unseen.
+        if (loop && self.progress >= 1 && self.direction > 0) {
+          segRef.current = 0;
+          self.scroll(self.start + 1);
+          select(0, 1);
+          return;
+        }
+        const seg = Math.round(self.progress * steps);
+        if (seg === segRef.current) return;
+        const dir = seg > segRef.current ? 1 : -1;
+        segRef.current = seg;
+        select(wrapIndex(seg, n), dir);
+      },
+    });
+    // At the very top no scroll is left to fire onUpdate, so scrolling up there wraps round to the last dish.
+    // Deferred a frame so the browser's own wheel scroll has landed first.
+    let raf = 0;
+    const onWheel = (e: WheelEvent) => {
+      const y = trigger.scroll();
+      if (!loop || e.deltaY >= 0 || y < trigger.start - 1 || y > trigger.start + 1) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        segRef.current = n - 1;
+        trigger.scroll(trigger.start + ((trigger.end - trigger.start) * (n - 1)) / steps);
+        select(n - 1, -1);
+      });
+    };
+    window.addEventListener('wheel', onWheel, { passive: true });
+    stRef.current = trigger;
+    // The track height changed with the item count, so re-measure the whole page.
+    ScrollTrigger.refresh();
+    // Earlier sections can change height when their assets or responsive layout load.
+    // Re-measure after those layout changes rather than using stale scroll offsets.
+    const resizeObserver = new ResizeObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+    const section = track.closest('section');
+    for (let previous = section?.previousElementSibling; previous; previous = previous.previousElementSibling) {
+      resizeObserver.observe(previous);
+    }
+    return () => {
+      resizeObserver.disconnect();
+      cancelAnimationFrame(raf);
+      window.removeEventListener('wheel', onWheel);
+      trigger.kill();
+      stRef.current = null;
+    };
+  }, [steps, loop, n, scrollDriven]);
+
+  // A different set of items (e.g. a category filter) restarts the carousel from the first one.
+  const signature = dishes.map((d) => d.label ?? `${d.title} ${d.subtitle}`).join('|');
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    if (!mountedRef.current) {
+      // First render: the trigger already sits at the start, so there is nothing to reset
+      // and nothing to scroll — moving the page here would yank the visitor off the hero.
+      mountedRef.current = true;
+      return;
+    }
+    indexRef.current = 0;
+    dirRef.current = 1;
+    segRef.current = 0;
+    setIndex((current) => (current === 0 ? current : 0));
+    onChangeRef.current?.(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature]);
+
+  // Buttons, keys and swipes jump to a dish and move the scroll to its stretch, so the two stay in step.
+  const go = (to: number, dir?: 1 | -1) => {
+    if (n < 2) return;
+    const next = loop ? wrapIndex(to, n) : Math.max(0, Math.min(to, n - 1));
+    if (next === index) return;
+    const st = stRef.current;
+    const y = st ? st.scroll() : 0;
+    if (st && y >= st.start - 1 && y <= st.end + 1) {
+      const seg = segmentFor(next, segRef.current, n, loop);
+      segRef.current = seg;
+      st.scroll(st.start + ((st.end - st.start) * seg) / steps);
+    }
+    select(next, dir ?? stepDirection(index, next, n));
+  };
+  const step = (d: 1 | -1) => go(index + d, d);
+
+  const onKeyDown = (e: ReactKeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      step(1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      step(-1);
+    }
+  };
+  const onPointerDown = (e: ReactPointerEvent) => {
+    swipe.current = { x: e.clientX, y: e.clientY };
+  };
+  const onPointerUp = (e: ReactPointerEvent) => {
+    const s = swipe.current;
+    swipe.current = null;
+    if (!s) return;
+    const dx = e.clientX - s.x;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.clientY - s.y) * 1.4)
+      step(dx < 0 ? 1 : -1);
+  };
+
+  const start = stripStart(index, n, visibleThumbnails);
+  const dish = dishes[index];
+
+  if (n === 0) return null;
 
   return (
     <div
-      className={cn(
-        'relative isolate overflow-hidden rounded-[28px] border border-white/10 bg-[#120d0a] shadow-[0_30px_80px_rgba(0,0,0,0.42)]',
-        className,
-      )}
+      ref={trackRef}
+      className={'dsh-trk' + (className ? ' ' + className : '')}
+      style={{ height: scrollDriven ? `calc(${height} * ${1 + steps * SCROLL_PER_DISH})` : 'auto' }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,190,110,0.18),_transparent_38%),linear-gradient(180deg,_rgba(18,13,10,0.96),_rgba(10,8,7,0.98))]" />
-      <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] [background-size:18px_18px]" />
+      <div
+        ref={rootRef}
+        className="dsh-root"
+        style={
+          {
+            height,
+            position: scrollDriven ? 'sticky' : 'relative',
+            '--dsh-sticky': stickyTop,
+            '--dsh-font': fontStack,
+            ...style,
+          } as CSSProperties
+        }
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={ariaLabel ?? `Browse ${itemNoun}s`}
+        tabIndex={0}
+        onKeyDown={onKeyDown}
+      >
+        <style>
+          {(fontSrc
+            ? `@font-face{font-family:${FONT};src:url(${fontSrc}) format('woff2');font-weight:100 900;font-display:swap}`
+            : '') +
+            CSS}
+        </style>
+        {backdrop ? <img className="dsh-bd" src={backdrop} alt="" width={1200} height={900} /> : null}
+        {backdrop ? <div className="dsh-dim" /> : null}
+        {backdrop ? <div className="dsh-wash" /> : null}
 
-      <div className="relative z-10 p-4 sm:p-6 xl:p-8">
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d9a34b]">
-              our collection
-            </p>
-            <h3 className="mt-3 font-display text-3xl tracking-[-0.06em] text-[#f7f1e8] sm:text-4xl">
-              Essential grooming, styled to perform.
-            </h3>
-          </div>
+        <div className="dsh-canvas">
+          <svg className="dsh-arc" viewBox="0 0 960 520" aria-hidden="true">
+            <path ref={arcRef} style={{ opacity: 0.34 }} />
+          </svg>
 
-          <div className="flex items-center gap-2">
+          <div className="dsh-top">
             <button
               type="button"
-              aria-label="Previous product"
-              onClick={() => step(-1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f7f1e8] transition hover:border-[#d9a34b]/60 hover:bg-[#d9a34b]/10"
+              className="dsh-btn"
+              aria-label={`Show the first ${itemNoun}`}
+              onClick={() => go(0)}
             >
-              <ArrowLeft className="h-4 w-4" />
+              <Search className="dsh-ico" aria-hidden="true" />
             </button>
             <button
               type="button"
-              aria-label="Next product"
-              onClick={() => step(1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f7f1e8] transition hover:border-[#d9a34b]/60 hover:bg-[#d9a34b]/10"
+              className="dsh-btn"
+              aria-label="Open the collection menu"
+              onClick={() => (onMenu ? onMenu() : onOrder?.(dish, index))}
             >
-              <ArrowRight className="h-4 w-4" />
+              <MenuIcon className="dsh-ico" aria-hidden="true" />
             </button>
           </div>
-        </div>
 
-        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-center">
-          <div className="relative h-[360px] sm:h-[430px]">
-            <div className="absolute left-1/2 top-1/2 h-[290px] w-[290px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d9a34b]/25 bg-[radial-gradient(circle,_rgba(217,163,75,0.18),_transparent_60%)]" />
-            <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5" />
-
-            {dishes.map((dish, dishIndex) => {
-              const isActive = dishIndex === index;
-              const angle = ((dishIndex - index) * 28) % 360;
-              const offsetX = Math.sin((angle * Math.PI) / 180) * 142;
-              const offsetY = Math.cos((angle * Math.PI) / 180) * 82;
-
-              return (
-                <motion.div
-                  key={`${dish.title}-${dish.subtitle}`}
-                  animate={{
-                    x: isActive ? 12 : offsetX,
-                    y: isActive ? -4 : offsetY,
-                    scale: isActive ? 1 : 0.78,
-                    rotate: isActive ? 0 : angle * 0.5,
-                    opacity: isActive ? 1 : 0.18,
-                    zIndex: isActive ? 20 : 5,
-                  }}
-                  transition={{ duration: 0.55, ease: 'easeInOut' }}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                >
-                  <div
-                    className="relative flex h-[220px] w-[220px] items-center justify-center rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(16,11,9,0.4))] shadow-[0_18px_40px_rgba(0,0,0,0.38)]"
-                    style={{
-                      boxShadow: isActive ? `0 24px 48px ${dish.accent}22` : undefined,
-                    }}
-                  >
-                    <div
-                      className="absolute inset-x-6 bottom-5 h-7 rounded-full blur-xl"
-                      style={{ backgroundColor: `${dish.accent}55` }}
-                    />
-                    <motion.img
-                      src={dish.image}
-                      alt={dish.alt ?? dish.title}
-                      className="relative z-10 h-[180px] w-[180px] object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.55)]"
-                      animate={{ y: isActive ? 0 : 10 }}
-                      transition={{ duration: 0.55, ease: 'easeInOut' }}
-                    />
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="dsh-pager" role="tablist" aria-label={`Choose a ${itemNoun}`}>
+            {dishes.map((d, i) => (
+              <button
+                key={i}
+                type="button"
+                role="tab"
+                className="dsh-btn dsh-dot"
+                aria-selected={i === index}
+                aria-current={i === index ? 'true' : undefined}
+                aria-label={d.title + ' ' + d.subtitle}
+                onClick={() => go(i)}
+              >
+                <i />
+              </button>
+            ))}
           </div>
 
-          <motion.div
-            key={activeDish.title + activeDish.subtitle}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="rounded-[26px] border border-white/10 bg-[#19120f]/90 p-5 sm:p-6"
+          <div
+            className="dsh-plates"
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={() => (swipe.current = null)}
           >
-            <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full border border-[#d9a34b]/30 bg-[#d9a34b]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#f6d7a0]">
-                {activeDish.eyebrow ?? 'Most loved'}
-              </span>
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1 text-[#f7f1e8]">
-                <Star className="h-3.5 w-3.5 fill-[#f5c768] text-[#f5c768]" />
-                <span className="text-sm font-semibold">{activeDish.rating.toFixed(1)}</span>
-              </div>
-            </div>
-
-            <div className="mt-5 flex items-baseline gap-3">
-              <span className="font-display text-xl uppercase tracking-[0.12em] text-[#f7f1e8]">
-                {activeDish.title}
-              </span>
-              <span className="font-semibold text-[#d9a34b]">•</span>
-              <span className="text-sm uppercase tracking-[0.18em] text-[#cbbba7]">
-                {activeDish.subtitle}
-              </span>
-            </div>
-
-            <div className="mt-5 space-y-3 border-t border-white/10 pt-5">
-              <div className="flex items-center gap-3">
-                <div
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: activeDish.accent }}
+            {dishes.map((d, i) => (
+              <div
+                key={i}
+                ref={(el) => {
+                  orbits.current[i] = el;
+                }}
+                className="dsh-orbit"
+                aria-hidden={i !== index}
+              >
+                <img
+                  src={d.image}
+                  alt={d.alt ?? d.title + ' ' + d.subtitle}
+                  width={245}
+                  height={245}
+                  draggable={false}
                 />
-                <p className="text-sm font-medium text-[#f7f1e8]">{activeDish.chef}</p>
               </div>
-              <p className="text-sm leading-6 text-[#c9b9a8]">{activeDish.description}</p>
-            </div>
+            ))}
+          </div>
 
-            <div className="mt-5 flex items-center gap-2">
-              {(['overview', 'ingredients'] as const).map((item) => (
+          <div className="dsh-head" aria-live="polite">
+            {dishes.map((d, i) => (
+              <div
+                key={i}
+                ref={(el) => {
+                  heads.current[i] = el;
+                }}
+                className="dsh-hd"
+                aria-hidden={i !== index}
+              >
+                <p className="dsh-eye">{d.eyebrow ?? `#${i + 1} Most loved ${itemNoun}`}</p>
+                <h2 style={{ margin: 0, font: 'inherit' }}>
+                  <span
+                    className="dsh-t1"
+                    style={{ fontSize: fitSize(d.title.length, 56, 330, EM_THIN) + 'px' }}
+                  >
+                    {d.title}
+                  </span>
+                  <span
+                    className="dsh-t2"
+                    style={{ fontSize: fitSize(d.subtitle.length, 62, 320, EM_HEAVY) + 'px' }}
+                  >
+                    {d.subtitle}
+                  </span>
+                </h2>
+              </div>
+            ))}
+          </div>
+
+          <div className="dsh-acts">
+            <button
+              type="button"
+              className="dsh-btn"
+              onClick={() => dish && onPlay?.(dish, index)}
+            >
+              <Play className="dsh-ico dsh-ico-fill" aria-hidden="true" />
+              {primaryActionLabel}
+            </button>
+            <button
+              type="button"
+              className="dsh-btn"
+              onClick={() => dish && onOrder?.(dish, index)}
+            >
+              <ShoppingBag className="dsh-ico" aria-hidden="true" />
+              {secondaryActionLabel}
+            </button>
+          </div>
+
+          <div className="dsh-card">
+            <div className="dsh-tabs" role="tablist" aria-label={`${itemNoun} details`}>
+              {[
+                ['overview', overviewLabel],
+                ['ingredients', detailsLabel],
+              ].map(([value, label]) => (
                 <button
-                  key={item}
+                  key={value}
                   type="button"
-                  onClick={() => setTab(item)}
-                  className={cn(
-                    'rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] transition',
-                    tab === item
-                      ? 'bg-[#f7f1e8] text-[#120d0a]'
-                      : 'border border-white/10 bg-transparent text-[#d6c5b2]',
-                  )}
+                  role="tab"
+                  className="dsh-btn dsh-tab"
+                  aria-selected={tab === value}
+                  onClick={() => setTab(value)}
                 >
-                  {item === 'overview' ? 'Overview' : 'Ingredients'}
+                  {label}
                 </button>
               ))}
             </div>
-
-            <div className="mt-5 min-h-[112px]">
-              {tab === 'overview' ? (
-                <div className="space-y-3">
-                  <p className="text-sm leading-6 text-[#d5c4ae]">
-                    {activeDish.kitchen ?? 'Crafted for everyday performance and polished finishing.'}
-                  </p>
-                  <div className="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.18em] text-[#e8d3a8]">
-                    <span className="rounded-full border border-[#d9a34b]/20 bg-[#d9a34b]/5 px-2.5 py-1">
-                      {activeDish.kitchen ?? 'Salon formula'}
-                    </span>
-                    <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">
-                      {activeDish.likes.toLocaleString()} likes
-                    </span>
+            <div className="dsh-bodies">
+              {dishes.map((d, i) => (
+                <div
+                  key={i}
+                  ref={(el) => {
+                    bodies.current[i] = el;
+                  }}
+                  className="dsh-body"
+                  aria-hidden={i !== index}
+                >
+                  <p className="dsh-chef">{d.chef}</p>
+                  <p className="dsh-kit">{d.kitchen ?? ' '}</p>
+                  {tab === 'overview' || !d.ingredients?.length ? (
+                    <p className="dsh-desc">{d.description}</p>
+                  ) : (
+                    <ul className="dsh-ing">
+                      {d.ingredients.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="dsh-react">
+                    <button
+                      type="button"
+                      className="dsh-btn dsh-wishlist"
+                      aria-pressed={wishlistIds.includes(d.id)}
+                      aria-label={`${wishlistIds.includes(d.id) ? 'Remove' : 'Add'} ${d.title} ${d.subtitle} ${wishlistIds.includes(d.id) ? 'from' : 'to'} wishlist`}
+                      tabIndex={i === index ? 0 : -1}
+                      onClick={() => onToggleWishlist?.(d.id)}
+                    >
+                      <Heart className="dsh-ico" aria-hidden="true" />
+                      {wishlistIds.includes(d.id) ? 'Saved to wishlist' : 'Add to wishlist'}
+                    </button>
                   </div>
                 </div>
-              ) : (
-                <ul className="space-y-2 text-sm text-[#d9ceb8]">
-                  {(activeDish.ingredients ?? ['Clean ingredients', 'Performance-ready finish', 'Lightweight comfort']).map((ingredient) => (
-                    <li key={ingredient} className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#d9a34b]" />
-                      <span>{ingredient}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              ))}
             </div>
+          </div>
 
-            <div className="mt-6 flex items-center justify-between gap-3 border-t border-white/10 pt-5">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.24em] text-[#d2b998]">Available now</p>
-                <p className="mt-2 text-2xl font-semibold text-[#f7f1e8]">₹{activeDish.likes}</p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => onOrder?.(activeDish, index)}
-                className="inline-flex items-center gap-2 rounded-full bg-[#f7f1e8] px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#120d0a] transition hover:bg-[#f1d7a8]"
-              >
-                <Sparkles className="h-3.5 w-3.5" />
-                Reserve
-              </button>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="mt-8 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {dishes.map((dish, dishIndex) => (
+          <div className="dsh-strip">
             <button
-              key={`${dish.title}-${dish.subtitle}-thumb`}
               type="button"
-              onClick={() => setIndex(dishIndex)}
-              className={cn(
-                'group min-w-[110px] rounded-2xl border px-2 py-2 transition',
-                dishIndex === index
-                  ? 'border-[#d9a34b]/40 bg-[#d9a34b]/10'
-                  : 'border-white/10 bg-white/[0.02]',
-              )}
+              className="dsh-btn dsh-arrow"
+              aria-label={`Previous ${itemNoun}`}
+              disabled={!loop && index === 0}
+              onClick={() => step(-1)}
             >
-              <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[#1a130f]">
-                  <img src={dish.image} alt="" className="h-8 w-8 object-contain" />
-                </div>
-                <div className="text-left">
-                  <p className="text-[9px] uppercase tracking-[0.2em] text-[#d2b998]">{dish.title}</p>
-                  <p className="mt-1 text-[10px] text-[#f7f1e8]">{dish.subtitle}</p>
-                </div>
-              </div>
+              <Triangle className="dsh-caret-l" aria-hidden="true" />
             </button>
-          ))}
+            <div className="dsh-win">
+              <div className="dsh-track" style={{ transform: `translateX(${-start * ITEM}px)` }}>
+                {dishes.map((d, i) => (
+                  <div key={i} className="dsh-th">
+                    <button
+                      type="button"
+                      className="dsh-btn"
+                      aria-current={i === index ? 'true' : undefined}
+                      onClick={() => go(i)}
+                    >
+                      <img src={d.image} alt="" width={56} height={56} draggable={false} />
+                      <span>{d.label ?? d.title + ' ' + d.subtitle}</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="dsh-btn dsh-arrow"
+              aria-label={`Next ${itemNoun}`}
+              disabled={!loop && index === n - 1}
+              onClick={() => step(1)}
+            >
+              <Triangle className="dsh-caret-r" aria-hidden="true" />
+            </button>
+          </div>
         </div>
+        <p className="dsh-sr" aria-live="polite">
+          {dish
+            ? `${itemNoun.charAt(0).toUpperCase()}${itemNoun.slice(1)} ${index + 1} of ${n}: ${dish.title} ${dish.subtitle}`
+            : ''}
+        </p>
       </div>
     </div>
   );

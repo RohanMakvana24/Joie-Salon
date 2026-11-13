@@ -73,7 +73,7 @@ export const MeetYourBarberSection: React.FC = () => {
           <div className="meet-salon__booking">
             <div className="meet-salon__planner-title"><span className="meet-salon__step">02</span><div><h3>Let’s save you a chair.</h3><p>Your message is ready to go.</p></div></div>
             <p className="meet-salon__note">“{bookingNote}”</p>
-            <div className="meet-salon__actions"><button type="button" onClick={copyNote} aria-label="Copy booking note">{copyStatus === 'copied' ? <Check size={15} /> : <Copy size={15} />}{copyStatus === 'copied' ? 'Copied' : 'Copy note'}</button><a href={bookingUrl} target="_blank" rel="noopener noreferrer"><Calendar size={16} /> Book on WhatsApp <ArrowUpRight size={15} /></a></div>
+            <div className="meet-salon__actions"><button type="button" onClick={copyNote} aria-label="Copy booking note">{copyStatus === 'copied' ? <Check size={15} /> : <Copy size={15} />}{copyStatus === 'copied' ? 'Copied' : 'Copy note'}</button><a href={bookingUrl} target="_blank" rel="noopener noreferrer"><Calendar size={16} /> Booking <ArrowUpRight size={15} /></a></div>
             {copyStatus === 'error' && <p className="meet-salon__copy-error" role="status">Couldn’t copy. Your message will still open on WhatsApp.</p>}
           </div>
         </div>

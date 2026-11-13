@@ -1,4 +1,4 @@
-﻿import { ArrowUpRight, Star } from 'lucide-react';
+﻿import { ArrowUpRight } from 'lucide-react';
 import { BUSINESS_INFO, FAITHFUL_REVIEWS } from '../data/barbershopData';
 import {
   TestimonialsMarquee,
@@ -57,24 +57,6 @@ export function CustomerReviewsSection() {
         <p className="mt-5 text-[13px] text-muted-foreground">
           Good hair. Great conversations. A reason to come back.
         </p>
-
-        <a
-          className="mt-6 inline-flex flex-wrap items-center justify-center gap-3 rounded-[4px] border border-border px-4 py-2.5 text-[11px] text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
-          href={BUSINESS_INFO.googleReviewsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="flex gap-[2px] text-primary" aria-hidden="true">
-            {Array.from({ length: 5 }, (_, index) => (
-              <Star key={index} size={13} strokeWidth={1.5} fill="currentColor" />
-            ))}
-          </span>
-          <strong className="text-[12px] font-semibold text-foreground">
-            {BUSINESS_INFO.googleSnapshot.rating}
-          </strong>
-          <span>{BUSINESS_INFO.googleSnapshot.reviewCount}+ client ratings</span>
-          <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
       </header>
 
       <div className="relative z-10 mt-12 md:mt-14">

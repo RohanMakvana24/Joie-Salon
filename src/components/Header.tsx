@@ -26,12 +26,28 @@ export const Header: React.FC<HeaderProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('#top');
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const headerBarRef = useRef<HTMLDivElement>(null);
   const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
+  const navigationCleanupRef = useRef<(() => void) | null>(null);
   const isLight = theme === 'light';
   // In the Hero section (before scrolling), keep the navbar 100% transparent with dark/gold foreground against hero artwork.
   // When scrolled, seamlessly match the user's selected theme (dark studio glass or warm light glass).
   const surfaceTheme: ThemeMode = isScrolled ? theme : 'dark';
   const useLightSurface = surfaceTheme === 'light';
+
+  useEffect(() => () => navigationCleanupRef.current?.(), []);
+
+  useEffect(() => {
+    const bar = headerBarRef.current;
+    if (!bar) return;
+    const updateHeight = () => {
+      document.documentElement.style.setProperty('--salon-header-h', `${bar.getBoundingClientRect().height}px`);
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(bar);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let frameId = 0;
@@ -40,8 +56,8 @@ export const Header: React.FC<HeaderProps> = ({
       setIsScrolled(scrollY > 24);
 
       // Track active section for Scroll Spy
-      const sections = ['#contact', '#gallery', '#barbers', '#products', '#services', '#top'];
-      const scrollPosition = scrollY + 140;
+      const sections = [...NAV_LINKS].reverse().map((link) => link.href);
+      const scrollPosition = (headerBarRef.current?.getBoundingClientRect().height ?? 60) + 24;
 
       for (const sectionId of sections) {
         if (sectionId === '#top') {
@@ -50,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
         }
         const element = document.querySelector(sectionId);
         if (element instanceof HTMLElement) {
-          const top = element.offsetTop;
+          const top = element.getBoundingClientRect().top;
           if (scrollPosition >= top) {
             setActiveSection(sectionId);
             break;
@@ -67,8 +83,10 @@ export const Header: React.FC<HeaderProps> = ({
 
     checkScrollAndSection();
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       if (frameId) window.cancelAnimationFrame(frameId);
     };
   }, []);
@@ -89,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768 && mobileMenuOpen) {
+      if (window.innerWidth >= 1280 && mobileMenuOpen) {
         setMobileMenuOpen(false);
       }
     };
@@ -107,8 +125,51 @@ export const Header: React.FC<HeaderProps> = ({
     });
   };
 
+  const handleSectionNavigation = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
+    const href = link?.getAttribute('href');
+    const target = href ? document.getElementById(href.slice(1)) : null;
+    if (!target || !href) return;
+    event.preventDefault();
+    navigationCleanupRef.current?.();
+    setMobileMenuOpen(false);
+    if (window.location.hash !== href) window.history.pushState(null, '', href);
+    requestAnimationFrame(() => {
+      const destination = () => {
+        const headerHeight = headerBarRef.current?.getBoundingClientRect().height ?? 60;
+        return href === '#top' ? 0 : target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+      };
+      if (Math.abs(window.scrollY - Math.max(0, destination())) < 1) return;
+      const cleanup = () => {
+        window.removeEventListener('scrollend', alignTarget);
+        window.removeEventListener('wheel', cleanup);
+        window.removeEventListener('touchstart', cleanup);
+        window.removeEventListener('keydown', cleanup);
+        window.removeEventListener('popstate', cleanup);
+        navigationCleanupRef.current = null;
+      };
+      const alignTarget = () => {
+        cleanup();
+        // Responsive assets can settle during a long jump. Align once after scrolling ends.
+        window.scrollTo({ top: destination(), behavior: 'instant' });
+      };
+      window.addEventListener('scrollend', alignTarget, { once: true });
+      window.addEventListener('wheel', cleanup, { passive: true });
+      window.addEventListener('touchstart', cleanup, { passive: true });
+      window.addEventListener('keydown', cleanup);
+      window.addEventListener('popstate', cleanup);
+      navigationCleanupRef.current = cleanup;
+      window.scrollTo({
+        top: destination(),
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      });
+    });
+  };
+
   return (
     <header
+      onClick={handleSectionNavigation}
       className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300 ${
         !isScrolled
           ? 'bg-transparent border-b border-transparent shadow-none'
@@ -117,14 +178,14 @@ export const Header: React.FC<HeaderProps> = ({
           : 'bg-[#0C0907]/92 backdrop-blur-md border-b border-[#DFAF63]/20 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
       }`}
     >
-      <div className="max-w-[1380px] mx-auto flex items-center justify-between gap-4 sm:gap-6 px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5">
+      <div ref={headerBarRef} className="max-w-[1380px] mx-auto flex items-center justify-between gap-4 sm:gap-6 px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5">
         {/* Zone 1: Redesigned Luxury Barber Crest & Wordmark */}
         <BrandLogo theme={useLightSurface ? 'light' : 'dark'} />
 
         {/* Zone 2: Center Navigation Links */}
         <nav
           aria-label="Primary section navigation"
-          className="hidden md:flex items-center gap-7 lg:gap-9 text-[12.5px] font-medium tracking-[0.04em]"
+          className="hidden xl:flex items-center gap-7 lg:gap-9 text-[12.5px] font-medium tracking-[0.04em]"
         >
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.href;
@@ -132,6 +193,7 @@ export const Header: React.FC<HeaderProps> = ({
               <a
                 key={link.label}
                 href={link.href}
+                aria-current={isActive ? 'location' : undefined}
                 className={`relative py-1 transition-colors whitespace-nowrap shrink-0 focus-ring ${
                   isActive
                     ? useLightSurface
@@ -221,7 +283,7 @@ export const Header: React.FC<HeaderProps> = ({
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-nav-drawer"
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className={`md:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border transition-colors cursor-pointer focus-ring ${
+            className={`xl:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border transition-colors cursor-pointer focus-ring ${
               useLightSurface
                 ? 'border-[#C28B37]/50 bg-[#F2EAE0] text-[#1A130E] hover:bg-[#E6D9C6]'
                 : 'border-[#DFAF63]/50 bg-[#120E0B]/60 text-[#F7F1E8] hover:border-[#E5B96F] hover:text-[#E5B96F]'
@@ -238,12 +300,12 @@ export const Header: React.FC<HeaderProps> = ({
           <div
             aria-hidden="true"
             onClick={() => setMobileMenuOpen(false)}
-            className="fixed inset-0 top-[52px] bg-black/60 backdrop-blur-xs z-[99] md:hidden animate-fade-in"
+            className="fixed inset-0 top-[var(--salon-header-h)] bg-black/60 backdrop-blur-xs z-[99] xl:hidden animate-fade-in"
           />
           <nav
             id="mobile-nav-drawer"
             aria-label="Mobile section navigation"
-            className={`relative z-[100] md:hidden border-b px-5 pt-3 pb-6 shadow-2xl transition-all ${
+            className={`relative z-[100] xl:hidden max-h-[calc(100dvh-var(--salon-header-h))] overflow-y-auto border-b px-5 pt-3 pb-6 shadow-2xl transition-all ${
               useLightSurface
                 ? 'bg-[#FAF6EE]/98 border-[#C28B37]/35 text-[#1A130E]'
                 : 'bg-[#120E0B]/98 border-[#DFAF63]/40 text-[#F7F1E8]'
@@ -257,6 +319,7 @@ export const Header: React.FC<HeaderProps> = ({
                     <a
                       ref={idx === 0 ? firstMobileLinkRef : undefined}
                       href={link.href}
+                      aria-current={isActive ? 'location' : undefined}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center justify-between min-h-[44px] px-3 py-2.5 text-sm font-medium rounded-lg transition-colors focus-ring ${
                         isActive
@@ -269,7 +332,7 @@ export const Header: React.FC<HeaderProps> = ({
                       }`}
                     >
                       <span>{link.label}</span>
-                      <span className="text-[#C28B37] text-xs font-mono">0{idx + 1}</span>
+                      <span aria-hidden="true" className="text-[#C28B37] text-xs font-mono">0{idx + 1}</span>
                     </a>
                   </li>
                 );

@@ -56,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-12">
           {/* Left-Aligned Hero Content Column matching Image 2 */}
           <div className="max-w-[650px] flex flex-col items-start text-left">
-            {/* 1. Location & Google Rating Row */}
+            {/* 1. Location Row */}
             <div className="inline-flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-[13px] text-[#E8E2D9]/90 mb-5">
               <a
                 href={BUSINESS_INFO.googleMapsUrl}
@@ -70,20 +70,6 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 </span>
               </a>
 
-              <span aria-hidden="true" className="hidden sm:inline-block h-3.5 w-[1px] bg-[#E8E2D9]/25" />
-
-              <a
-                href={BUSINESS_INFO.googleReviewsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 hover:text-[#E5B96F] transition-colors"
-              >
-                <Star className="w-4 h-4 text-[#E5B96F] fill-[#E5B96F] shrink-0" />
-                <span>
-                  <strong className="text-[#FFFFFF] font-semibold">4.9</strong>{' '}
-                  <span className="text-[#C9B8A6]">({BUSINESS_INFO.googleSnapshot.reviewCount}+ reviews)</span>
-                </span>
-              </a>
             </div>
 
             {/* 2. Wide-Tracked Uppercase Kicker: PREMIUM SALON · RAJKOT */}

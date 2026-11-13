@@ -1,0 +1,369 @@
+/* ==========================================================================
+   Classic Cut Salon — Google Reviews card
+   One large card: intro on the left, a single readable review on the right,
+   with initials rail and arrow controls for exploring every review.
+   ========================================================================== */
+
+.grev {
+  --grev-bg: #0c0907;
+  --grev-card: #17110c;
+  --grev-ink: #f7efe2;
+  --grev-muted: #bcac99;
+  --grev-gold: #e5b96f;
+  --grev-line: rgba(223, 175, 99, 0.2);
+  --grev-line-strong: rgba(223, 175, 99, 0.42);
+  position: relative;
+  padding: clamp(48px, 5.6vw, 84px) clamp(18px, 4vw, 64px);
+  background: var(--grev-bg);
+  border-top: 1px solid var(--grev-line);
+  color: var(--grev-ink);
+}
+
+html[data-theme='light'] .grev {
+  --grev-bg: #f2ebdd;
+  --grev-card: #fffdf8;
+  --grev-ink: #2d2118;
+  --grev-muted: #75634f;
+  --grev-gold: #88602b;
+  --grev-line: rgba(155, 120, 56, 0.22);
+  --grev-line-strong: rgba(155, 120, 56, 0.4);
+}
+
+.grev__shell {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.grev__card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.25fr);
+  gap: clamp(24px, 3.4vw, 60px);
+  padding: clamp(26px, 3.2vw, 52px);
+  border: 1px solid var(--grev-line-strong);
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 130% at 0% 0%, rgba(229, 185, 111, 0.1) 0%, rgba(229, 185, 111, 0) 55%),
+    var(--grev-card);
+  box-shadow: 0 24px 60px rgba(28, 18, 8, 0.16);
+}
+
+/* --- Intro --------------------------------------------------------------- */
+
+.grev__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.grev__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px;
+  border: 1px solid var(--grev-line);
+  border-radius: 999px;
+  color: var(--grev-gold);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.grev__badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.grev__intro h2 {
+  margin: 20px 0 0;
+  color: var(--grev-ink);
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.4vw, 46px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.03;
+}
+
+.grev__intro h2 span {
+  color: var(--grev-gold);
+}
+
+.grev__intro > p {
+  margin: 16px 0 0;
+  max-width: 34ch;
+  color: var(--grev-muted);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+
+.grev__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--grev-line-strong);
+  color: var(--grev-gold);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.grev__all:hover {
+  border-color: var(--grev-gold);
+  color: var(--grev-ink);
+}
+
+/* --- Review stage -------------------------------------------------------- */
+
+.grev__stage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.grev__quote {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 240px;
+  margin: 0;
+  padding: clamp(20px, 2.4vw, 32px);
+  border: 1px solid var(--grev-line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--grev-bg) 55%, transparent);
+  animation: grev-fade 0.45s ease both;
+}
+
+.grev__mark {
+  position: absolute;
+  top: 4px;
+  right: 20px;
+  color: var(--grev-gold);
+  font-family: var(--font-display);
+  font-size: 74px;
+  line-height: 1;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.grev__text {
+  margin: 0;
+  color: var(--grev-ink);
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.5vw, 22px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+.grev__person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--grev-line);
+}
+
+.grev__avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.grev__person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.grev__person-info strong {
+  color: var(--grev-ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.grev__person-info span {
+  color: var(--grev-muted);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+}
+
+/* --- Initials rail + controls -------------------------------------------- */
+
+.grev__rail {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+}
+
+.grev__rail::-webkit-scrollbar {
+  display: none;
+}
+
+.grev__chip {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--grev-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--grev-muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.grev__chip:hover {
+  color: var(--grev-ink);
+  border-color: var(--grev-line-strong);
+}
+
+.grev__chip.is-active {
+  background: var(--chip, var(--grev-gold));
+  border-color: transparent;
+  color: #fff;
+}
+
+.grev__controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.grev__nav {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--grev-line-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--grev-ink);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.grev__nav:hover {
+  background: var(--grev-gold);
+  border-color: var(--grev-gold);
+  color: #17110a;
+  transform: translateY(-1px);
+}
+
+.grev__count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--grev-muted);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.grev__count strong {
+  color: var(--grev-gold);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.grev a:focus-visible,
+.grev button:focus-visible {
+  outline: 2px solid var(--grev-gold);
+  outline-offset: 3px;
+}
+
+@keyframes grev-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grev__quote {
+    animation: none;
+  }
+  .grev__nav {
+    transition: none;
+  }
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .grev__card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+  .grev__quote {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .grev {
+    padding: 44px 16px;
+  }
+  .grev__card {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+  .grev__intro h2 {
+    font-size: clamp(27px, 8.4vw, 36px);
+  }
+  .grev__text {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .grev__mark {
+    font-size: 56px;
+  }
+  .grev__controls {
+    justify-content: space-between;
+  }
+}

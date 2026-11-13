@@ -1,0 +1,35 @@
+[
+  {
+    "id": "matte-molding-hair-clay",
+    "prompt": "Use case: product-mockup. Asset type: salon website carousel transparent product cutout. Premium photorealistic studio packshot of a low wide matte black hair clay jar with a black screw lid. Front view, upright, entire product visible centered, filling 82% of a square frame with consistent generous clear margins. Matching Classic Cut Salon collection: matte black label, fine warm gold typography and thin gold border. Label text exactly \"CLASSIC CUT\", \"MATTE CLAY\", \"100 G\". Elegant believable packaging, crisp clean silhouette, soft warm studio highlights, realistic materials. Single product only. Fully transparent background with actual alpha, no floor, no props, no cast shadow, no watermark.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "royal-oud-argan-beard-oil",
+    "prompt": "Use case: product-mockup. Asset type: salon website carousel transparent product cutout. Premium photorealistic studio packshot of an amber glass beard oil bottle with a black rubber dropper and brushed brass collar. Front view, upright, entire product visible centered, filling 82% of a square frame with consistent generous clear margins. Matching Classic Cut Salon collection: matte black label, fine warm gold typography and thin gold border. Label text exactly \"CLASSIC CUT\", \"BEARD OIL\", \"30 ML\". Elegant believable packaging, crisp clean silhouette, soft warm studio highlights, realistic materials. Single product only. Fully transparent background with actual alpha, no floor, no props, no cast shadow, no watermark.",
+    "edit": "Edit this product packshot. Change ONLY the volume text on the bottom of the label to exactly \"50 ML\". Preserve the entire packaging design, CLASSIC CUT brand, product name, shape, lighting, framing and actual transparent background.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "charcoal-detan-face-scrub",
+    "prompt": "Use case: product-mockup. Asset type: salon website carousel transparent product cutout. Premium photorealistic studio packshot of a tall charcoal black face scrub squeeze tube with a black flip cap at the bottom. Front view, upright, entire product visible centered, filling 82% of a square frame with consistent generous clear margins. Matching Classic Cut Salon collection: matte black label, fine warm gold typography and thin gold border. Label text exactly \"CLASSIC CUT\", \"CHARCOAL SCRUB\", \"100 ML\". Elegant believable packaging, crisp clean silhouette, soft warm studio highlights, realistic materials. Single product only. Fully transparent background with actual alpha, no floor, no props, no cast shadow, no watermark.",
+    "edit": "Edit this product packshot. Change ONLY the volume text on the bottom of the label to exactly \"120 ML\". Preserve the entire packaging design, CLASSIC CUT brand, product name, shape, lighting, framing and actual transparent background.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "sea-salt-volume-spray",
+    "prompt": "Use case: product-mockup. Asset type: salon website carousel transparent product cutout. Premium photorealistic studio packshot of a tall smoke amber cylindrical sea salt spray bottle with a black fine mist spray pump. Front view, upright, entire product visible centered, filling 82% of a square frame with consistent generous clear margins. Matching Classic Cut Salon collection: matte black label, fine warm gold typography and thin gold border. Label text exactly \"CLASSIC CUT\", \"SEA SALT SPRAY\", \"150 ML\". Elegant believable packaging, crisp clean silhouette, soft warm studio highlights, realistic materials. Single product only. Fully transparent background with actual alpha, no floor, no props, no cast shadow, no watermark.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "sandalwood-cooling-aftershave",
+    "prompt": "Use case: product-mockup. Asset type: salon website carousel transparent product cutout. Premium photorealistic studio packshot of a squat amber glass aftershave bottle with a black screw cap. Front view, upright, entire product visible centered, filling 82% of a square frame with consistent generous clear margins. Matching Classic Cut Salon collection: matte black label, fine warm gold typography and thin gold border. Label text exactly \"CLASSIC CUT\", \"AFTERSHAVE\", \"100 ML\". Elegant believable packaging, crisp clean silhouette, soft warm studio highlights, realistic materials. Single product only. Fully transparent background with actual alpha, no floor, no props, no cast shadow, no watermark.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "keratin-repair-hair-serum",
+    "prompt": "Use case: product-mockup. Asset type: salon website carousel transparent product cutout. Premium photorealistic studio packshot of a slim amber glass hair serum bottle with a black pump and brass collar. Front view, upright, entire product visible centered, filling 82% of a square frame with consistent generous clear margins. Matching Classic Cut Salon collection: matte black label, fine warm gold typography and thin gold border. Label text exactly \"CLASSIC CUT\", \"HAIR SERUM\", \"50 ML\". Elegant believable packaging, crisp clean silhouette, soft warm studio highlights, realistic materials. Single product only. Fully transparent background with actual alpha, no floor, no props, no cast shadow, no watermark.",
+    "edit": "Edit this product packshot. Change ONLY the volume text on the bottom of the label to exactly \"60 ML\". Preserve the entire packaging design, CLASSIC CUT brand, product name, shape, lighting, framing and actual transparent background.",
+    "tool": "built-in image_gen"
+  }
+]

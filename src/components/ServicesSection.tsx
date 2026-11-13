@@ -234,7 +234,7 @@ export const ServicesSection: React.FC = () => {
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl sm:rounded-full bg-gradient-to-r from-[#E8C27A] via-[#DFAF63] to-[#C58E3D] text-[#090705] font-bold text-xs uppercase tracking-[0.08em] hover:brightness-110 transition-all shadow-[0_8px_24px_rgba(223,175,99,0.28)] focus-ring"
             >
               <Calendar className="w-4 h-4 shrink-0" />
-              <span className="truncate">Book via WhatsApp</span>
+              <span className="truncate">Booking</span>
               <ArrowUpRight className="w-4 h-4 shrink-0" />
             </a>
             <a

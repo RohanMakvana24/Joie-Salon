@@ -18,7 +18,7 @@ html[data-theme='light'] .image-skeleton { --skeleton-base: #eae1d4; --skeleton-
 .image-skeleton--error::after { animation: none; background: none; }
 .skeleton-image[data-image-state='loading'], .skeleton-image[data-image-state='error'] { opacity: 0 !important; }
 .skeleton-image[data-image-state='loaded'] { animation: skeleton-image-reveal .3s ease both; }
-.salon-location__shop-photo, .product-bag-item { position: relative; }
+.product-bag-item { position: relative; }
 .product-bag-item .image-skeleton { inset: 23px auto auto 0; width: 78px; height: 94px; border-radius: 11px; }
 @keyframes image-skeleton-shimmer { to { transform: translateX(100%); } }
 @keyframes skeleton-image-reveal { from { opacity: 0; } to { opacity: 1; } }
