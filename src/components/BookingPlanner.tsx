@@ -1,12 +1,12 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { ArrowUpRight, Check, Clock3, Crown, Scissors, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Check, Clock3, Crown, Scissors } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/barbershopData';
 import './BookingPlanner.css';
 
 const MODES = [
   { id: 'salon', title: 'The salon chair', caption: 'Your everyday refresh', icon: Scissors },
   { id: 'wedding', title: 'The wedding edit', caption: 'Groom & wedding party', icon: Crown },
-  { id: 'event', title: 'Beyond the salon', caption: 'Barber for your event', icon: Sparkles },
+  { id: 'event', title: 'Beyond the salon', caption: 'Barber for your event', icon: Scissors },
 ] as const;
 type Mode = typeof MODES[number]['id'];
 const SERVICES: Record<Mode, string[]> = {
@@ -36,12 +36,13 @@ export function BookingPlanner() {
   const [location, setLocation] = useState('At your venue');
   const [notes, setNotes] = useState('');
   const [error, setError] = useState('');
-  const [opened, setOpened] = useState(false);
+  const [preparedUrl, setPreparedUrl] = useState('');
   useEffect(() => { setToday(indiaNow().date); }, []);
   const special = mode !== 'salon';
   const selectedMode = MODES.find(item => item.id === mode)!;
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setPreparedUrl('');
     const now = indiaNow();
     setToday(now.date);
     if (date < now.date || (date === now.date && time <= now.time)) {
@@ -50,6 +51,10 @@ export function BookingPlanner() {
     }
     if (!/^[+\d\s()-]+$/.test(phone) || phone.replace(/\D/g, '').length < 10 || phone.replace(/\D/g, '').length > 15) {
       setError('Please enter a valid contact number with at least 10 digits.');
+      return;
+    }
+    if (!name.trim() || (special && location === 'At your venue' && !venue.trim())) {
+      setError('Please enter your name and, for a venue booking, the full address.');
       return;
     }
     setError('');
@@ -62,8 +67,9 @@ export function BookingPlanner() {
       ...(notes.trim() ? [`Notes: ${notes.trim()}`] : []),
       '', 'Please confirm availability and pricing. Thank you!',
     ].join('\n');
-    window.open(`${BUSINESS_INFO.bookingUrl}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
-    setOpened(true);
+    const url = `${BUSINESS_INFO.bookingUrl}?text=${encodeURIComponent(message)}`;
+    setPreparedUrl(url);
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
   return (
     <div className="booking-planner" id="booking" aria-labelledby="booking-heading">
@@ -82,7 +88,7 @@ export function BookingPlanner() {
         </div>
         <a className="salon-visit__link" href={BUSINESS_INFO.phoneHref}>Prefer a conversation? {BUSINESS_INFO.phoneDisplay} <ArrowUpRight size={14} /></a>
       </div>
-      <form className="booking-planner__form" onSubmit={submit} onChange={() => { setOpened(false); setError(''); }}>
+      <form className="booking-planner__form" onSubmit={submit} onChange={() => { setPreparedUrl(''); setError(''); }}>
         <fieldset className="booking-planner__modes">
           <legend><span>01</span> What are we planning?</legend>
           <div>{MODES.map(({ id, title, caption, icon: Icon }) => <label key={id} className={mode === id ? 'is-selected' : ''}>
@@ -113,9 +119,9 @@ export function BookingPlanner() {
           </div>
         </fieldset>
         {error && <p className="booking-planner__error" role="alert">{error}</p>}
-        <button className="booking-planner__submit" type="submit">Let’s plan your look <ArrowUpRight size={19} /></button>
+        <button className="booking-planner__submit" type="submit">Continue on WhatsApp <ArrowUpRight size={19} /></button>
         <p className="booking-planner__disclaimer">Continue on WhatsApp · Your booking is confirmed after the salon replies.</p>
-        {opened && <p className="booking-planner__success" role="status"><Check size={15} /> WhatsApp opened with your details. Send the message to request your booking.</p>}
+        {preparedUrl && <div className="booking-planner__success" role="status"><Check size={15} /><div>Your message is ready. Send it on WhatsApp to request your booking. <a href={preparedUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Open WhatsApp again</a></div></div>}
       </form>
     </div>
   );

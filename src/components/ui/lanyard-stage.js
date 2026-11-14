@@ -68,7 +68,9 @@ class LanyardStage {
   }
 
   sizeTarget(rig) {
-    const width = Math.max(1, Math.round(rig.width * this.dpr));
+    // Give each rig space to swing over neighbouring cards. Its DOM canvas
+    // remains the original size so pointer picking and resting scale stay exact.
+    const width = Math.max(1, Math.round(rig.width * 3 * this.dpr));
     const height = Math.max(1, Math.round(rig.height * this.dpr));
     if (rig.target?.width === width && rig.target?.height === height) return;
     if (rig.target) rig.target.setSize(width, height);
@@ -91,7 +93,7 @@ class LanyardStage {
       const x = box.left - stage.left + this.element.scrollLeft, y = box.top - stage.top + this.element.scrollTop;
       rig.inView = x < this.width && x + box.width > 0 && y < this.height && y + box.height > 0;
       rig.plane.position.set(x + box.width / 2, this.height - y - box.height / 2, 0);
-      rig.plane.scale.set(box.width, box.height, 1);
+      rig.plane.scale.set(box.width * 3, box.height, 1);
       rig.plane.renderOrder = rig.container.closest('[data-active]')?.dataset.active === 'true' ? 100 : rig.index;
       rig.plane.visible = rig.inView && rig.ready && rig.painted;
     }
@@ -124,7 +126,10 @@ class LanyardStage {
       }
       this.renderer.setRenderTarget(rig.target);
       this.renderer.clear();
-      this.renderer.render(rig.scene, rig.camera);
+      rig.expandedCamera ??= rig.camera.clone();
+      rig.expandedCamera.copy(rig.camera);
+      rig.expandedCamera.setViewOffset(rig.width, rig.height, -rig.width, 0, rig.width * 3, rig.height);
+      this.renderer.render(rig.scene, rig.expandedCamera);
       rig.dirty = false;
       rig.plane.visible = true;
       if (!rig.painted) { rig.painted = true; firstPaints.push(rig); }

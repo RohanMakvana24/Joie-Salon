@@ -15,11 +15,13 @@ import {
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { ServicesSection } from './components/ServicesSection';
+import { GroomingPackagesSection } from './components/GroomingPackagesSection';
+import { WhyChooseUsSection } from './components/WhyChooseUsSection';
 import { ProductsSection } from './components/ProductsSection';
 import { MeetYourBarberSection } from './components/MeetYourBarberSection';
-import { OurBarbersSection } from './components/OurBarbersSection';
 import { TransformationGallerySection } from './components/TransformationGallerySection';
 import { CustomerReviewsSection } from './components/CustomerReviewsSection';
+import { FaqSection } from './components/FaqSection';
 import { SocialMediaSection } from './components/SocialMediaSection';
 import { VisitAndBookSection } from './components/VisitAndBookSection';
 import { Footer } from './components/Footer';
@@ -27,7 +29,20 @@ import { FloatingWhatsAppWidget } from './components/FloatingWhatsAppWidget';
 const DesignSystemPreviewModal = lazy(() => import('./components/DesignSystemPreviewModal').then(module => ({ default: module.DesignSystemPreviewModal })));
 
 const SiteSections = memo(function SiteSections() {
-  return <><ServicesSection /><ProductsSection /><MeetYourBarberSection /><OurBarbersSection /><TransformationGallerySection /><CustomerReviewsSection /><SocialMediaSection /><VisitAndBookSection /></>;
+  return (
+    <>
+      <ServicesSection />
+      <GroomingPackagesSection />
+      <WhyChooseUsSection />
+      <ProductsSection />
+      <MeetYourBarberSection />
+      <TransformationGallerySection />
+      <CustomerReviewsSection />
+      <FaqSection />
+      <SocialMediaSection />
+      <VisitAndBookSection />
+    </>
+  );
 });
 
 export default function App() {

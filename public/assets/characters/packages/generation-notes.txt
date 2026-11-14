@@ -1,0 +1,8 @@
+﻿Generated using the built-in image_gen tool. Transparent PNG originals and optimized alpha WebP files are stored alongside this note.
+
+Shared prompt: Polished friendly stylized 3D animated-film character cutouts for an Indian men's salon. Full body including shoes, Indian skin tones, expressive brown eyes, detailed styled hair, realistic cloth textures, soft studio lighting and dimensional shading. Transparent background. No text, logo, floor, arch or card UI.
+
+executive: Indian man around 30, side-part fade and sculpted short beard, fitted charcoal blazer, cream tee, dark trousers and cream sneakers. Hand adjusting lapel, confident smile.
+wedding: Indian groom around 28, sculpted quiff and contoured beard, ivory sherwani with subtle gold collar embroidery, ivory trousers and tan jutti. No turban, hair fully visible.
+youth: Indian college student around 20, textured crop and low taper, clean shaven, sage overshirt, white tee, dark trousers and white sneakers. Hand brushing hair.
+family: Indian father around 36 in taupe shirt and navy chinos beside son around 8 in ochre tee and shorts. Fresh haircuts, father resting hand on son's shoulder, boy giving thumbs up.

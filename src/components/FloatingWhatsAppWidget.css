@@ -1,0 +1,19 @@
+.salon-booking-widget,.salon-booking-launcher{position:fixed;right:24px;bottom:max(20px,env(safe-area-inset-bottom));z-index:40}
+.salon-booking-widget{width:280px;border:1px solid #c6ae89;border-radius:16px;background:#fffcf6;color:#30251b;box-shadow:0 8px 32px #281b1224;overflow:hidden}
+.salon-booking-widget__heading{display:flex;align-items:center;justify-content:space-between;padding:8px 10px 8px 16px;background:#f1e8d9;border-bottom:1px solid #d8c7ac}
+.salon-booking-widget__heading>span{display:flex;align-items:center;gap:8px;font-size:8px;font-weight:600;letter-spacing:.13em;color:#78592f}
+.salon-booking-widget__heading button{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;color:#78592f;cursor:pointer}
+.salon-booking-widget__heading button:hover{background:#e2d3bc}
+.salon-booking-widget__link{display:flex;align-items:center;gap:12px;padding:16px;text-decoration:none;color:inherit;transition:background .2s}
+.salon-booking-widget__link:hover{background:#f6f0e5}
+.salon-booking-widget__icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#137a3d;color:white;flex-shrink:0}
+.salon-booking-widget__copy{display:flex;flex:1;flex-direction:column;gap:5px}
+.salon-booking-widget__copy strong{font-size:14px;font-weight:650;line-height:1.2}
+.salon-booking-widget__copy>span{font-size:10px;color:#786651}
+.salon-booking-launcher{width:52px;height:52px;display:grid;place-items:center;border:1px solid #c6ae89;border-radius:16px;background:#137a3d;color:white;box-shadow:0 6px 24px #281b1224;cursor:pointer}
+html[data-theme=dark] .salon-booking-widget{background:#211a13;color:#f7eedf;border-color:#665039}
+html[data-theme=dark] .salon-booking-widget__heading{background:#2c2218;border-color:#493825}
+html[data-theme=dark] .salon-booking-widget__heading>span,html[data-theme=dark] .salon-booking-widget__heading button{color:#dbbb8b}
+html[data-theme=dark] .salon-booking-widget__copy>span{color:#beac95}
+html[data-theme=dark] .salon-booking-widget__link:hover{background:#30251b}
+@media(max-width:639px){.salon-booking-widget,.salon-booking-launcher{right:16px}.salon-booking-widget{width:230px}.salon-booking-widget__link{padding:12px;gap:10px}.salon-booking-widget__heading{padding-block:4px}.salon-booking-widget__copy strong{font-size:13px}}

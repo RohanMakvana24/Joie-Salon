@@ -7,3 +7,6 @@ dist/
 .env*
 !.env.example
 .andromity/
+
+# Local design review screenshots (website assets live in public/).
+/*.png

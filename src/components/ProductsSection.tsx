@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ArrowUpRight, Calendar, MousePointerClick, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Calendar, MousePointerClick, SprayCan } from 'lucide-react';
 import { DishOrbitCarousel } from './ui/dish-orbit-carousel';
 import {
   PRODUCT_ITEMS,
@@ -159,7 +159,7 @@ export const ProductsSection: React.FC = () => {
       id="products"
       className="relative border-b border-[#B88235]/28 bg-[var(--color-background)] py-16 text-[var(--color-foreground)] sm:py-20"
     >
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="site-container relative z-10">
         <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
             <div className="mb-3 inline-flex items-center gap-2.5">
@@ -212,7 +212,7 @@ export const ProductsSection: React.FC = () => {
 
             <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#D9A34B]">
               <MousePointerClick className="h-3.5 w-3.5" aria-hidden="true" />
-              Scroll or tap to browse
+              Swipe or tap to browse
             </p>
           </div>
         </div>
@@ -222,12 +222,9 @@ export const ProductsSection: React.FC = () => {
           dishes={dishes}
           wishlistIds={wishlistIds}
           onToggleWishlist={toggleWishlist}
-          /* The reference carousel loops forever, which is right for a standalone
-             page but wrong for an embedded section: the wrap-back fires the moment
-             the last product is reached and yanks the visitor back to the first,
-             so the sections below the carousel become unreachable. */
           loop={false}
-          height="calc(100svh - var(--salon-header-h))"
+          scrollWithPage={false}
+          height="clamp(480px, 46vw, 600px)"
           stickyTop="var(--salon-header-h)"
           style={
             {
@@ -254,7 +251,7 @@ export const ProductsSection: React.FC = () => {
           <div className="max-w-2xl">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F59E0B]/12 text-[#D9A34B]">
-                <Sparkles className="h-5 w-5" />
+                <SprayCan className="h-5 w-5" />
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-[#D9A34B]">

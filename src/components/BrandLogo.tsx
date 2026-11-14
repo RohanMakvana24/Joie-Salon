@@ -5,6 +5,7 @@ interface BrandLogoProps {
   size?: 'default' | 'lg';
   theme?: ThemeMode;
   className?: string;
+  href?: string;
 }
 
 /** Official Classic Cut identity: intertwined CC monogram + diamond detail. */
@@ -12,14 +13,15 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'default',
   theme = 'dark',
   className = '',
+  href = '#top',
 }) => {
   const isLarge = size === 'lg';
   const isLight = theme === 'light';
 
   return (
     <a
-      href="#top"
-      aria-label="Classic Cut Salon — Back to top"
+      href={href}
+      aria-label={href === '#top' ? 'Classic Cut Salon — Back to top' : 'Classic Cut Salon home'}
       className={`group inline-flex items-center shrink-0 select-none focus-ring ${
         isLarge ? 'gap-3' : 'gap-2.5'
       } ${className}`}

@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Calendar, ArrowRight, Sun, Moon } from 'lucide-react';
 import { BUSINESS_INFO, ThemeMode } from '../data/barbershopData';
 import { BrandLogo } from './BrandLogo';
@@ -12,16 +15,24 @@ interface HeaderProps {
 const NAV_LINKS = [
   { label: 'Home', href: '#top' },
   { label: 'Services', href: '#services' },
+  { label: 'Packages', href: '#packages' },
   { label: 'Products', href: '#products' },
-  { label: 'Our Barbers', href: '#barbers' },
   { label: 'The Shop', href: '#gallery' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
+  { label: 'Blog', href: '/blog' },
 ];
 
 export const Header: React.FC<HeaderProps> = ({
   theme,
   onToggleTheme,
 }) => {
+  const pathname = usePathname();
+  const isInteriorPage = pathname !== '/';
+  const navigationLinks = NAV_LINKS.map((link) => ({
+    ...link,
+    href: isInteriorPage && link.href.startsWith('#') ? `/${link.href}` : link.href,
+  }));
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('#top');
@@ -32,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   const isLight = theme === 'light';
   // In the Hero section (before scrolling), keep the navbar 100% transparent with dark/gold foreground against hero artwork.
   // When scrolled, seamlessly match the user's selected theme (dark studio glass or warm light glass).
-  const surfaceTheme: ThemeMode = isScrolled ? theme : 'dark';
+  const surfaceTheme: ThemeMode = isScrolled || isInteriorPage ? theme : 'dark';
   const useLightSurface = surfaceTheme === 'light';
 
   useEffect(() => () => navigationCleanupRef.current?.(), []);
@@ -50,13 +61,17 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   useEffect(() => {
+    if (isInteriorPage) {
+      setActiveSection(pathname.startsWith('/blog') ? '/blog' : '');
+      return;
+    }
     let frameId = 0;
     const checkScrollAndSection = () => {
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 24);
 
       // Track active section for Scroll Spy
-      const sections = [...NAV_LINKS].reverse().map((link) => link.href);
+      const sections = [...NAV_LINKS].reverse().map((link) => link.href).filter((href) => href.startsWith('#'));
       const scrollPosition = (headerBarRef.current?.getBoundingClientRect().height ?? 60) + 24;
 
       for (const sectionId of sections) {
@@ -89,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
       window.removeEventListener('resize', handleScroll);
       if (frameId) window.cancelAnimationFrame(frameId);
     };
-  }, []);
+  }, [isInteriorPage, pathname]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -171,23 +186,23 @@ export const Header: React.FC<HeaderProps> = ({
     <header
       onClick={handleSectionNavigation}
       className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300 ${
-        !isScrolled
+        !isScrolled && !isInteriorPage
           ? 'bg-transparent border-b border-transparent shadow-none'
           : useLightSurface
           ? 'bg-[#FAF6EE]/92 backdrop-blur-md border-b border-[#C28B37]/25 shadow-[0_4px_20px_rgba(20,14,10,0.08)]'
           : 'bg-[#0C0907]/92 backdrop-blur-md border-b border-[#DFAF63]/20 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
       }`}
     >
-      <div ref={headerBarRef} className="max-w-[1380px] mx-auto flex items-center justify-between gap-4 sm:gap-6 px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5">
+      <div ref={headerBarRef} className="site-container flex items-center justify-between gap-4 sm:gap-6 py-2 sm:py-2.5">
         {/* Zone 1: Redesigned Luxury Barber Crest & Wordmark */}
-        <BrandLogo theme={useLightSurface ? 'light' : 'dark'} />
+        <BrandLogo theme={useLightSurface ? 'light' : 'dark'} href={isInteriorPage ? '/' : '#top'} />
 
         {/* Zone 2: Center Navigation Links */}
         <nav
           aria-label="Primary section navigation"
           className="hidden xl:flex items-center gap-7 lg:gap-9 text-[12.5px] font-medium tracking-[0.04em]"
         >
-          {NAV_LINKS.map((link) => {
+          {navigationLinks.map((link) => {
             const isActive = activeSection === link.href;
             return (
               <a
@@ -266,7 +281,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'text-[#DFAF63] group-hover:text-[#0C0907]'
               }`}
             />
-            <span>Book Now</span>
+            <span>WhatsApp Booking</span>
             <ArrowRight
               className={`w-3.5 h-3.5 group-hover:translate-x-0.5 transition-all ${
                 useLightSurface
@@ -312,7 +327,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <ul className="flex flex-col space-y-1">
-              {NAV_LINKS.map((link, idx) => {
+              {navigationLinks.map((link, idx) => {
                 const isActive = activeSection === link.href;
                 return (
                   <li key={link.label}>
@@ -347,7 +362,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.1em] bg-gradient-to-r from-[#E8C27A] to-[#C89643] text-[#0C0907] rounded-full transition-colors whitespace-nowrap focus-ring shadow-[0_4px_16px_rgba(200,150,67,0.35)]"
               >
                 <Calendar className="w-3.5 h-3.5" />
-                <span>Book Your Chair</span>
+                <span>Book on WhatsApp</span>
               </a>
               <a
                 href={BUSINESS_INFO.phoneHref}

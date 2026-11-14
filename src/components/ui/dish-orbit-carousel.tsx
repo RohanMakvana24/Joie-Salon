@@ -75,6 +75,8 @@ export type DishOrbitCarouselProps = {
   onToggleWishlist?: (id: string) => void;
   /** Root height. A definite length: percentages collapse on a host page. */
   height?: string;
+  /** Enable the long pinned page-scroll presentation. Disable for an embedded section. */
+  scrollWithPage?: boolean;
   /** Optional photo behind the display, e.g. a kitchen wall. Washed by the theme background. */
   backdrop?: string;
   /** Scroll on forever: past the last dish comes the first again, and up from the first, the last. */
@@ -320,6 +322,7 @@ export function DishOrbitCarousel({
   wishlistIds = [],
   onToggleWishlist,
   height = '100svh',
+  scrollWithPage = true,
   backdrop,
   loop = true,
   fontSrc = null,
@@ -390,7 +393,7 @@ export function DishOrbitCarousel({
     const desktop = window.matchMedia('(min-width: 640px)');
     const on = () => {
       reducedRef.current = mq.matches;
-      setScrollDriven(desktop.matches && !mq.matches);
+      setScrollDriven(scrollWithPage && desktop.matches && !mq.matches);
     };
     on();
     mq.addEventListener('change', on);
@@ -399,7 +402,7 @@ export function DishOrbitCarousel({
       mq.removeEventListener('change', on);
       desktop.removeEventListener('change', on);
     };
-  }, []);
+  }, [scrollWithPage]);
 
   // The swap. Every dish is in the DOM; GSAP only moves the outgoing and incoming ones.
   useIsomorphicLayoutEffect(() => {

@@ -14,10 +14,12 @@ interface FooterProps {
 const NAV = [
   { label: 'Home', href: '#top' },
   { label: 'Services', href: '#services' },
+  { label: 'Packages', href: '#packages' },
   { label: 'Products', href: '#products' },
-  { label: 'Our Barbers', href: '#barbers' },
   { label: 'The Shop', href: '#gallery' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
+  { label: 'Blog', href: '/blog' },
 ];
 
 const FACEBOOK_URL = 'https://www.facebook.com/search/top?q=Classic%20Cut%20Salon%20Rajkot';

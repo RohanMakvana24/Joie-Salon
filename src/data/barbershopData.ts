@@ -39,7 +39,7 @@ export interface ServiceItem {
   priceNote: string;
   duration?: string;
   featuredOrangeCard?: boolean;
-  iconName: 'scissors' | 'sparkles' | 'shield' | 'layers' | 'users' | 'compass';
+  iconName: 'scissors' | 'scissors' | 'shield' | 'layers' | 'users' | 'compass';
 }
 
 export interface ReviewExcerpt {
@@ -96,6 +96,8 @@ export const BUSINESS_INFO: BusinessContactInfo = {
   neighborhood: 'Arya Nagar · Pedak Road, Rajkot',
   phoneDisplay: '+91 82828 48453',
   phoneHref: 'tel:+918282848453',
+  // Public contact matches https://gujaratipedia.com/rajkot/barbers/ (checked 2026-11-14).
+  // The listing confirms the phone number; WhatsApp activation still needs owner confirmation.
   bookingUrl: 'https://wa.me/918282848453',
   instagramUrl: 'https://www.instagram.com/classiccutmenssalon/',
   instagramHandle: '@classiccutmenssalon',
@@ -172,7 +174,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
       'Top choice for weekly grooming, festive looks, and complete Rajkot makeover sessions.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
     duration: '50-60 mins',
-    iconName: 'sparkles',
+    iconName: 'scissors',
   },
   {
     id: 'kids-family-cuts',
@@ -369,7 +371,21 @@ export function buildHairSalonSchemaJsonLd(info: BusinessContactInfo) {
       postalCode: info.postalCode,
       addressCountry: 'IN',
     },
-    sameAs: [info.instagramUrl, info.bookingUrl],
+    sameAs: [info.instagramUrl],
+    hasMap: info.googleMapsUrl,
+    areaServed: { '@type': 'City', name: info.locality },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Salon services in Rajkot',
+      itemListElement: SERVICE_ITEMS.map((service) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: service.title,
+          description: service.description,
+        },
+      })),
+    },
   };
 }
 

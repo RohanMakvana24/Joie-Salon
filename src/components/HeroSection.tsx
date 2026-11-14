@@ -4,10 +4,10 @@ import {
   Phone,
   Calendar,
   MapPin,
-  Star,
+  SprayCan,
   ArrowRight,
   ShieldCheck,
-  Sparkles,
+  Scissors,
   Clock,
   ChevronDown,
 } from 'lucide-react';
@@ -27,7 +27,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
     <section
       id="top"
       aria-label="Classic Cut Salon Rajkot Hero"
-      className="relative min-h-[92vh] xl:min-h-screen w-full overflow-hidden bg-[#080605] border-b border-[#D9A34B]/25 flex items-center"
+      className="relative w-full overflow-hidden bg-[#080605] border-b border-[#D9A34B]/25 flex items-center"
     >
       {/* LAYER 1: First Uploaded Image (/assets/aistudio/image_5ddfe75b.webp) as Full-Bleed Hero Background */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -53,7 +53,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
       {/* LAYER 2: Foreground Hero Content */}
       <div className="relative z-10 w-full pt-28 pb-14 sm:pt-32 sm:pb-20 lg:py-28">
-        <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-12">
+        <div className="site-container">
           {/* Left-Aligned Hero Content Column matching Image 2 */}
           <div className="max-w-[650px] flex flex-col items-start text-left">
             {/* 1. Location Row */}
@@ -79,8 +79,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
             {/* 3. 3D Extruded / Beveled Headline ("SHARPER / EVERYDAY") + Overlapping Gold Script ("Look Good") */}
             <div
-              style={{ transform: 'rotate(-2.2deg)' }}
-              className="relative my-1 sm:my-2 select-none max-w-full"
+              className="hero-title relative my-1 sm:my-2 select-none max-w-full"
             >
               <h1 className="flex flex-col items-start leading-[0.92]">
                 <span className="text-3d-sharper text-[2.85rem] sm:text-[5.1rem] md:text-[6.1rem] lg:text-[6.6rem] tracking-[-0.02em]">
@@ -102,9 +101,9 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
             {/* 4. Two-Line Value Proposition Copy */}
             <p className="mt-4 sm:mt-5 text-sm sm:text-[16px] text-[#E6E0D6]/90 leading-relaxed max-w-md font-normal">
-              Precision cuts. Classic styles. Modern looks.
+              Men's haircuts, skin fades and beard styling in Rajkot.
               <br />
-              Your style, our expertise.
+              Visit Classic Cut Salon on Pedak Road, Arya Nagar.
             </p>
 
             {/* 5. Dual Pill CTA Buttons ("Book Your Chair ->" & "Call the Shop") */}
@@ -116,7 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-b from-[#EDD08D] via-[#DBA958] to-[#C28B37] hover:from-[#F5DC9C] hover:to-[#CF9640] text-[#0E0A07] font-semibold text-sm sm:text-[15px] px-7 py-3.5 sm:px-8 sm:py-4 shadow-[0_10px_28px_rgba(219,169,88,0.32)] transition-all cursor-pointer group focus-ring"
               >
                 <Calendar className="w-4 h-4 text-[#0E0A07] stroke-[2.2]" />
-                <span>Book Your Chair</span>
+                <span>Book on WhatsApp</span>
                 <ArrowRight className="w-4 h-4 text-[#0E0A07] group-hover:translate-x-1 transition-transform" />
               </a>
 
@@ -133,10 +132,10 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             <div className="mt-5 flex flex-wrap items-center gap-2 sm:gap-2.5 text-[11px] sm:text-xs text-[#D8CFBF]">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/[0.12] backdrop-blur-sm">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#E5B96F]" />
-                100% Sanitized Tools
+                Hair & Beard Styling
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/[0.12] backdrop-blur-sm">
-                <Sparkles className="w-3.5 h-3.5 text-[#E5B96F]" />
+                <Scissors className="w-3.5 h-3.5 text-[#E5B96F]" />
                 AC Lounge
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/[0.12] backdrop-blur-sm">
@@ -202,7 +201,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
               {/* Feature 3: Premium Products */}
               <div className="flex items-center gap-2 sm:gap-3">
-                <Star className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B96F] stroke-[1.6] shrink-0" />
+                <SprayCan className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B96F] stroke-[1.6] shrink-0" />
                 <div className="text-[11px] sm:text-[13px] leading-snug text-[#E8E2D9]">
                   <div className="font-medium">Premium</div>
                   <div className="text-[#C9B8A6]">Products</div>

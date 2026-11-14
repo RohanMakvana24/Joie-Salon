@@ -64,7 +64,7 @@ export const ServicesSection: React.FC = () => {
         className="pointer-events-none absolute -top-40 left-1/2 hidden md:block -translate-x-1/2 w-[900px] h-[380px] rounded-full bg-[#DFAF63]/[0.06] blur-[100px]"
       />
 
-      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
+      <div className="site-container relative z-10">
         {/* Section Header + Category Filter Bar */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
           <div>

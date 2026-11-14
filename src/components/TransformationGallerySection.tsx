@@ -8,6 +8,10 @@ import { RisingInk } from './ui/rising-ink';
 const InfiniteMenu = lazy(() => import('./ui/InfiniteMenu'));
 
 const GALLERY_ITEMS = [
+  { image: '/assets/hairstyles/rajkot-precision-fade.jpg', title: 'Rajkot Precision Fade', description: 'Seamless skin fade with razor-sharp hairline lineup.' },
+  { image: '/assets/hairstyles/rajkot-royal-beard.jpg', title: 'Royal Beard Sculpting', description: 'Hot-towel straight-razor contouring & beard spa.' },
+  { image: '/assets/hairstyles/rajkot-groom-styling.jpg', title: 'Groom Wedding Styling', description: 'Complete royal makeover for weddings and receptions.' },
+  { image: '/assets/location/rajkot-salon-experience.jpg', title: 'Classic Cut Lounge', description: 'Luxury grooming chair experience on Pedak Road.' },
   { image: '/assets/hairstyles/textured-crop.webp', title: 'Textured Crop', description: 'Choppy texture with a clean low fade.' },
   { image: '/assets/hairstyles/modern-quiff.webp', title: 'Modern Quiff', description: 'Lifted volume with neatly tapered sides.' },
   { image: '/assets/hairstyles/classic-side-part.webp', title: 'Classic Side Part', description: 'A clean part with a polished finish.' },
@@ -16,7 +20,6 @@ const GALLERY_ITEMS = [
   { image: '/assets/hairstyles/slick-back-ai.webp', title: 'Slick Back', description: 'Swept-back length with a crisp undercut.' },
   { image: '/assets/hairstyles/wavy-flow-ai.webp', title: 'Wavy Flow', description: 'Natural movement with medium-length layers.' },
   { image: '/assets/hairstyles/french-crop-ai.webp', title: 'French Crop', description: 'A blunt fringe with a clean high fade.' },
-  { image: '/assets/hairstyles/modern-mullet-ai.webp', title: 'Modern Mullet', description: 'Textured layers with a subtle burst fade.' },
 ];
 
 export const TransformationGallerySection = () => {
@@ -25,7 +28,7 @@ export const TransformationGallerySection = () => {
   const nearby = useElementInView(stageRef, { once: true, rootMargin: '240px' });
   return (
   <section id="gallery" aria-labelledby="gallery-heading" className="relative overflow-hidden border-b border-[#DFAF63]/15 bg-[#0C0907] py-20 sm:py-28">
-    <div className="relative w-full">
+    <div className="site-container relative">
       <div className="mx-auto mb-4 max-w-2xl px-5 text-center sm:mb-6">
         <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.28em] text-[#E5B96F]">
           Style inspiration · Rajkot
@@ -45,7 +48,7 @@ export const TransformationGallerySection = () => {
         </p>
       </div>
 
-      <div ref={stageRef} className="gallery-immersive-stage relative h-[520px] sm:h-[660px]">
+      <div ref={stageRef} className="gallery-immersive-stage relative h-[420px] sm:h-[560px]">
         {nearby ? <Suspense fallback={<GallerySkeleton />}><InfiniteMenu items={GALLERY_ITEMS} count={160} tileSize={0.63} roundness={0.2}
           zoom={1.65} pullBack={1} stretch={0.6} inertia={0.6} autoplay={3}
           grayscale dim={0.5} intro showInfo theme={theme} accentColor={theme === 'light' ? '#2D2118' : '#E5B96F'} /></Suspense> : <GallerySkeleton />}

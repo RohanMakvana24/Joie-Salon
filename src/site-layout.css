@@ -1,0 +1,138 @@
+/* Shared page grid: every section uses the same content edges and spacing. */
+:root {
+  --site-container: 1280px;
+  --site-gutter: 40px;
+  --site-section-space: 80px;
+}
+.site-container,
+#main-content .signature-packages__inner,
+#main-content .meet-salon__inner,
+#main-content .our-barbers__inner,
+#main-content .salon-social__inner,
+#main-content .salon-visit__inner,
+.salon-footer .salon-footer__inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--site-container);
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
+}
+#main-content > section:not(#top) {
+  min-height: 0;
+  padding-block: var(--site-section-space);
+  padding-inline: 0;
+  scroll-margin-top: calc(var(--salon-header-h, 70px) + 16px);
+}
+#main-content #top {
+  min-height: 0;
+  height: auto;
+}
+#main-content #top > .relative {
+  padding-block: 112px 72px;
+}
+#main-content .signature-packages__grid {
+  max-width: none;
+}
+#main-content #faq > .site-container > div:last-child {
+  max-width: 880px;
+  margin-inline: auto;
+}
+#main-content #gallery .gallery-immersive-stage {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+#main-content #products .dsh-root {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+#main-content .salon-social__header {
+  padding-inline: 0;
+}
+#main-content .community-deck__footer {
+  margin-inline: 0;
+}
+@media (min-width: 1200px) {
+  #main-content .community-deck__track { padding-inline: 0; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root { --site-gutter: 28px; --site-section-space: 64px; }
+}
+@media (max-width: 639px) {
+  :root { --site-gutter: 20px; --site-section-space: 56px; }
+  #main-content #top > .relative { padding-block: 100px 52px; }
+  #main-content #gallery .gallery-immersive-stage,
+  #main-content #products .dsh-root { border-radius: 14px; }
+  #main-content .community-deck__track {
+    --social-mobile-card: min(340px, calc(100vw - 80px));
+    gap: 24px;
+    min-width: 100%;
+    padding-inline: max(0px, calc((100vw - 2 * var(--site-gutter) - var(--social-mobile-card)) / 2));
+  }
+}
+
+/* A quieter editorial finish across the existing salon sections. */
+#top .hero-title h1 > span {
+  font-weight: 750;
+  text-shadow: none;
+  filter: none;
+  -webkit-text-stroke: 0;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+#top .hero-title .text-3d-sharper { color: #faf3e6; }
+#top .hero-title .text-3d-everyday { color: #d9b375; }
+#top .hero-title .font-script-lookgood {
+  font-size: clamp(2.2rem, 4vw, 3.7rem);
+  margin-top: 8px;
+  margin-left: 4px;
+  transform: none;
+  color: #efdfc2;
+  text-shadow: none;
+  filter: none;
+}
+#top a[href^='https://wa.me/'] {
+  background: #dabb86;
+  box-shadow: 0 6px 20px #00000024;
+}
+#top a[href^='https://wa.me/']:hover { background: #e8cfa4; }
+#experience h2 {
+  font-size: clamp(32px, 3.7vw, 48px);
+  font-weight: 600;
+  letter-spacing: -.04em;
+  line-height: 1.15;
+  text-transform: none;
+  text-wrap: balance;
+}
+#experience h2 > span {
+  color: #a77b44;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+#experience h3 { text-transform: none; font-size: 22px; letter-spacing: -.025em; }
+#experience h3 + p { font-size: 13px; line-height: 1.85; }
+#experience > .site-container > div:first-child { max-width: 760px; }
+#main-content .service-character-card__body > p,
+#main-content .signature-package__description { font-size: 13px; line-height: 1.8; }
+#main-content .signature-package__body { padding: 28px; }
+#main-content .signature-package__body::before { display: none; }
+#main-content .signature-package { border-radius: 16px; box-shadow: 0 5px 18px #00000008; }
+#main-content .signature-package__footer a { min-height: 48px; }
+#main-content .signature-package__details summary { font-size: 12px; min-height: 48px; }
+#main-content .signature-package__includes li { font-size: 12px; }
+#main-content .signature-packages__intro { max-width: 520px; margin-inline: auto; }
+#main-content .signature-packages__filters button { min-height: 44px; font-size: 12px; }
+#main-content .service-character-card__signature,
+#main-content .service-character-card__spark { display: none; }
+#main-content .service-character-card__body { border-radius: 14px; }
+#booking .booking-planner__fields input,
+#booking .booking-planner__fields select,
+#booking .booking-planner__fields textarea { font-size: 16px; }
+#booking .booking-planner__submit { min-height: 54px; }
+@media (max-width: 639px) {
+  #main-content .signature-package__body { padding: 22px; }
+  #main-content .signature-packages__intro { margin-inline: 0; font-size: 13px; }
+  #main-content .signature-packages__filters { gap: 0 16px; }
+  #main-content .signature-packages__filters button { font-size: 11px; }
+  #experience h2 > span { display: block; margin-top: 4px; }
+}

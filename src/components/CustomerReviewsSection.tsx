@@ -59,7 +59,7 @@ export function CustomerReviewsSection() {
         </p>
       </header>
 
-      <div className="relative z-10 mt-12 md:mt-14">
+      <div className="site-container relative z-10 mt-12 md:mt-14">
         <TestimonialsMarquee
           firstRow={firstRow}
           secondRow={secondRow}
