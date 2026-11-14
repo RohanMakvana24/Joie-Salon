@@ -13,7 +13,7 @@ html[data-theme='dark'] .salon-social { --social-bg:#100d0a; --social-ink:#f5eee
 .community-deck { margin-top:46px; }
 .community-deck__stage { position:relative; height:620px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; }
 .community-deck__stage::-webkit-scrollbar { display:none; }
-.community-deck__stage { touch-action:pan-y pinch-zoom; }
+.community-deck__stage { touch-action:pan-x pan-y pinch-zoom; }
 .community-deck__stage[data-touch-scrolling='true'] { scroll-snap-type:none; }
 .community-deck__track { position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; width:100%; padding:18px 28px 14px; }
 /* A flat matte support, with a fine brass edge and flush end caps. */

@@ -41,9 +41,7 @@ export function SocialMediaSection() {
   const getStage = useCallback(() => stageRef.current, []);
   const slots = useRef<(HTMLDivElement | null)[]>([]);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const gesture = useRef<{ x: number; y: number; index: number; left: number; axis: 'horizontal' | 'vertical' | null } | null>(null);
-  const dragFrame = useRef(0);
-  useEffect(() => () => { if (scrollTimer.current) clearTimeout(scrollTimer.current); cancelAnimationFrame(dragFrame.current); }, []);
+  useEffect(() => () => { if (scrollTimer.current) clearTimeout(scrollTimer.current); }, []);
   const nearestCard = () => {
     const stage = stageRef.current; if (!stage) return 0;
     const center = stage.scrollLeft + stage.clientWidth / 2;
@@ -63,7 +61,6 @@ export function SocialMediaSection() {
     if (scrollTimer.current) clearTimeout(scrollTimer.current);
     scrollTimer.current = setTimeout(() => {
       scrollTimer.current = null;
-      if (gesture.current?.axis === 'horizontal') return;
       stageRef.current?.removeAttribute('data-touch-scrolling');
       setActive(nearestCard());
     }, 140);
@@ -83,40 +80,6 @@ export function SocialMediaSection() {
             const next = event.key === 'Home' ? 0 : event.key === 'End' ? PROFILES.length - 1 : (active + (event.key === 'ArrowRight' ? 1 : -1) + PROFILES.length) % PROFILES.length;
             select(next);
             slots.current[next]?.querySelector<HTMLButtonElement>('.community-deck__dot')?.focus({ preventScroll: true });
-          }} onTouchStart={event => {
-            gesture.current = null;
-            const stage = stageRef.current;
-            if (event.touches.length !== 1 || !stage || stage.scrollWidth <= stage.clientWidth) return;
-            stage.scrollTo({ left: stage.scrollLeft, behavior: 'auto' });
-            gesture.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, index: nearestCard(), left: stage.scrollLeft, axis: null };
-          }} onTouchMove={event => {
-            const start = gesture.current;
-            const stage = stageRef.current;
-            if (!start || !stage || event.touches.length !== 1) return;
-            const dx = event.touches[0].clientX - start.x;
-            const dy = event.touches[0].clientY - start.y;
-            if (!start.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 8) start.axis = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical';
-            if (start.axis !== 'horizontal') return;
-            stage.dataset.touchScrolling = 'true';
-            cancelAnimationFrame(dragFrame.current);
-            dragFrame.current = requestAnimationFrame(() => {
-              dragFrame.current = 0;
-              stage.scrollLeft = start.left - dx;
-            });
-          }} onTouchEnd={event => {
-            const start = gesture.current; gesture.current = null;
-            cancelAnimationFrame(dragFrame.current); dragFrame.current = 0;
-            if (!start || event.touches.length || !event.changedTouches.length) return;
-            const dx = event.changedTouches[0].clientX - start.x;
-            if (start.axis === 'horizontal') {
-              const step = Math.abs(dx) > 45 ? (dx < 0 ? 1 : -1) : 0;
-              select(Math.max(0, Math.min(PROFILES.length - 1, start.index + step)));
-              syncAfterScroll();
-            }
-          }} onTouchCancel={() => {
-            gesture.current = null;
-            cancelAnimationFrame(dragFrame.current); dragFrame.current = 0;
-            select(nearestCard()); syncAfterScroll();
           }} onScroll={() => {
             const stage = stageRef.current;
             if (!stage || stage.scrollWidth <= stage.clientWidth) return;
@@ -147,7 +110,7 @@ export function SocialMediaSection() {
               </div>)}
             </div>
           </div>
-          <div className="community-deck__footer"><p><span />Drag to swing. Tap to turn.</p><div><span><strong>0{active + 1}</strong> / 04</span><button type="button" aria-label="Previous social card" onClick={() => select(active - 1)}><ChevronLeft size={17} /></button><button type="button" aria-label="Next social card" onClick={() => select(active + 1)}><ChevronRight size={17} /></button></div></div>
+          <div className="community-deck__footer"><p><span />Swipe to explore. Tap to turn.</p><div><span><strong>0{active + 1}</strong> / 04</span><button type="button" aria-label="Previous social card" onClick={() => select(active - 1)}><ChevronLeft size={17} /></button><button type="button" aria-label="Next social card" onClick={() => select(active + 1)}><ChevronRight size={17} /></button></div></div>
         </div>
       </div>
     </section>
