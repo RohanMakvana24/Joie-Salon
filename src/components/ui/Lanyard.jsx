@@ -15,16 +15,16 @@ const THICKNESS = 0.018;
 const BEVEL = 0.007;
 const JOINTS = 4;
 const NODE_WEIGHT = 1 / 0.05;
-const MAX_STEP = 1 / 960;
+const MAX_STEP = 1 / 240;
 const ITERATIONS = 2;
-const SAMPLES = 72;
+const SAMPLES = 36;
 const FOV = 24;
 const STRAP_WIDTH = 0.36;
 const RING_RADIUS = 0.095;
 const RING_TUBE = 0.0135;
 const EYELET_RADIUS = 0.036;
 const CLAMP_BODY = 0.15;
-const FACE_WIDTH = 1024;
+const FACE_WIDTH = 768;
 
 const FINISHES = {
   glossy: { roughness: 0.42, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.06, foil: 0, anisotropy: 0 },
@@ -250,11 +250,11 @@ const buildCardGeometry = layout => {
     bevelEnabled: true,
     bevelThickness: BEVEL,
     bevelSize: BEVEL,
-    bevelSegments: 5,
-    curveSegments: 24
+    bevelSegments: 3,
+    curveSegments: 14
   });
   body.translate(0, 0, -THICKNESS / 2);
-  const face = new THREE.ShapeGeometry(outline, 24);
+  const face = new THREE.ShapeGeometry(outline, 14);
   const position = face.getAttribute('position');
   const uv = face.getAttribute('uv');
   for (let i = 0; i < position.count; i++) {
@@ -273,8 +273,8 @@ const buildClampGeometry = width => {
     bevelEnabled: true,
     bevelThickness: 0.014,
     bevelSize: 0.014,
-    bevelSegments: 6,
-    curveSegments: 10
+    bevelSegments: 3,
+    curveSegments: 8
   });
   geometry.translate(0, 0, -0.01);
   return geometry;
@@ -809,7 +809,7 @@ const Lanyard = ({
     container.appendChild(canvas);
     const eventTarget = settingsRef.current.getEventTarget?.() || canvas;
 
-    const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    const anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
     const scene = new THREE.Scene();
     const environment = renderer.getEnvironment?.() || buildEnvironment(renderer);
     scene.environment = environment.texture;
@@ -1253,20 +1253,25 @@ const Lanyard = ({
       start();
     };
 
+    let lastHoverPick = 0;
     const onPointerMove = event => {
       if (!settingsRef.current.interactive) return;
       if (event.pointerType === 'touch' && settingsRef.current.touchScroll) {
         if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 8) press = null;
         return;
       }
-      toPointer(event);
       if (sim.grab) {
+        toPointer(event);
         if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 6) press = null;
         raycaster.ray.at(sim.grab.reach, sim.grab.target);
         start();
         return;
       }
       if (event.pointerType === 'touch') return;
+      const now = performance.now();
+      if (now - lastHoverPick < 36) return;
+      lastHoverPick = now;
+      toPointer(event);
       const hit = pickCard();
       hovering = !!hit;
       const action = hit?.uv && hit.uv.x >= 0.07 && hit.uv.x <= 0.93 && hit.uv.y >= 0.055 && hit.uv.y <= 0.16;

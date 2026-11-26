@@ -1,5 +1,5 @@
 {
-  "name": "classic-cut-salon-next",
+  "name": "joie-salon-next",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,9 @@
     "test": "tsx --test src/data/barbershopData.test.ts"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.5.0",
     "@tailwindcss/postcss": "^4.0.12",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.15.1",
     "leaflet": "^1.9.4",

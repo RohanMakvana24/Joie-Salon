@@ -56,7 +56,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      const saved = window.localStorage.getItem('relook-theme');
+      const saved = window.localStorage.getItem('joie-salon-theme') ?? window.localStorage.getItem('relook-theme');
       if (saved === 'light' || saved === 'dark') setTheme(saved);
     } catch {
       // Keep the default theme when storage is unavailable.
@@ -66,7 +66,7 @@ export default function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     try {
-      window.localStorage.setItem('relook-theme', theme);
+      window.localStorage.setItem('joie-salon-theme', theme);
     } catch {
       // Ignore storage quota errors in restricted iframes
     }

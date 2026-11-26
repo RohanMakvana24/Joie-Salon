@@ -39,6 +39,7 @@
 
 .social-lanyard[data-ready='true'] .social-lanyard__fallback {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 

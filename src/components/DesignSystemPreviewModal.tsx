@@ -41,9 +41,9 @@ const PHASE_SUMMARIES = [
     file: 'phase-1-content-plan.md',
     title: 'Content & Website Structure Blueprint',
     highlights: [
-      'Separates supplied Toronto facts (1054 Eglinton Ave W, +1 647-222-3540, Linktree, Instagram) from customer-reported observations (Amir, fades, beard work, kids’ cuts).',
-      'Defines 8-section single-page reading order and faithful verbatim review excerpts without inferred per-review stars.',
-      'Keeps unconfirmed prices ($30–40 anecdote), opening hours, and direct WhatsApp URL in pending-confirmation rules.',
+      'Uses verified Joie Salon Rajkot details (Jyoti Nagar Main Road, +91 82828 48453, WhatsApp, Instagram) across hair, skincare, nails, and bridal services.',
+      'Defines single-page reading order and faithful client review excerpts across Google, Justdial & Magicpin.',
+      'Routes rate confirmations directly to WhatsApp and salon phone while preserving transparent consultation guidance.',
     ],
   },
   {
@@ -52,8 +52,8 @@ const PHASE_SUMMARIES = [
     title: 'Visual Design System & Component Preview',
     highlights: [
       'Centralizes semantic CSS custom properties in src/index.css (--color-canvas through --color-muted-text).',
-      'Pairs Anton condensed uppercase display typography with DM Sans body prose and JetBrains Mono tabular numerals.',
-      'Establishes shared Header, Orange Section Band, angled Service Card (.service-card-angled), and 6-layer Hero diagram.',
+      'Pairs Outfit display typography with Plus Jakarta Sans body prose and Cinzel accents.',
+      'Establishes shared Header, Services Deck, Signature Packages, and layered Hero composition.',
     ],
   },
   {
@@ -61,8 +61,8 @@ const PHASE_SUMMARIES = [
     file: 'phase-3-hero-notes.md',
     title: 'Reference-Style Layered Hero',
     highlights: [
-      'Implements 6 explicit layers: Brick Backdrop (z-1), Warm Edge Lighting (z-10), Oversized White NEW RELOOK H1 (z-20), Transparent Barber Model Cutout (z-30), Lower Black Fade (z-40), and Foreground Copy/CTAs (z-50).',
-      'Supports both transparent cutout modes and a deliberate missing-image typographic brick fallback.',
+      'Implements 6 explicit layers: Brick Backdrop (z-1), Warm Edge Lighting (z-10), Oversized JOIE SALON H1 (z-20), Studio Cutout (z-30), Lower Fade (z-40), and Foreground Copy/CTAs (z-50).',
+      'Supports responsive portrait scaling across desktop and mobile viewports.',
     ],
   },
   {
@@ -70,8 +70,8 @@ const PHASE_SUMMARIES = [
     file: 'phase-4-page-notes.md',
     title: 'Complete Page Sections',
     highlights: [
-      'Implements Services (#services), Meet Your Barber (#about), Transformation Gallery (#gallery), Customer Reviews (#reviews), Visit & Book (#contact), and Footer.',
-      'Replaces the reference product/blog areas with an evidence-backed Meet Your Barber section for Amir.',
+      'Implements Services (#services), Signature Packages (#packages), Our Bridals (#bridals), Meet Your Salon (#about), Transformation Gallery (#gallery), Reviews (#reviews), Visit & Book (#contact), and Footer.',
+      'Showcases 3D sculptural salon artwork, bridal lookbook, hair & skin retail bottles, and interactive Rajkot map.',
     ],
   },
   {
@@ -79,8 +79,8 @@ const PHASE_SUMMARIES = [
     file: 'phase-5-assets.md',
     title: 'Images & Alpha Cutout Engineering',
     highlights: [
-      'Provides both a Canvas silhouette alpha cutout extracted from the supplied reference and a native alpha SVG studio barber cutout (/assets/hero-barber-cutout.svg).',
-      'Treats the hero model strictly as decorative (alt="") and keeps fake AI/stock haircuts out of the Transformation Gallery.',
+      'Integrates high-resolution ladies hair, skin, bridal, and product studio assets built exclusively for Joie Salon.',
+      'Treats hero decorative cutouts cleanly and showcases authentic ladies salon gallery categories.',
     ],
   },
   {
@@ -88,8 +88,8 @@ const PHASE_SUMMARIES = [
     file: 'phase-6-validation.md / phase-7-handoff.md',
     title: 'Validation, Basic SEO & Release Handoff',
     highlights: [
-      'Includes Schema.org HairSalon JSON-LD with verified Toronto address and telephone, plus noindex protection for demo preview.',
-      'Backed by automated node:test unit tests verifying service filtering, crop bounds, and public copy compliance.',
+      'Includes Schema.org HairSalon JSON-LD with verified Joie Salon Rajkot address and telephone.',
+      'Backed by automated unit tests verifying service filtering, crop bounds, product filters, and public copy compliance.',
     ],
   },
 ];
@@ -232,7 +232,7 @@ export const DesignSystemPreviewModal: React.FC<DesignSystemPreviewModalProps> =
                         Reference Photo Cutout
                       </span>
                       <span className="mt-1 block text-[11px] leading-snug">
-                        Canvas alpha silhouette from supplied reference overlapping NEW RELOOK.
+                        Canvas alpha silhouette layered over the JOIE SALON hero headline.
                       </span>
                     </button>
 
@@ -252,7 +252,7 @@ export const DesignSystemPreviewModal: React.FC<DesignSystemPreviewModalProps> =
                         Studio Vector Cutout
                       </span>
                       <span className="mt-1 block text-[11px] leading-snug">
-                        High-DPI rim-lit SVG barber cutout (/assets/hero-barber-cutout.svg).
+                        High-DPI rim-lit Joie Salon studio cutout layer.
                       </span>
                     </button>
 
@@ -386,16 +386,16 @@ export const DesignSystemPreviewModal: React.FC<DesignSystemPreviewModalProps> =
                   </h3>
                   <ol className="space-y-1.5 text-xs font-mono text-[#C3B6A8]">
                     <li>
-                      <strong className="text-[#F58A16]">Layer 6 (z-50):</strong> Foreground Toronto copy &amp; Book Now / Call CTAs
+                      <strong className="text-[#F58A16]">Layer 6 (z-50):</strong> Foreground Rajkot copy &amp; Book Now / Call CTAs
                     </li>
                     <li>
                       <strong className="text-[#F58A16]">Layer 5 (z-40):</strong> Lower black vertical gradient fade into #0C0907 canvas
                     </li>
                     <li>
-                      <strong className="text-[#F58A16]">Layer 4 (z-30):</strong> Central transparent barber cutout (alt=&quot;&quot; decorative)
+                      <strong className="text-[#F58A16]">Layer 4 (z-30):</strong> Central transparent studio cutout (alt=&quot;&quot; decorative)
                     </li>
                     <li>
-                      <strong className="text-[#F58A16]">Layer 3 (z-20):</strong> Oversized condensed white NEW RELOOK H1 heading
+                      <strong className="text-[#F58A16]">Layer 3 (z-20):</strong> Oversized condensed white JOIE SALON H1 heading
                     </li>
                     <li>
                       <strong className="text-[#F58A16]">Layer 2 (z-10):</strong> Warm amber/orange radial edge glows &amp; center vignette
@@ -417,14 +417,14 @@ export const DesignSystemPreviewModal: React.FC<DesignSystemPreviewModalProps> =
                     DESKTOP &amp; MOBILE REFERENCE SHEET
                   </h3>
                   <p className="mt-1 text-xs text-[#C3B6A8]">
-                    Used for palette, condensed typography, orange section bands, and person-over-title hero composition.
+                    Used for palette, condensed typography, warm studio bands, and layered hero composition.
                   </p>
                 </div>
 
                 <div className="mt-3 max-h-[380px] overflow-y-auto rounded-[6px] border border-[#F7F1E8]/15 bg-[#181311]">
                   <img
                     src="/assets/aistudio/image_c6e6f2ed.webp"
-                    alt="Supplied desktop and mobile barbershop reference layout"
+                    alt="Supplied desktop and mobile salon layout reference"
                     className="w-full h-auto object-contain"
                   />
                 </div>
@@ -472,13 +472,13 @@ export const DesignSystemPreviewModal: React.FC<DesignSystemPreviewModalProps> =
                     Typography Hierarchy (2+1 Rule)
                   </span>
                   <p className="font-display-condensed text-4xl text-[#F7F1E8]">
-                    ANTON DISPLAY HEADING
+                    OUTFIT DISPLAY HEADING
                   </p>
                   <p className="text-sm text-[#C3B6A8] leading-relaxed">
-                    Body copy uses <strong className="text-[#F7F1E8]">DM Sans</strong> at 15px–16px with 1.6 line-height for effortless readability against dark brick and panel surfaces.
+                    Body copy uses <strong className="text-[#F7F1E8]">Plus Jakarta Sans</strong> at 15px–16px with 1.6 line-height for effortless readability across dark and light surfaces.
                   </p>
                   <p className="font-mono text-xs text-[#D9A34B] tabular-nums">
-                    JetBrains Mono Tabular: +1 647-222-3540 · 5.0 / 5 (333 Reviews)
+                    Tabular Figures: +91 82828 48453 · 4.9 / 5 (280+ Reviews)
                   </p>
                 </div>
 

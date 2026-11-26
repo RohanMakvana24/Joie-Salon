@@ -9,16 +9,16 @@ export const metadata: Metadata = {
   title: SEO_TITLE,
   description: SEO_DESCRIPTION,
   keywords: [
-    'best salon in rajkot',
-    'best men salon in rajkot',
-    'hair salon rajkot',
-    'pedak road salon rajkot',
-    'Joie Salon salon rajkot',
-    'beard styling rajkot',
-    'skin fade haircut rajkot',
-    'groom wedding package rajkot',
-    'arya nagar salon rajkot',
-    'barbershop in rajkot',
+    'best ladies salon in rajkot',
+    'women hair salon rajkot',
+    'bridal makeup artist rajkot',
+    'jyoti nagar salon rajkot',
+    'crystal mall rajkot salon',
+    'balayage and keratin rajkot',
+    'hydra glow facial rajkot',
+    'gel nail art rajkot',
+    'layer haircut ladies rajkot',
+    'joie salon rajkot',
   ],
   ...(SITE_URL ? {
     metadataBase: new URL(SITE_URL),
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: SEO_TITLE,
     ...(SITE_URL ? { url: `${SITE_URL}/` } : {}),
     description:
-      "Premier men's grooming salon on Pedak Road, Arya Nagar, Rajkot. Master fades, royal beard grooming, groom packages & de-tan facials. Book via WhatsApp or call +91 82828 48453.",
+      "Premier ladies hair, skin & bridal studio at Jyoti Nagar Main Road, Behind Crystal Mall, Rajkot. Layer cuts, balayage, keratin smoothing, hydra facials & bridal makeup. Book via WhatsApp or call +91 82828 48453.",
     siteName: BUSINESS_INFO.name,
     locale: 'en_IN',
     type: 'website',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
         url: '/assets/brand/joie-salon-luxury-card.jpg',
         width: 1200,
         height: 630,
-        alt: 'Joie Salon Rajkot - Best Men Salon on Pedak Road',
+        alt: 'Joie Salon Rajkot - Ladies Hair, Skin and Bridal Studio',
       },
     ],
   },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: SEO_TITLE,
     description:
-      'Book your next haircut, fade, or beard styling session at Joie Salon, Rajkot. Call +91 82828 48453.',
+      'Book your next haircut, balayage, hydra facial, or bridal consultation at Joie Salon, Rajkot. Call +91 82828 48453.',
     images: ['/assets/brand/joie-salon-luxury-card.jpg'],
   },
   icons: {
@@ -83,7 +83,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="bg-[#0C0907] text-[#F7F1E8] antialiased selection:bg-[#F58A16] selection:text-[#0C0907]">
         <Script id="theme-bootstrap" strategy="beforeInteractive">
-          {`try { const theme = localStorage.getItem('relook-theme'); document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light'; } catch { document.documentElement.dataset.theme = 'light'; }`}
+          {`try { const theme = localStorage.getItem('joie-salon-theme') || localStorage.getItem('relook-theme'); document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light'; } catch { document.documentElement.dataset.theme = 'light'; }`}
         </Script>
         {children}
         <script

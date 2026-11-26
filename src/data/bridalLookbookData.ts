@@ -101,7 +101,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     details: [
       { name: 'Precision Brow Arch', kind: 'Brows', note: 'Soft feathered brow framing', x: 47, y: 12 },
       { name: 'Satin Radiance Prep', kind: 'Skin', note: 'De-tan & smooth base prime', x: 54, y: 18 },
-      { name: 'Classic Side Waves', kind: 'Hairstyle', note: 'Camera-ready glossy hold', x: 40, y: 26 },
+      { name: 'Signature Side Waves', kind: 'Hairstyle', note: 'Camera-ready glossy hold', x: 40, y: 26 },
     ],
   },
 ];
@@ -111,7 +111,7 @@ export function buildBridalWhatsAppUrl(
   baseBookingUrl: string = BUSINESS_INFO.bookingUrl
 ): string {
   const message = [
-    '✨ *JOIE SALON — OUR BRIDALS (RAJKOT)*',
+    '*JOIE SALON — OUR BRIDALS (RAJKOT)*',
     '━━━━━━━━━━━━━━━━━━━━',
     `👰 *Bridal Look:* ${look.name}`,
     `🏷️ *Gujarati:* ${look.gujaratiName}`,

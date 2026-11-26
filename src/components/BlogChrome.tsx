@@ -9,14 +9,14 @@ export function BlogChrome({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('relook-theme');
+      const saved = localStorage.getItem('joie-salon-theme') ?? localStorage.getItem('relook-theme');
       if (saved === 'dark' || saved === 'light') setTheme(saved);
     } catch { /* Keep the default when storage is unavailable. */ }
   }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    try { localStorage.setItem('relook-theme', theme); } catch { /* Storage may be unavailable. */ }
+    try { localStorage.setItem('joie-salon-theme', theme); } catch { /* Storage may be unavailable. */ }
   }, [theme]);
 
   return (

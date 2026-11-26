@@ -7,21 +7,21 @@ import { useTheme } from '../hooks/useActivity';
 const PILLARS = [
   {
     icon: Scissors,
-    title: 'A cut that fits your day',
+    title: 'A look that fits your day',
     detail:
-      'A regular trim, a shorter fade or a new style. Tell us what you have in mind when you book.',
+      'A soft layer trim, glossy blow-dry, or full bridal transformation. Tell us what you have in mind when you book.',
   },
   {
     icon: UserCheck,
-    title: 'Bring your reference photo',
+    title: 'Bring your lookbook photo',
     detail:
-      'Share a photo of the look you like. Talk through the length, beard shape and how you usually style your hair.',
+      'Share an inspiration photo you love. Talk through hair length, balayage tone, skin comfort, and how you style daily.',
   },
   {
     icon: MapPin,
-    title: 'Find us on Pedak Road',
+    title: 'Behind Crystal Mall, Rajkot',
     detail:
-      'Opposite Umiya R.O. at Pedak Cross Road, Arya Nagar. Get directions below or message us before your visit.',
+      'Jyoti Nagar Main Road, Near Masoom School, Ghanshyam Nagar. Get directions below or message us before your visit.',
   },
 ];
 
@@ -61,7 +61,7 @@ export const WhyChooseUsSection: React.FC = () => {
               isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
             }`}
           >
-            A good cut.{' '}
+            Luxury care.{' '}
             <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
               Close to home.
             </span>
@@ -72,7 +72,7 @@ export const WhyChooseUsSection: React.FC = () => {
               isLight ? 'text-[#4B5563]' : 'text-[#C9B8A6]'
             }`}
           >
-            Your neighbourhood salon for haircuts, beard styling and a fresh start to the week.
+            Your neighbourhood ladies sanctuary for precision haircuts, glowing skin rituals, and bridal artistry.
           </p>
         </div>
 

@@ -11,7 +11,7 @@ html[data-theme='dark'] .salon-social { --social-bg:#100d0a; --social-ink:#f5f6f
 .salon-social__intro a { display:inline-flex; gap:16px; align-items:center; color:var(--social-ink); text-decoration:none; font-size:11px; border-bottom:1px solid var(--social-line); padding-bottom:7px; }
 .salon-social__intro svg { color:var(--social-gold); }
 .community-deck { margin-top:46px; }
-.community-deck__stage { position:relative; height:636px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; }
+.community-deck__stage { position:relative; height:636px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; }
 .community-deck__stage::-webkit-scrollbar { display:none; }
 .community-deck__stage { touch-action:pan-x pan-y pinch-zoom; }
 .community-deck__stage[data-touch-scrolling='true'] { scroll-snap-type:none; }

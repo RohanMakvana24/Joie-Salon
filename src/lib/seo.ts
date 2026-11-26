@@ -11,6 +11,6 @@ function getSiteUrl(): string | undefined {
 }
 
 export const SITE_URL = getSiteUrl();
-export const SEO_TITLE = "Best Men's Salon in Rajkot | Joie Salon, Pedak Road";
+export const SEO_TITLE = "Joie Salon — Ladies Hair, Skin & Bridal Studio in Rajkot";
 export const SEO_DESCRIPTION =
-  "Rated 4.9★ best men's salon on Pedak Road, Arya Nagar, Rajkot. Master skin fades, precision haircuts, royal beard grooming, groom packages & de-tan facials. Call +91 82828 48453.";
+  "Rated 4.9★ ladies hair, skin & bridal salon at Jyoti Nagar Main Road, Behind Crystal Mall, Rajkot. Expert layer cuts, caramel balayage, keratin smoothing, hydra-glow facials, nail art & bridal makeup. Call +91 82828 48453.";

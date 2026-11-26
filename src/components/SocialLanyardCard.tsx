@@ -23,6 +23,7 @@ export function SocialLanyardCard({
   index,
   theme,
   review,
+  isSelected,
   children,
   getStage,
 }: {
@@ -138,12 +139,12 @@ export function SocialLanyardCard({
             finish="glossy"
             metal="gold"
             gravity={1}
-            damping={0.48}
-            elasticity={0.55}
-            breeze={0.42}
+            damping={0.55}
+            elasticity={0.5}
+            breeze={isSelected ? 0.24 : 0}
             interactive={true}
             touchScroll={true}
-            intro={true}
+            intro={isSelected}
             flipSignal={flipSignal}
             getStage={getStage}
             onReady={handleReady}

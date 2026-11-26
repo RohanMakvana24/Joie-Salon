@@ -96,8 +96,6 @@ export const BUSINESS_INFO: BusinessContactInfo = {
   neighborhood: 'Jyoti Nagar · Behind Crystal Mall, Rajkot',
   phoneDisplay: '+91 82828 48453',
   phoneHref: 'tel:+918282848453',
-  // Public contact matches https://gujaratipedia.com/rajkot/barbers/ (checked 2026-11-14).
-  // The listing confirms the phone number; WhatsApp activation still needs owner confirmation.
   bookingUrl: 'https://wa.me/918282848453',
   instagramUrl: 'https://www.instagram.com/joiesalonrajkot/',
   instagramHandle: '@joiesalonrajkot',
@@ -220,17 +218,17 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
   {
     id: 'ev-name',
     item: 'Business Name',
-    value: 'Joie Salon (Joie Salon Men’s Salon)',
+    value: 'Joie Salon · For Ladies',
     category: 'supplied_fact',
-    source: 'Rajkot local business listing',
+    source: 'Rajkot ladies salon listing',
     draftBehavior: 'Display prominently in Header, Hero, Structured Data, and Footer.',
   },
   {
     id: 'ev-address',
     item: 'Physical Address',
-    value: 'Pedak Cross Road, Opp. Umiya R.O., Ranchod Nagar Society, Arya Nagar, Rajkot, Gujarat 360003',
+    value: 'Jyoti Nagar Main Road, Near Masoom School, Behind Crystal Mall, Ghanshyam Nagar, Rajkot, Gujarat 360005',
     category: 'supplied_fact',
-    source: 'Rajkot local business listing',
+    source: 'Rajkot ladies salon listing',
     draftBehavior: 'Display in Hero location line, Visit & Book section, Footer, and Google Maps link.',
   },
   {
@@ -238,7 +236,7 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
     item: 'Telephone & WhatsApp',
     value: '+91 82828 48453 (tel:+918282848453)',
     category: 'supplied_fact',
-    source: 'Rajkot local business listing',
+    source: 'Verified salon phone listing',
     draftBehavior: 'Use for direct Call and WhatsApp appointment booking CTAs.',
   },
   {
@@ -254,8 +252,8 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
     item: 'Instagram Profile',
     value: 'https://www.instagram.com/joiesalonrajkot/',
     category: 'supplied_fact',
-    source: 'Joie Salon Men’s Salon Instagram',
-    draftBehavior: 'Use for social links and Transformation Gallery authentic work showcase.',
+    source: 'Joie Salon Ladies Salon Instagram',
+    draftBehavior: 'Use for social links and Ladies Lookbook Gallery showcase.',
   },
   {
     id: 'ev-google-snapshot',
@@ -269,34 +267,34 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
 
 export const INITIAL_GALLERY_SLOTS: GallerySlotItem[] = [
   {
-    id: 'slot-fade-transformation',
+    id: 'slot-layer-blowout',
     slotNumber: 'SLOT 01',
-    title: 'Skin Fade & Crown Restyle',
-    categoryLabel: 'Before / After Pair · 4:5 Portrait',
+    title: 'Layer Cut & Silk Blowout',
+    categoryLabel: 'Lookbook Pair · 4:5 Portrait',
     aspectRatio: '4:5',
     status: 'awaiting_authentic_photo',
     framingNote:
-      'Reserved for genuine paired client before/after photo from Joie Salon, Arya Nagar, Rajkot. AI or stock haircut images are strictly excluded.',
+      'Reserved for client layer-cut and blow-dry transformations from Joie Salon, Jyoti Nagar, Rajkot.',
   },
   {
-    id: 'slot-beard-sculpt',
+    id: 'slot-balayage-gloss',
     slotNumber: 'SLOT 02',
-    title: 'Beard Trim & Razor Lineup',
-    categoryLabel: 'Before / After Pair · 4:5 Portrait',
+    title: 'Caramel Balayage & Keratin',
+    categoryLabel: 'Lookbook Pair · 4:5 Portrait',
     aspectRatio: '4:5',
     status: 'awaiting_authentic_photo',
     framingNote:
-      'Reserved for authentic Rajkot salon beard grooming and hot-towel razor lineup transformation.',
+      'Reserved for authentic ammonia-free balayage and frizz-control keratin smoothing transformations.',
   },
   {
-    id: 'slot-classic-crop',
+    id: 'slot-bridal-glam',
     slotNumber: 'SLOT 03',
-    title: 'Classic Scissor Cut & Taper',
-    categoryLabel: 'Before / After Pair · 4:5 Portrait',
+    title: 'Bridal Glam & Mogra Updo',
+    categoryLabel: 'Lookbook Pair · 4:5 Portrait',
     aspectRatio: '4:5',
     status: 'awaiting_authentic_photo',
     framingNote:
-      'Reserved for authentic client transformation from @joiesalonrajkot in Rajkot. Preview real cuts on Instagram below.',
+      'Reserved for authentic bridal makeup and saree draping looks from @joiesalonrajkot in Rajkot.',
   },
 ];
 
@@ -429,10 +427,10 @@ export function calculateHeroParallaxOffsets(
     // Title shifts slightly opposite to pointer for deep background separation
     titleX: Number((-clampedX * 10).toFixed(2)),
     titleY: Number((-clampedY * 5).toFixed(2)),
-    // Barber model shifts with pointer in foreground plane
+    // Stylist portrait shifts with pointer in foreground plane
     modelX: Number((clampedX * 14).toFixed(2)),
     modelY: Number((clampedY * 7).toFixed(2)),
-    // Outer floating barber tools shift further for strong depth cue
+    // Outer floating salon tools shift further for strong depth cue
     toolsX: Number((clampedX * 20).toFixed(2)),
     toolsY: Number((clampedY * 12).toFixed(2)),
     // Warm side lighting shifts subtly
@@ -573,7 +571,7 @@ export function getThemePaletteTokens(mode: ThemeMode): ThemePaletteTokens {
   };
 }
 
-export type ProductCategoryFilter = 'all' | 'hair' | 'beard' | 'skin';
+export type ProductCategoryFilter = 'all' | 'hair' | 'styling' | 'skin';
 
 export interface ProductItem {
   id: string;
@@ -596,38 +594,38 @@ export const PRODUCT_ITEMS: ProductItem[] = [
     id: 'matte-molding-hair-clay',
     indexLabel: '01',
     name: 'Matte Molding Hair Clay',
-    subtitle: 'High-Hold · Zero-Shine Natural Texture',
-    category: 'hair',
+    subtitle: 'Soft Flyaway Hold · Natural Texture',
+    category: 'styling',
     categoryLabel: 'Hair Styling',
     volume: '100 g',
-    holdOrFinish: 'Strong Hold · Matte Finish',
+    holdOrFinish: 'Flexible Hold · Satin Matte Finish',
     priceInr: '₹399',
     description:
-      'Formulated with natural kaolin clay and beeswax to lock in textured quiffs, crop tops, and messy volume all day in Rajkot humidity without sticky residue.',
+      'Formulated with natural kaolin clay and botanical wax to smooth baby hairs, sculpt sleek bridal buns, and add effortless piecey texture in Rajkot humidity.',
     keyBenefits: [
-      'All-day reworkable strong hold',
-      'Sweat & humidity resistant matte texture',
-      'Washes out effortlessly with a single rinse',
+      'Tames frizz & baby hairs around the hairline',
+      'Humidity-resistant touchable hold for buns & waves',
+      'Washes out effortlessly with mild shampoo',
     ],
     featured: true,
     bottleStyle: 'jar',
   },
   {
-    id: 'royal-oud-argan-beard-oil',
+    id: 'argan-rose-hair-elixir',
     indexLabel: '02',
-    name: 'Royal Oud & Argan Beard Oil',
-    subtitle: 'Cold-Pressed Softening & Shine Elixir',
-    category: 'beard',
-    categoryLabel: 'Beard & Shave',
+    name: 'Moroccan Argan & Rose Hair Elixir',
+    subtitle: 'Cold-Pressed Shine & Split-End Care',
+    category: 'hair',
+    categoryLabel: 'Hair Care',
     volume: '50 ml',
-    holdOrFinish: 'Deep Conditioning · Warm Oud Scent',
+    holdOrFinish: 'Deep Nourishment · Floral Glow',
     priceInr: '₹349',
     description:
-      'A non-greasy blend of Moroccan argan, jojoba, and sweet almond oils infused with warm royal oud to soften coarse beard hair and eliminate itchiness.',
+      'A weightless blend of Moroccan argan, jojoba, and rosehip oils crafted to seal split ends, nourish dry strands, and leave hair glossy after every blow-dry.',
     keyBenefits: [
-      'Nourishes beard roots & prevents flakiness',
-      'Tames flyaways for a sharp razor-lined look',
-      'Lightweight fast-absorbing dropper formula',
+      'Restores softness to dry or colour-treated hair',
+      'Adds mirror shine without weighing down curls',
+      'Fast-absorbing dropper formula for daily ends care',
     ],
     bottleStyle: 'dropper',
   },
@@ -637,16 +635,16 @@ export const PRODUCT_ITEMS: ProductItem[] = [
     name: 'Activated Charcoal De-Tan Scrub',
     subtitle: 'Sun-Tan Removal & Deep Pore Detox',
     category: 'skin',
-    categoryLabel: 'Skin & Care',
+    categoryLabel: 'Skin & Glow',
     volume: '120 ml',
-    holdOrFinish: 'Exfoliating · Oil Control',
+    holdOrFinish: 'Gentle Exfoliation · Brightening',
     priceInr: '₹299',
     description:
-      'Salon-grade activated bamboo charcoal and walnut micro-granules crafted for daily riders and outdoor professionals in Rajkot to lift stubborn sun tan and pollution.',
+      'Salon-grade activated bamboo charcoal and fine botanical exfoliants crafted to lift stubborn Rajkot sun tan, clear pores, and restore bright glass-skin radiance.',
     keyBenefits: [
-      'Clears blackheads, dust, and excess oil',
-      'Brightens sun-exposed skin from first wash',
-      'Cooling menthol finish with zero dryness',
+      'Clears impurities, whiteheads, and dull surface cells',
+      'Visibly brightens sun-exposed skin from first ritual',
+      'Soothing finish with zero tightness or dryness',
     ],
     bottleStyle: 'tube',
   },
@@ -655,36 +653,36 @@ export const PRODUCT_ITEMS: ProductItem[] = [
     indexLabel: '04',
     name: 'Sea Salt Volume Pre-Styler',
     subtitle: 'Heat Protection & Root Lift Mist',
-    category: 'hair',
+    category: 'styling',
     categoryLabel: 'Hair Styling',
     volume: '150 ml',
-    holdOrFinish: 'Light Hold · Natural Flow',
+    holdOrFinish: 'Weightless Lift · Bouncy Waves',
     priceInr: '₹329',
     description:
-      'Used at every Joie Salon chair before blow-drying to build effortless lift, beachy flow, and thermal shield against dryer heat.',
+      'Used at Joie Salon before round-brush blow-drying to build airy crown volume, soft beachy waves, and thermal protection against heat tools.',
     keyBenefits: [
-      'Boosts crown volume on fine or flat hair',
-      'Protects hair fibers during blow-dry styling',
-      'Pairs with Matte Clay for maximum hold',
+      'Boosts crown lift on fine or flat layered hair',
+      'Protects strands during blow-dry & curling sessions',
+      'Leaves hair bouncy with natural movement',
     ],
     bottleStyle: 'spray',
   },
   {
-    id: 'sandalwood-cooling-aftershave',
+    id: 'rose-glow-soothing-mist',
     indexLabel: '05',
-    name: 'Sandalwood Cooling Aftershave Balm',
-    subtitle: 'Post-Razor Soothing & Barrier Repair',
-    category: 'beard',
-    categoryLabel: 'Beard & Shave',
+    name: 'Rose Glow Botanical Toning Mist',
+    subtitle: 'Post-Wax & Facial Soothing Hydration',
+    category: 'skin',
+    categoryLabel: 'Skin & Glow',
     volume: '100 ml',
-    holdOrFinish: 'Alcohol-Free · Instant Calm',
+    holdOrFinish: 'Alcohol-Free · Dewy Calm',
     priceInr: '₹279',
     description:
-      'Pure Mysore sandalwood extract, aloe vera, and witch hazel calm freshly lined cheeks and necklines immediately after a straight-razor shave.',
+      'Pure Kannauj rosewater, aloe vera, and chamomile calm freshly threaded brows and waxed skin immediately while locking in dewy facial hydration.',
     keyBenefits: [
-      'Prevents razor bumps & post-shave redness',
-      'Alcohol-free hydration that never stings',
-      'Classic barbershop sandalwood aroma',
+      'Soothes skin after threading, waxing & facials',
+      'Alcohol-free hydration for sensitive skin types',
+      'Refreshes makeup and preps a luminous skin base',
     ],
     bottleStyle: 'balm',
   },
@@ -693,16 +691,16 @@ export const PRODUCT_ITEMS: ProductItem[] = [
     indexLabel: '06',
     name: 'Pro-Keratin Anti-Frizz Hair Serum',
     subtitle: 'Frizz Control & UV Shine Shield',
-    category: 'skin',
-    categoryLabel: 'Skin & Care',
+    category: 'hair',
+    categoryLabel: 'Hair Care',
     volume: '60 ml',
     holdOrFinish: 'Silky Smooth · UV Defense',
     priceInr: '₹379',
     description:
-      'Concentrated plant keratin and vitamin E serum that seals split ends, smooths dry or wavy hair, and restores healthy salon luster.',
+      'Concentrated plant keratin and vitamin E serum that seals split ends, smooths dry or wavy hair, and protects coloured or keratin-treated locks.',
     keyBenefits: [
       'Instantly tames dry frizz & rough ends',
-      'Shields against harsh sun & hard water',
+      'Shields against harsh sun & Saurashtra hard water',
       '2 drops deliver weightless all-day silkiness',
     ],
     bottleStyle: 'serum',
@@ -726,7 +724,7 @@ export function buildProductWhatsAppUrl(
   const cleanNames = productNames.map((n) => n.trim()).filter(Boolean);
   const message =
     cleanNames.length > 0
-      ? `Hi Joie Salon (Rajkot), I would like to check availability / reserve these grooming products at your Arya Nagar salon: ${cleanNames.join(', ')}.`
-      : `Hi Joie Salon (Rajkot), I would like to inquire about your salon grooming products.`;
+      ? `Hi Joie Salon (Rajkot), I would like to check availability / reserve these salon beauty products at your Jyoti Nagar studio: ${cleanNames.join(', ')}.`
+      : `Hi Joie Salon (Rajkot), I would like to inquire about your ladies salon hair & skin care products.`;
   return `${baseBookingUrl}?text=${encodeURIComponent(message)}`;
 }

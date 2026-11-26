@@ -1,364 +1,644 @@
 /* ==========================================================================
-   Joie Salon — footer
-   Same dark + gold identity as the rest of the site, rebuilt as a clear
-   four-column sign-off: brand and socials, exploration links, visit details
-   and a single booking action. Everything sits on one hairline grid.
+   Joie Salon — Interactive Animated Architectural Footer
+   Real-time fluid silk & bokeh canvas, 3D tilt concierge card,
+   kinetic proximity wordmark, and dual-theme parity.
    ========================================================================== */
 
-.salon-footer {
-  --sf-bg: #0b0907;
-  --sf-ink: #f5f6f7;
-  --sf-muted: #a2917a;
-  --sf-gold: #cbd5e1;
-  --sf-gold-deep: #94a3b8;
-  --sf-line: rgba(255, 255, 255, 0.14);
-  --sf-line-strong: rgba(255, 255, 255, 0.24);
+.js-footer {
+  --jf-bg: #0c0907;
+  --jf-surface: rgba(24, 19, 16, 0.78);
+  --jf-surface-solid: #181310;
+  --jf-ink: #f7f1e8;
+  --jf-muted: #bfb2a2;
+  --jf-accent: #e5b96f;
+  --jf-accent-ink: #120d08;
+  --jf-line: rgba(229, 185, 111, 0.16);
+  --jf-line-strong: rgba(229, 185, 111, 0.34);
+  --jf-pill-bg: rgba(255, 255, 255, 0.04);
+  --jf-letter-face: #231a15;
+  --jf-letter-edge: #110c09;
+  --jf-letter-rim: rgba(229, 185, 111, 0.36);
+  --jf-letter-glow: rgba(229, 185, 111, 0.25);
+
   position: relative;
   overflow: hidden;
-  color: var(--sf-ink);
-  background:
-    radial-gradient(120% 90% at 50% -20%, rgba(148, 163, 184, 0.1) 0%, rgba(11, 9, 7, 0) 62%),
-    var(--sf-bg);
-  border-top: 1px solid var(--sf-line-strong);
+  width: 100%;
+  background-color: var(--jf-bg);
+  color: var(--jf-ink);
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-/* Subtle hairline that keeps the editorial sign-off feel without clutter. */
-.salon-footer::before {
-  content: '';
+html[data-theme="light"] .js-footer {
+  --jf-bg: #F5F6F7;
+  --jf-surface: rgba(255, 255, 255, 0.86);
+  --jf-surface-solid: #ffffff;
+  --jf-ink: #232c3b;
+  --jf-muted: #525c6b;
+  --jf-accent: #8f5f19;
+  --jf-accent-ink: #ffffff;
+  --jf-line: rgba(35, 44, 59, 0.12);
+  --jf-line-strong: rgba(35, 44, 59, 0.22);
+  --jf-pill-bg: rgba(35, 44, 59, 0.045);
+  --jf-letter-face: #232c3b;
+  --jf-letter-edge: #121822;
+  --jf-letter-rim: rgba(143, 95, 25, 0.38);
+  --jf-letter-glow: rgba(143, 95, 25, 0.2);
+}
+
+/* Real-time interactive Canvas backdrop */
+.js-footer__canvas {
   position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(203, 213, 225, 0) 0%,
-    rgba(203, 213, 225, 0.55) 50%,
-    rgba(203, 213, 225, 0) 100%
-  );
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.salon-footer__inner {
+/* Subtle cursor-reactive spotlight */
+.js-footer__spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.js-footer:hover .js-footer__spotlight {
+  opacity: 1;
+}
+
+.js-footer__container {
+  position: relative;
+  z-index: 2;
   max-width: 1280px;
   margin-inline: auto;
-  padding: clamp(44px, 5vw, 72px) clamp(20px, 4vw, 40px) 0;
+  padding: clamp(52px, 6vw, 84px) clamp(20px, 4vw, 48px) 0;
 }
 
-.salon-footer__grid {
+/* ==========================================================================
+   Main Grid: Brand & Studio Details | Nav Columns | Interactive 3D Card
+   ========================================================================== */
+
+.js-footer__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(0, 0.85fr) minmax(0, 1.15fr) minmax(0, 1.05fr);
-  gap: clamp(28px, 3.4vw, 56px);
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.45fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 4vw, 56px);
   align-items: start;
 }
 
-/* --- Brand column -------------------------------------------------------- */
-
-.salon-footer__tagline {
-  margin: 18px 0 22px;
-  max-width: 32ch;
-  color: var(--sf-muted);
-  font-family: var(--font-sans);
-  font-size: 13px;
-  line-height: 1.75;
-}
-
-.salon-footer__social {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.salon-footer__social a {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--sf-line);
-  border-radius: 50%;
-  color: var(--sf-ink);
-  transition:
-    background-color 0.24s ease,
-    border-color 0.24s ease,
-    color 0.24s ease,
-    transform 0.24s ease;
-}
-
-.salon-footer__social a:hover {
-  background: #232C3B;
-  border-color: rgba(255, 255, 255, 0.35);
-  color: #F8F6F2;
-  transform: translateY(-2px);
-}
-
-.salon-footer__social svg {
-  width: 15px;
-  height: 15px;
-}
-
-/* --- Link columns -------------------------------------------------------- */
-
-.salon-footer__heading {
-  margin: 0 0 16px;
-  color: var(--sf-gold);
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-
-.salon-footer__links {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.salon-footer__links a {
-  color: var(--sf-muted);
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  line-height: 1.5;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.salon-footer__links a:hover {
-  color: var(--sf-ink);
-}
-
-.salon-footer__address {
-  margin: 0;
-  color: var(--sf-muted);
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  font-style: normal;
+.js-footer__tagline {
+  margin: 18px 0 0;
+  max-width: 34ch;
+  color: var(--jf-muted);
+  font-size: 15.5px;
   line-height: 1.7;
 }
 
-.salon-footer__actions {
-  display: grid;
-  gap: 11px;
-  margin-top: 18px;
+/* Interactive Copy Address button */
+.js-footer__address-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
-.salon-footer__action {
+.js-footer__copy-btn {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  color: var(--sf-ink);
-  font-family: var(--font-sans);
-  font-size: 13px;
-  line-height: 1.4;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.salon-footer__action > svg {
-  flex: 0 0 auto;
-  width: 15px;
-  height: 15px;
-  color: var(--sf-gold-deep);
-  stroke-width: 1.7;
-}
-
-.salon-footer__action-arrow {
-  width: 13px !important;
-  height: 13px !important;
-  opacity: 0.75;
-}
-
-.salon-footer__action:hover {
-  color: var(--sf-gold);
-}
-
-/* --- Booking panel ------------------------------------------------------- */
-
-.salon-footer__book {
-  position: relative;
-  padding: clamp(20px, 2.2vw, 26px);
-  border: 1px solid var(--sf-line);
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 15px;
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(148, 163, 184, 0.08) 0%, rgba(11, 9, 7, 0) 78%);
+  border: 1px solid var(--jf-line);
+  background: var(--jf-pill-bg);
+  color: var(--jf-ink);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.salon-footer__book-mark {
+.js-footer__copy-btn:hover {
+  border-color: var(--jf-accent);
+  transform: translateY(-1px);
+}
+
+.js-footer__copy-btn[data-copied="true"] {
+  border-color: var(--jf-accent);
+  color: var(--jf-accent);
+}
+
+/* Social buttons row */
+.js-footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.js-footer__social-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--jf-line);
+  background: var(--jf-pill-bg);
+  color: var(--jf-ink);
+  text-decoration: none;
+  transition:
+    border-color 0.22s ease,
+    color 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.js-footer__social-link:hover {
+  border-color: var(--jf-accent);
+  color: var(--jf-accent);
+  box-shadow: 0 8px 20px -6px var(--jf-letter-glow);
+}
+
+/* Navigation Columns */
+.js-footer__nav {
   display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  margin-bottom: 14px;
-  border: 1px solid var(--sf-line-strong);
-  border-radius: 50%;
-  color: var(--sf-gold);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
 }
 
-.salon-footer__book-mark svg {
-  width: 15px;
-  height: 15px;
-  stroke-width: 1.6;
+.js-footer__col-title {
+  margin: 0 0 16px;
+  color: var(--jf-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.salon-footer__book-text {
+.js-footer__link-list {
+  display: grid;
+  gap: 11px;
   margin: 0;
-  color: var(--sf-muted);
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  line-height: 1.65;
+  padding: 0;
+  list-style: none;
 }
 
-.salon-footer__button {
+.js-footer__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-block: 3px;
+  color: var(--jf-muted);
+  font-size: 15px;
+  line-height: 1.45;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-footer__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--jf-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-footer__link:hover {
+  color: var(--jf-ink);
+  transform: translateX(3px);
+}
+
+.js-footer__link:hover::after {
+  transform: scaleX(1);
+}
+
+.js-footer__link-arrow {
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: opacity 0.18s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-footer__link:hover .js-footer__link-arrow {
+  opacity: 0.9;
+  transform: translate(0, 0);
+}
+
+/* ==========================================================================
+   3D Interactive Concierge Booking Card
+   ========================================================================== */
+
+.js-footer__card-perspective {
+  perspective: 1000px;
+}
+
+.js-footer__card {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: 18px;
+  border: 1px solid var(--jf-line-strong);
+  background: var(--jf-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transform-style: preserve-3d;
+  box-shadow:
+    0 18px 40px -16px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="light"] .js-footer__card {
+  box-shadow:
+    0 16px 36px -14px rgba(35, 44, 59, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.js-footer__card-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.js-footer__card:hover .js-footer__card-glare {
+  opacity: 1;
+}
+
+.js-footer__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.js-footer__card-title {
+  margin: 0;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--jf-ink);
+}
+
+.js-footer__hours {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--jf-muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Segmented service tabs */
+.js-footer__tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: 11px;
+  border: 1px solid var(--jf-line);
+  background: var(--jf-pill-bg);
+}
+
+.js-footer__tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 38px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--jf-muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.js-footer__tab[aria-selected="true"] {
+  color: var(--jf-accent-ink);
+}
+
+.js-footer__tab-indicator {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 8px;
+  background: var(--jf-accent);
+  box-shadow: 0 4px 12px -2px var(--jf-letter-glow);
+}
+
+.js-footer__service-summary {
+  margin: 14px 0 0;
+  min-height: 44px;
+  color: var(--jf-muted);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.js-footer__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  margin-top: 18px;
-  padding: 11px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-  background: #232C3B;
-  color: #F8F6F2;
-  font-family: var(--font-sans);
-  font-size: 11.5px;
+  min-height: 46px;
+  margin-top: 16px;
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: var(--jf-ink);
+  color: var(--jf-bg);
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   text-decoration: none;
+  white-space: nowrap;
   transition:
-    background-color 0.22s ease,
-    border-color 0.22s ease,
-    transform 0.22s ease;
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.salon-footer__button-arrow {
-  width: 13px;
-  height: 13px;
-  stroke-width: 2.2;
+.js-footer__cta:hover {
+  background: var(--jf-accent);
+  color: var(--jf-accent-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px var(--jf-letter-glow);
 }
 
-.salon-footer__button:hover {
-  background: #2F3B4F;
-  border-color: rgba(255, 255, 255, 0.42);
-  transform: translateY(-1px);
+.js-footer__cta-icon {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Bottom bar ---------------------------------------------------------- */
+.js-footer__cta:hover .js-footer__cta-icon {
+  transform: translate(2px, -2px);
+}
 
-.salon-footer__bottom {
+/* ==========================================================================
+   Bottom Control Strip (Copyright | Ambience Lighting | Back to Top)
+   ========================================================================== */
+
+.js-footer__bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: clamp(34px, 4vw, 56px);
-  padding: 18px 0 22px;
-  border-top: 1px solid var(--sf-line);
+  gap: 16px 24px;
+  margin-top: clamp(36px, 4.5vw, 56px);
+  padding-block: 18px;
+  border-top: 1px solid var(--jf-line);
+  border-bottom: 1px solid var(--jf-line);
 }
 
-.salon-footer__copy {
+.js-footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
   margin: 0;
-  color: var(--sf-muted);
-  font-family: var(--font-sans);
-  font-size: 12px;
-  line-height: 1.5;
+  color: var(--jf-muted);
+  font-size: 14px;
 }
 
-.salon-footer__totop {
+/* Interactive Ambience Switcher */
+.js-footer__ambience {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: var(--sf-muted);
-  font-family: var(--font-sans);
-  font-size: 11px;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--jf-line);
+  background: var(--jf-pill-bg);
+}
+
+.js-footer__ambience-btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--jf-muted);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: color 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.18s ease;
 }
 
-.salon-footer__totop svg {
-  width: 13px;
-  height: 13px;
-  stroke-width: 2;
+.js-footer__ambience-btn[aria-pressed="true"] {
+  color: var(--jf-ink);
 }
 
-.salon-footer__totop:hover {
-  color: var(--sf-gold);
+.js-footer__ambience-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 999px;
+  background: var(--jf-surface-solid);
+  border: 1px solid var(--jf-line-strong);
 }
 
-.salon-footer a:focus-visible {
-  outline: 2px solid var(--sf-gold);
-  outline-offset: 4px;
-  border-radius: 4px;
+.js-footer__swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Back to top button */
+.js-footer__top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--jf-line);
+  background: var(--jf-pill-bg);
+  color: var(--jf-ink);
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-footer__top-btn:hover {
+  border-color: var(--jf-accent);
+  color: var(--jf-accent);
+  transform: translateY(-2px);
+}
+
+.js-footer__top-arrow {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-footer__top-btn:hover .js-footer__top-arrow {
+  transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   Interactive 3D Kinetic Wordmark Stage ("JOIE SALON")
+   ========================================================================== */
+
+.js-footer__stage {
+  position: relative;
+  padding: clamp(28px, 4vw, 48px) 0 clamp(22px, 3vw, 34px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 1100px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.js-footer__wordmark {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: clamp(1px, 0.5vw, 8px);
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+.js-footer__word-gap {
+  width: clamp(10px, 2.2vw, 34px);
+  flex-shrink: 0;
+}
+
+.js-footer__letter-btn {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-weight: 900;
+  font-size: clamp(44px, 11.8vw, 180px);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  color: var(--jf-letter-face);
+  -webkit-text-stroke: 1px var(--jf-letter-rim);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: color 0.25s ease, -webkit-text-stroke-color 0.25s ease;
+  text-shadow:
+    0 1px 0 var(--jf-letter-edge),
+    0 2px 0 var(--jf-letter-edge),
+    0 3px 0 var(--jf-letter-edge),
+    0 4px 0 var(--jf-letter-edge),
+    0 14px 26px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] .js-footer__letter-btn {
+  text-shadow:
+    0 1px 0 #090604,
+    0 2px 0 #090604,
+    0 3px 0 #090604,
+    0 4px 0 #090604,
+    0 5px 0 #090604,
+    0 18px 30px rgba(0, 0, 0, 0.65),
+    0 0 28px var(--jf-letter-glow);
+}
+
+.js-footer__letter-btn:hover,
+.js-footer__letter-btn[data-lit="true"] {
+  color: var(--jf-accent);
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.45);
+}
+
+.js-footer__stage-hint {
+  margin: 14px 0 0;
+  color: var(--jf-muted);
+  font-size: 13px;
+  opacity: 0.78;
+  text-align: center;
+}
+
+/* Focus visibility */
+.js-footer a:focus-visible,
+.js-footer button:focus-visible {
+  outline: 2px solid var(--jf-accent);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+  .js-footer__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+  .js-footer__card-perspective {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .js-footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .js-footer__nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .js-footer__bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .js-footer__nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+  .js-footer__tabs {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .salon-footer * {
-    transition: none !important;
-  }
-}
-
-/* --- Responsive ---------------------------------------------------------- */
-
-@media (max-width: 1024px) {
-  .salon-footer__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 34px 28px;
-  }
-  .salon-footer__brand {
-    grid-column: 1 / -1;
-  }
-  .salon-footer__tagline {
-    max-width: 46ch;
-  }
-  .salon-footer__book {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 18px;
-    row-gap: 4px;
-  }
-  .salon-footer__book-mark {
-    grid-row: 1 / span 2;
-    margin-bottom: 0;
-  }
-  .salon-footer__book .salon-footer__heading {
-    margin-bottom: 2px;
-  }
-  .salon-footer__button {
-    width: auto;
-    margin-top: 0;
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 640px) {
-  .salon-footer__grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 30px;
-  }
-  .salon-footer__inner {
-    padding-top: 38px;
-  }
-  .salon-footer__book {
-    display: block;
-    padding: 20px;
-  }
-  .salon-footer__book-mark {
-    margin-bottom: 14px;
-  }
-  .salon-footer__button {
-    width: 100%;
-    margin-top: 18px;
-  }
-  .salon-footer__bottom {
-    margin-top: 30px;
-    padding-bottom: 26px;
+  .js-footer * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

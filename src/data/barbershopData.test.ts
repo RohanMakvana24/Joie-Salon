@@ -36,7 +36,7 @@ test('filterServicesByCategory returns all 6 items for "all" and filters subsets
   assert.ok(bridal.every((s) => s.category === 'bridal'));
 });
 
-test('validatePublicCopyCompliance passes for official Toronto data and catches unconfirmed prices or Jordan domain', () => {
+test('validatePublicCopyCompliance passes for official Joie Salon Rajkot data and catches unconfirmed prices or unrelated domain', () => {
   const compliance = validatePublicCopyCompliance(SERVICE_ITEMS, FAITHFUL_REVIEWS, BUSINESS_INFO);
   assert.equal(compliance.valid, true);
   assert.deepEqual(compliance.violations, []);
@@ -129,16 +129,16 @@ test('filterProductsByCategory and buildProductWhatsAppUrl filter and format sal
   assert.equal(hairProducts.length, 2);
   assert.ok(hairProducts.every((p) => p.category === 'hair'));
 
-  const beardProducts = filterProductsByCategory(PRODUCT_ITEMS, 'beard');
-  assert.equal(beardProducts.length, 2);
-  assert.ok(beardProducts.every((p) => p.category === 'beard'));
+  const stylingProducts = filterProductsByCategory(PRODUCT_ITEMS, 'styling');
+  assert.equal(stylingProducts.length, 2);
+  assert.ok(stylingProducts.every((p) => p.category === 'styling'));
 
   const skinProducts = filterProductsByCategory(PRODUCT_ITEMS, 'skin');
   assert.equal(skinProducts.length, 2);
   assert.ok(skinProducts.every((p) => p.category === 'skin'));
 
-  const waUrl = buildProductWhatsAppUrl(['Matte Molding Hair Clay', 'Royal Oud & Argan Beard Oil']);
+  const waUrl = buildProductWhatsAppUrl(['Matte Molding Hair Clay', 'Moroccan Argan & Rose Hair Elixir']);
   assert.ok(waUrl.startsWith('https://wa.me/918282848453?text='));
   assert.ok(decodeURIComponent(waUrl).includes('Matte Molding Hair Clay'));
-  assert.ok(decodeURIComponent(waUrl).includes('Royal Oud & Argan Beard Oil'));
+  assert.ok(decodeURIComponent(waUrl).includes('Moroccan Argan & Rose Hair Elixir'));
 });

@@ -27,8 +27,45 @@ html[data-theme='light'] .service-character-card__signature { background: #232C3
 .service-character-card__actions a:focus-visible { outline: 2px solid var(--service-gold); outline-offset: 5px; border-radius: 3px; }
 @media (hover: hover) and (min-width: 768px) { .service-character-card:hover .service-character-card__stage > img { transform: translateX(-50%) translateY(-5px); } }
 @media (max-width: 767px) {
-  #services .service-deck { margin: 0 10px; padding: 0; gap: 0; }
-  #services .service-deck-card { transform: translateX(calc(var(--deck-position) * (100% + 32px) + var(--deck-drag, 0px))) rotateY(var(--deck-tilt)); opacity: var(--deck-opacity); }
+  #services .service-deck {
+    margin: 0;
+    padding: 8px 0 12px;
+    gap: 0;
+    perspective: 1200px;
+    perspective-origin: 50% 45%;
+    transform-style: preserve-3d;
+    overflow: visible;
+  }
+  #services .service-deck-card {
+    transform-style: preserve-3d;
+    transform-origin: 50% 55%;
+    transform:
+      translate3d(
+        calc(var(--deck-position) * (100% + 28px) + var(--deck-drag, 0px)),
+        0px,
+        calc(var(--deck-depth) * -90px + var(--deck-drag-z, 0px))
+      )
+      rotateY(calc(var(--deck-position) * -22deg + var(--deck-drag-tilt, 0deg)))
+      scale(calc(1 - var(--deck-depth) * 0.08));
+    opacity: var(--deck-opacity);
+    transition:
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 360ms ease;
+    will-change: transform, opacity;
+  }
+  #services .service-deck-card[data-pos='1'] {
+    opacity: var(--deck-reveal-next, 0);
+  }
+  #services .service-deck-card[data-pos='-1'] {
+    opacity: var(--deck-reveal-prev, 0);
+  }
+  #services .service-deck-card[data-active='true'] {
+    opacity: 1;
+    cursor: grab;
+  }
+  #services .service-deck-card[data-active='true'] .service-character-card__stage > img {
+    transform: translateX(-50%) translateY(-4px) scale(1.03);
+  }
   #services .service-deck[data-dragging='true'] .service-deck-card { transition: none; }
   #services .service-character-card { transform: none !important; }
   .service-character-card__stage { height: 242px; }
@@ -38,4 +75,4 @@ html[data-theme='light'] .service-character-card__signature { background: #232C3
   .service-character-card__body h3 { font-size: 26px; }
   .service-character-card__body > p { font-size: 11px; }
 }
-@media (prefers-reduced-motion: reduce) { .service-character-card__stage > img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .service-character-card__stage > img, #services .service-deck-card { transition: none; } }

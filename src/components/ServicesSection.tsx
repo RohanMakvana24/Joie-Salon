@@ -88,11 +88,20 @@ export const ServicesSection: React.FC = () => {
   const paintDrag = () => {
     dragFrame.current = 0;
     const deck = deckRef.current; if (!deck) return;
-    deck.dataset.dragging = String(dragX.current !== 0);
-    deck.style.setProperty('--deck-drag', `${dragX.current}px`);
-    deck.style.setProperty('--deck-drag-tilt', `${dragX.current / 35}deg`);
+    const x = dragX.current;
+    deck.dataset.dragging = String(x !== 0);
+    deck.style.setProperty('--deck-drag', `${x}px`);
+    deck.style.setProperty('--deck-drag-tilt', `${x / 12}deg`);
+    deck.style.setProperty('--deck-drag-z', `${-Math.abs(x) * 0.35}px`);
+    deck.style.setProperty('--deck-reveal-next', String(x < 0 ? Math.min(1, Math.abs(x) / 72) : 0));
+    deck.style.setProperty('--deck-reveal-prev', String(x > 0 ? Math.min(1, Math.abs(x) / 72) : 0));
   };
-  const resetDrag = () => { cancelAnimationFrame(dragFrame.current); dragX.current = 0; paintDrag(); touchStart.current = null; };
+  const resetDrag = () => {
+    cancelAnimationFrame(dragFrame.current);
+    dragX.current = 0;
+    paintDrag();
+    touchStart.current = null;
+  };
   const touchStart = React.useRef<{ x: number; y: number; axis: 'horizontal' | 'vertical' | null } | null>(null);
   const didSwipe = React.useRef(false);
   const visibleServices = filterServicesByCategory(SERVICE_ITEMS, selectedCategory);
@@ -186,14 +195,14 @@ export const ServicesSection: React.FC = () => {
             }
             if (touchStart.current.axis === 'horizontal') {
               didSwipe.current = true;
-              dragX.current = Math.max(-110, Math.min(110, dx));
+              dragX.current = Math.max(-120, Math.min(120, dx));
               if (!dragFrame.current) dragFrame.current = requestAnimationFrame(paintDrag);
             }
           }}
           onTouchEnd={() => {
             // Capture direction before resetting the ref; React may run the updater later.
             const direction = dragX.current < 0 ? 1 : -1;
-            if (Math.abs(dragX.current) > 40) setActiveCard((current) => (current + direction + visibleServices.length) % visibleServices.length);
+            if (Math.abs(dragX.current) > 36) setActiveCard((current) => (current + direction + visibleServices.length) % visibleServices.length);
             resetDrag();
           }}
           onTouchCancel={resetDrag}
@@ -212,18 +221,18 @@ export const ServicesSection: React.FC = () => {
                 className="service-deck-card"
                 data-active={position === 0}
                 data-visible={Math.abs(position) <= 1}
+                data-pos={position}
                 style={{
                   '--deck-position': position,
                   '--deck-depth': Math.abs(position),
                   '--deck-tilt': position === 0 ? 'var(--deck-drag-tilt, 0deg)' : '0deg',
-                  '--deck-opacity': position === 0 ? 1 : 0.6,
+                  '--deck-opacity': position === 0 ? 1 : 0,
                   zIndex: visibleServices.length - Math.abs(position),
                 } as React.CSSProperties}
               >
               <article className="service-character-card" data-featured={isFeatured}>
                 <div className="service-character-card__stage">
                   <div className="service-character-card__arch" aria-hidden="true"><span>{visual.word}</span></div>
-                  <span className="service-character-card__spark" aria-hidden="true"><SalonServiceIcon serviceId={service.id} /></span>
                   <SkeletonImage skeletonClassName="image-skeleton--portrait" src={visual.image} alt={visual.alt} loading="lazy" decoding="async" draggable={false} width="1024" height="1024" />
                   {isFeatured && <span className="service-character-card__signature">THE SIGNATURE LOOK</span>}
                 </div>

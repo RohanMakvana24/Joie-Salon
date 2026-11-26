@@ -18,7 +18,7 @@ const NAV_LINKS = [
   { label: 'Bridal', href: '#bridals' },
   { label: 'Packages', href: '#packages' },
   { label: 'Products', href: '#products' },
-  { label: 'The Shop', href: '#gallery' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
   { label: 'Blog', href: '/blog' },
@@ -197,18 +197,35 @@ export const Header: React.FC<HeaderProps> = ({
     >
       <div
         ref={headerBarRef}
-        className={`site-container flex items-center justify-between gap-4 sm:gap-6 transition-[padding] duration-300 ${
+        className={`site-container relative flex items-center justify-between gap-4 sm:gap-6 transition-[padding] duration-300 ${
           !isScrolled && !isInteriorPage ? 'py-3.5 sm:py-4' : 'py-2 sm:py-2.5'
         }`}
       >
-        {/* Zone 1: Default Left-Aligned Joie Salon Brand Wordmark */}
+        {/* Mobile & Tablet Left: Navigation Drawer Toggle */}
+        <button
+          ref={menuButtonRef}
+          type="button"
+          onClick={handleToggleMobileMenu}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav-drawer"
+          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          className={`xl:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border transition-colors cursor-pointer shrink-0 focus-ring ${
+            useLightSurface
+              ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
+              : 'border-white/25 bg-[#181B22]/75 text-[#F5F6F7] hover:border-white/50 hover:bg-[#232C3B]'
+          }`}
+        >
+          {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+        </button>
+
+        {/* Zone 1: Centered on Mobile/Tablet (< xl), Left-Aligned on Desktop (xl+) */}
         <BrandLogo
           theme={useLightSurface ? 'light' : 'dark'}
           href={isInteriorPage ? '/' : '#top'}
-          className="translate-y-[1px]"
+          className="translate-y-[1px] max-xl:absolute max-xl:left-1/2 max-xl:-translate-x-1/2"
         />
 
-        {/* Zone 2: Center Navigation Links */}
+        {/* Zone 2: Center Navigation Links (Desktop) */}
         <nav
           aria-label="Primary section navigation"
           className="hidden xl:flex items-center gap-7 lg:gap-9 text-[12.5px] font-medium tracking-[0.04em]"
@@ -244,27 +261,8 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Zone 3: Theme Switcher (Light / Dark) + Book Now Pill CTA + Mobile Toggle */}
+        {/* Zone 3: Theme Switcher (Light / Dark) + Book Now Pill CTA */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Interactive Light / Dark Theme Toggle Button */}
-          <button
-            type="button"
-            onClick={onToggleTheme}
-            aria-label={isLight ? 'Switch to dark theme' : 'Switch to light theme'}
-            title={isLight ? 'Switch to Dark Studio theme' : 'Switch to Warm Light theme'}
-            className={`inline-flex items-center justify-center w-9 h-9 rounded-full border text-xs font-medium tracking-[0.04em] transition-all cursor-pointer focus-ring ${
-              useLightSurface
-                ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
-                : 'border-white/25 bg-[#181B22]/75 text-[#F5F6F7] hover:border-white/50 hover:bg-[#232C3B]'
-            }`}
-          >
-            {isLight ? (
-              <Moon className="w-4 h-4 shrink-0 text-[#232C3B]" />
-            ) : (
-              <Sun className="w-4 h-4 shrink-0 text-[#F5F6F7]" />
-            )}
-          </button>
-
           <a
             href={BUSINESS_INFO.bookingUrl}
             target="_blank"
@@ -284,20 +282,23 @@ export const Header: React.FC<HeaderProps> = ({
             <ArrowRight className="w-3.5 h-3.5 text-[#F8F6F2]/90 group-hover:translate-x-0.5 transition-all" />
           </a>
 
+          {/* Interactive Light / Dark Theme Toggle Button (Right Side) */}
           <button
-            ref={menuButtonRef}
             type="button"
-            onClick={handleToggleMobileMenu}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-nav-drawer"
-            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className={`xl:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border transition-colors cursor-pointer focus-ring ${
+            onClick={onToggleTheme}
+            aria-label={isLight ? 'Switch to dark theme' : 'Switch to light theme'}
+            title={isLight ? 'Switch to Dark Studio theme' : 'Switch to Warm Light theme'}
+            className={`inline-flex items-center justify-center w-9 h-9 rounded-full border text-xs font-medium tracking-[0.04em] transition-all cursor-pointer focus-ring ${
               useLightSurface
                 ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
                 : 'border-white/25 bg-[#181B22]/75 text-[#F5F6F7] hover:border-white/50 hover:bg-[#232C3B]'
             }`}
           >
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {isLight ? (
+              <Moon className="w-4 h-4 shrink-0 text-[#232C3B]" />
+            ) : (
+              <Sun className="w-4 h-4 shrink-0 text-[#F5F6F7]" />
+            )}
           </button>
         </div>
       </div>

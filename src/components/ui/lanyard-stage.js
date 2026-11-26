@@ -43,6 +43,11 @@ class LanyardStage {
       else { cancelAnimationFrame(this.frame); this.frame = 0; }
     });
     this.visibilityObserver.observe(element);
+    this.onScroll = () => {
+      this.dirtyBounds = true;
+      this.request();
+    };
+    element.addEventListener('scroll', this.onScroll, { passive: true });
     this.resize();
   }
 
@@ -52,9 +57,8 @@ class LanyardStage {
     const track = this.element.querySelector('.community-deck__track');
     const width = Math.max(1, this.element.clientWidth, track?.offsetWidth || 0);
     const height = Math.max(1, this.element.clientHeight);
-    // Budget for the entire four-card strip, rather than a single viewport.
-    // A viewport-sized budget downsampled phone cards below their screen density.
-    const dpr = Math.min(Math.max(window.devicePixelRatio || 1, 1.5), 2, Math.sqrt(8000000 / (width * height)));
+    // Cap DPR at 1.5 and total stage buffer budget to keep interaction silky smooth.
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(4500000 / (width * height)));
     if (width === this.width && height === this.height && dpr === this.dpr) return;
     this.width = width; this.height = height; this.dpr = dpr;
     this.renderer.setPixelRatio(dpr);
@@ -68,16 +72,19 @@ class LanyardStage {
   }
 
   sizeTarget(rig) {
-    // Give each rig space to swing over neighbouring cards. Its DOM canvas
-    // remains the original size so pointer picking and resting scale stay exact.
-    const width = Math.max(1, Math.round(rig.width * 3 * this.dpr));
+    // Give each rig 2x horizontal headroom to swing smoothly over neighbouring cards without heavy 3x VRAM bloat.
+    const width = Math.max(1, Math.round(rig.width * 2 * this.dpr));
     const height = Math.max(1, Math.round(rig.height * this.dpr));
     if (rig.target?.width === width && rig.target?.height === height) return;
     if (rig.target) rig.target.setSize(width, height);
     else {
       rig.target = new THREE.WebGLRenderTarget(width, height, {
-        type: THREE.HalfFloatType, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,
-        depthBuffer: true, stencilBuffer: false, samples: Math.min(2, this.renderer.capabilities.maxSamples),
+        type: THREE.HalfFloatType,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        depthBuffer: true,
+        stencilBuffer: false,
+        samples: 0,
       });
       rig.target.texture.colorSpace = THREE.LinearSRGBColorSpace;
       rig.material.map = rig.target.texture;
@@ -88,12 +95,20 @@ class LanyardStage {
 
   measure() {
     const stage = this.element.getBoundingClientRect();
+    const viewLeft = this.element.scrollLeft;
+    const viewRight = viewLeft + this.element.clientWidth;
     for (const rig of this.rigs) {
       const box = rig.canvas.getBoundingClientRect();
-      const x = box.left - stage.left + this.element.scrollLeft, y = box.top - stage.top + this.element.scrollTop;
-      rig.inView = x < this.width && x + box.width > 0 && y < this.height && y + box.height > 0;
+      const x = box.left - stage.left + viewLeft;
+      const y = box.top - stage.top + this.element.scrollTop;
+      const pad = box.width * 0.65;
+      rig.inView =
+        x < viewRight + pad &&
+        x + box.width > viewLeft - pad &&
+        y < this.height &&
+        y + box.height > 0;
       rig.plane.position.set(x + box.width / 2, this.height - y - box.height / 2, 0);
-      rig.plane.scale.set(box.width * 3, box.height, 1);
+      rig.plane.scale.set(box.width * 2, box.height, 1);
       rig.plane.renderOrder = rig.container.closest('[data-active]')?.dataset.active === 'true' ? 100 : rig.index;
       rig.plane.visible = rig.inView && rig.ready && rig.painted;
     }
@@ -128,7 +143,7 @@ class LanyardStage {
       this.renderer.clear();
       rig.expandedCamera ??= rig.camera.clone();
       rig.expandedCamera.copy(rig.camera);
-      rig.expandedCamera.setViewOffset(rig.width, rig.height, -rig.width, 0, rig.width * 3, rig.height);
+      rig.expandedCamera.setViewOffset(rig.width, rig.height, -rig.width * 0.5, 0, rig.width * 2, rig.height);
       this.renderer.render(rig.scene, rig.expandedCamera);
       rig.dirty = false;
       rig.plane.visible = true;
@@ -182,6 +197,7 @@ class LanyardStage {
     if (this.disposed) return;
     this.disposed = true;
     cancelAnimationFrame(this.frame);
+    this.element.removeEventListener('scroll', this.onScroll);
     this.resizeObserver.disconnect(); this.visibilityObserver.disconnect();
     document.removeEventListener('visibilitychange', this.onVisibility);
     this.canvas.removeEventListener('webglcontextlost', this.onContextLost);

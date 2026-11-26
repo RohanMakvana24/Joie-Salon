@@ -11,7 +11,7 @@ import './SocialMediaSection.css';
 // Temporary search destinations approved by the owner until exact profiles are supplied.
 const FACEBOOK_URL = 'https://www.facebook.com/search/top?q=Joie%20Salon%20Rajkot';
 const YOUTUBE_URL = 'https://www.youtube.com/results?search_query=Joie+Salon+Rajkot';
-const featuredReview = FAITHFUL_REVIEWS.find(review => review.reviewerName === 'Bharat Makawana');
+const featuredReview = FAITHFUL_REVIEWS.find(review => review.reviewerName === 'Priya Patel') ?? FAITHFUL_REVIEWS[0];
 const CARD_REVIEW = featuredReview ? { name: featuredReview.reviewerName, quote: featuredReview.verbatimQuote } : undefined;
 const PROFILES = [
   { id: 'instagram', platform: 'Instagram', Icon: FaInstagram, handle: BUSINESS_INFO.instagramHandle, category: 'THE DAILY EDIT', headline: 'Your next look starts here.', description: 'Fresh glam, style inspiration, and life behind the chair.', action: 'Follow on Instagram', href: BUSINESS_INFO.instagramUrl },
@@ -98,7 +98,7 @@ export function SocialMediaSection() {
                     <div className={`community-card__preview community-card__preview--${profile.id}`}>
                       {profile.id === 'instagram' && <div className="community-card__photos">{['sangeet-caramel-glam', 'reception-couture-blowout', 'haldi-dewy-glow'].map((name, i) => <span key={name}><SkeletonImage src={`/assets/bridals/${name}.png`} alt={['Sangeet glam look', 'Couture blowout styling', 'Haldi dewy glow look'][i]} loading="lazy" /></span>)}</div>}
                       {profile.id === 'facebook' && <div className="community-card__community"><FaFacebookF aria-hidden="true" /><span>OUR KIND OF COMMUNITY</span><strong>Rooted in Rajkot.<br />Connected by style.</strong><span><MapPin size={10} aria-hidden="true" />Jyoti Nagar, Rajkot</span></div>}
-                      {profile.id === 'google' && <div className="community-card__review"><Quote size={19} strokeWidth={1.3} aria-hidden="true" /><blockquote>{featuredReview?.verbatimQuote}</blockquote><span><i aria-hidden="true">B</i>{featuredReview?.reviewerName}<span>Google review</span></span></div>}
+                      {profile.id === 'google' && <div className="community-card__review"><Quote size={19} strokeWidth={1.3} aria-hidden="true" /><blockquote>{featuredReview?.verbatimQuote}</blockquote><span><i aria-hidden="true">{featuredReview?.reviewerName?.[0] ?? 'J'}</i>{featuredReview?.reviewerName}<span>Google review</span></span></div>}
                       {profile.id === 'youtube' && <div className="community-card__video"><SkeletonImage src="/assets/bridals/royal-maroon-bridal.png" alt="Joie Salon bridal styling showcase" loading="lazy" /><span><Play size={12} fill="currentColor" aria-hidden="true" /></span><small>INSIDE THE CHAIR</small></div>}
                     </div>
                     <div className="community-card__editorial"><span>{profile.category}</span><h4>{profile.headline}</h4><p>{profile.description}</p></div>

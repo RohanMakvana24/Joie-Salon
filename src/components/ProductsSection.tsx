@@ -11,31 +11,31 @@ import { useTheme } from '../hooks/useActivity';
 
 const CATEGORY_TABS: { id: ProductCategoryFilter; label: string }[] = [
   { id: 'all', label: 'All' },
-  { id: 'hair', label: 'Hair' },
-  { id: 'beard', label: 'Beard' },
-  { id: 'skin', label: 'Skin' },
+  { id: 'hair', label: 'Hair Care' },
+  { id: 'styling', label: 'Styling' },
+  { id: 'skin', label: 'Skin & Glow' },
 ];
 
 const PRODUCT_CUTOUT: Record<string, string> = {
   'matte-molding-hair-clay': '/assets/products/joie/matte-molding-hair-clay.png',
-  'royal-oud-argan-beard-oil': '/assets/products/joie/royal-oud-argan-beard-oil.png',
+  'argan-rose-hair-elixir': '/assets/products/joie/argan-rose-hair-elixir.jpg',
   'charcoal-detan-face-scrub': '/assets/products/joie/charcoal-detan-face-scrub.png',
   'sea-salt-volume-spray': '/assets/products/joie/sea-salt-volume-spray.png',
-  'sandalwood-cooling-aftershave': '/assets/products/joie/sandalwood-cooling-aftershave.png',
+  'rose-glow-soothing-mist': '/assets/products/joie/rose-glow-soothing-mist.jpg',
   'keratin-repair-hair-serum': '/assets/products/joie/keratin-repair-hair-serum.png',
 };
 
 /** Slate charcoal tones so the orbit band morphs subtly within the unified brand palette. */
 const PRODUCT_ACCENT: Record<string, string> = {
   'matte-molding-hair-clay': '#232C3B',
-  'royal-oud-argan-beard-oil': '#334155',
+  'argan-rose-hair-elixir': '#334155',
   'charcoal-detan-face-scrub': '#1E293B',
   'sea-salt-volume-spray': '#3B485E',
-  'sandalwood-cooling-aftershave': '#2A3547',
+  'rose-glow-soothing-mist': '#2A3547',
   'keratin-repair-hair-serum': '#475569',
 };
 
-const WISHLIST_STORAGE_KEY = 'classic-cut-product-wishlist';
+const WISHLIST_STORAGE_KEY = 'joie-salon-product-wishlist';
 
 function readWishlist(): string[] {
   try {
@@ -187,7 +187,7 @@ export const ProductsSection: React.FC = () => {
               </span>
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
-              Counter-sold grooming formulas used on every chair at Joie Salon. Explore
+              Counter-sold hair and skin formulas used at every Joie Salon ritual. Explore
               the collection and find your everyday essentials.
             </p>
           </div>

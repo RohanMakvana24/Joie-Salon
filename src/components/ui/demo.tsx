@@ -6,20 +6,20 @@ import { TestimonialsMarquee } from '@/components/ui/grid-testimonials-marquee';
 const row = [
   {
     id: 'demo-1',
-    name: 'Rajkot Local Client',
+    name: 'Priya Patel',
     handle: 'Verified Rajkot Review',
     avatarColor: '#1a73e8',
-    content: 'Best men’s salon on Pedak Cross Road. They take time to understand the fade you want.',
-    highlights: ['Pedak Cross Road'],
+    content: 'Best ladies salon near Crystal Mall, Jyoti Nagar. They take time to understand the layer cut you want.',
+    highlights: ['Jyoti Nagar'],
     rating: 5,
   },
   {
     id: 'demo-2',
-    name: 'Ranchod Nagar Regular',
+    name: 'Kavya Jadeja',
     handle: 'Verified Rajkot Review',
     avatarColor: '#a142f4',
-    content: 'Sharp skin fade and clean beard lineup every single visit.',
-    highlights: ['skin fade', 'beard lineup'],
+    content: 'Silky keratin smoothing and glowing hydra facial every single visit.',
+    highlights: ['keratin smoothing', 'hydra facial'],
     rating: 5,
   },
 ];

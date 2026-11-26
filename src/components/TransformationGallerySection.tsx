@@ -8,18 +8,18 @@ import { RisingInk } from './ui/rising-ink';
 const InfiniteMenu = lazy(() => import('./ui/InfiniteMenu'));
 
 const GALLERY_ITEMS = [
-  { image: '/assets/hairstyles/rajkot-precision-fade.jpg', title: 'Rajkot Precision Fade', description: 'Seamless skin fade with razor-sharp hairline lineup.' },
-  { image: '/assets/hairstyles/rajkot-royal-beard.jpg', title: 'Royal Beard Sculpting', description: 'Hot-towel straight-razor contouring & beard spa.' },
-  { image: '/assets/hairstyles/rajkot-groom-styling.jpg', title: 'Groom Wedding Styling', description: 'Complete royal makeover for weddings and receptions.' },
-  { image: '/assets/location/rajkot-salon-experience.jpg', title: 'Joie Salon Lounge', description: 'Luxury grooming chair experience on Pedak Road.' },
-  { image: '/assets/hairstyles/textured-crop.webp', title: 'Textured Crop', description: 'Choppy texture with a clean low fade.' },
-  { image: '/assets/hairstyles/modern-quiff.webp', title: 'Modern Quiff', description: 'Lifted volume with neatly tapered sides.' },
-  { image: '/assets/hairstyles/classic-side-part.webp', title: 'Classic Side Part', description: 'A clean part with a polished finish.' },
-  { image: '/assets/hairstyles/curly-taper-ai.webp', title: 'Curly Taper', description: 'Defined natural curls with a soft temple taper.' },
-  { image: '/assets/hairstyles/buzz-fade-ai.webp', title: 'Buzz Fade', description: 'A sharp buzz cut with a smooth skin fade.' },
-  { image: '/assets/hairstyles/slick-back-ai.webp', title: 'Slick Back', description: 'Swept-back length with a crisp undercut.' },
-  { image: '/assets/hairstyles/wavy-flow-ai.webp', title: 'Wavy Flow', description: 'Natural movement with medium-length layers.' },
-  { image: '/assets/hairstyles/french-crop-ai.webp', title: 'French Crop', description: 'A blunt fringe with a clean high fade.' },
+  { image: '/assets/gallery/feather-layers-blowout.jpg', title: 'Feather Layers & Blowout', description: 'Face-framing feather layers with a bouncy salon blow-dry.' },
+  { image: '/assets/gallery/caramel-balayage-waves.jpg', title: 'Caramel Honey Balayage', description: 'Sun-lit hand-painted balayage curls with glossy keratin shine.' },
+  { image: '/assets/gallery/curtain-bangs-soft-waves.jpg', title: 'Curtain Bangs & Waves', description: 'Wispy soft curtain bangs paired with silky chocolate waves.' },
+  { image: '/assets/gallery/mogra-gajra-bridal-bun.jpg', title: 'Mogra Gajra Bridal Bun', description: 'Sculpted bridal chignon adorned with fresh jasmine and gold pins.' },
+  { image: '/assets/gallery/hydra-glow-glass-skin.jpg', title: 'Hydra-Glow Facial & Brows', description: 'Dewy glass-skin radiance with cleanly shaped eyebrows.' },
+  { image: '/assets/gallery/rose-chrome-nail-couture.jpg', title: 'Rose & Gold Nail Couture', description: 'Almond rose-nude gel extensions with delicate gold-leaf artistry.' },
+  { image: '/assets/bridals/royal-maroon-bridal.png', title: 'Royal Maroon Bridal', description: 'HD airbrush bridal makeup, mogra bun & timeless lehenga draping.' },
+  { image: '/assets/bridals/sangeet-caramel-glam.png', title: 'Sangeet Caramel Glam', description: 'Soft bronze smokey eyes and glossy Hollywood waves.' },
+  { image: '/assets/bridals/reception-couture-blowout.png', title: 'Reception Couture Blowout', description: 'Lifted crown volume with sleek face-framing layers.' },
+  { image: '/assets/bridals/haldi-dewy-glow.png', title: 'Haldi Dewy Glow', description: 'Breathable sunlit makeup with floral-ready messy bun.' },
+  { image: '/assets/bridals/mehndi-nail-couture.png', title: 'Mehndi Nail Couture', description: 'Festive gel polish paired with half-up romantic curls.' },
+  { image: '/assets/bridals/engagement-sculpt.png', title: 'Engagement Brow Sculpt', description: 'Precision brow framing and camera-ready satin skin finish.' },
 ];
 
 export const TransformationGallerySection = () => {
@@ -35,12 +35,12 @@ export const TransformationGallerySection = () => {
             theme === 'light' ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
           }`}
         >
-          Style inspiration · Rajkot
+          Ladies Lookbook · Rajkot
         </p>
         <RisingInk
           as="h2"
           id="gallery-heading"
-          text="THE CUT IN MOTION"
+          text="BEAUTY IN MOTION"
           color={theme === 'light' ? '#232C3B' : '#F5F6F7'}
           colors={theme === 'light' ? ['#232C3B', '#475569'] : ['#F5F6F7', '#94A3B8']}
           lift={0.48}
@@ -48,7 +48,7 @@ export const TransformationGallerySection = () => {
           className="font-display text-4xl leading-none sm:text-5xl md:text-[3.5rem]"
         />
         <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-[#C9B8A6] sm:text-base">
-          Explore your next look. AI-generated hairstyle inspiration.
+          Explore signature hairstyles, balayage colour, hydra-glow facials, nail art, and bridal looks crafted at Joie Salon.
         </p>
       </div>
 

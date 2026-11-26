@@ -1,7 +1,7 @@
 import { MapPin } from 'lucide-react';
 
 const routes = [
-  { landmark: 'Akashvani Chowk', path: 'M400 44 Q185 28 144 172', side: 'left' },
+  { landmark: 'Kalawad Road', path: 'M400 44 Q185 28 144 172', side: 'left' },
   { landmark: 'Crystal Mall', path: 'M400 44 Q615 28 656 172', side: 'right' },
 ] as const;
 
@@ -18,7 +18,7 @@ export function SalonCrowdScene() {
       </div>
       <div className="joie-route-scene__dispatch">
         <span><MapPin size={13} /> Directions</span>
-        <i>Pedak Cross Road, Arya Nagar</i>
+        <i>Jyoti Nagar Main Rd, Behind Crystal Mall</i>
       </div>
       {routes.map(({ landmark, path, side }) => (
         <div key={landmark} className={`joie-route-cycle joie-route-cycle--${side}`}>

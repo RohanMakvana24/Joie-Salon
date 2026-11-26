@@ -22,7 +22,6 @@ import {
   Play,
   Plus,
   Scissors,
-  Sparkles,
 } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/barbershopData';
 import { useTheme } from '../hooks/useActivity';
@@ -675,7 +674,7 @@ export function HeroSection() {
                     >
                       <span className="joie-atelier-hero__pin-core">
                         {isPinSelected ? (
-                          <Sparkles className="w-3 h-3" aria-hidden="true" />
+                          <span className="w-2 h-2 rounded-full bg-current" aria-hidden="true" />
                         ) : (
                           <Plus className="w-3.5 h-3.5" aria-hidden="true" />
                         )}

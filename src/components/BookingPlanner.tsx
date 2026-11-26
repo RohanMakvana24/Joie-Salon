@@ -5,14 +5,14 @@ import './BookingPlanner.css';
 
 const MODES = [
   { id: 'salon', title: 'The salon chair', caption: 'Your everyday refresh', icon: Scissors },
-  { id: 'wedding', title: 'The wedding edit', caption: 'Groom & wedding party', icon: Crown },
-  { id: 'event', title: 'Beyond the salon', caption: 'Barber for your event', icon: Scissors },
+  { id: 'wedding', title: 'The bridal suite', caption: 'Brides, sangeet & party', icon: Crown },
+  { id: 'event', title: 'Group & festive glam', caption: 'Family weddings & events', icon: Scissors },
 ] as const;
 type Mode = typeof MODES[number]['id'];
 const SERVICES: Record<Mode, string[]> = {
-  salon: ['Haircut & styling', 'Fade & taper', 'Beard & shave', 'Haircut + beard', 'Kids haircut', 'Skin & grooming'],
-  wedding: ['Groom makeover', 'Wedding party grooming', 'Groom + wedding party', 'Pre-wedding grooming'],
-  event: ['Event barber service', 'Family function grooming', 'Group grooming', 'Other occasion'],
+  salon: ['Layer haircut & blow-dry', 'Balayage & hair colour', 'Keratin & hair spa', 'Hydra-glow facial & de-tan', 'Threading & waxing', 'Mani-pedi & gel nails'],
+  wedding: ['Bridal HD / airbrush makeup', 'Pre-bridal glow package', 'Sangeet & reception glam', 'Bridesmaid & family draping'],
+  event: ['Bridal & party venue styling', 'Family wedding group glam', 'Festive hair & makeup', 'Other occasion'],
 };
 function indiaNow() {
   const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
@@ -74,17 +74,17 @@ export function BookingPlanner() {
   return (
     <div className="booking-planner" id="booking" aria-labelledby="booking-heading">
       <div className="booking-planner__intro">
-        <p className="salon-visit__eyebrow">A FRESH CUT. A BIG DAY. YOUR MOMENT.</p>
-        <h3 id="booking-heading">Good looks.<br /><em>Great plans.</em></h3>
-        <p>From your favourite chair to your wedding venue. Let’s plan a little time to look your best.</p>
+        <p className="salon-visit__eyebrow">A BOUNCY BLOWOUT. A BRIDAL GLOW. YOUR MOMENT.</p>
+        <h3 id="booking-heading">Effortless beauty.<br /><em>Great plans.</em></h3>
+        <p>From your favourite chair at Jyoti Nagar to your wedding festivities. Let’s plan time to look and feel radiant.</p>
         <div className="booking-planner__ticket" aria-live="polite">
-          <span className="booking-planner__ticket-label">YOUR GROOMING ITINERARY <Scissors size={16} /></span>
+          <span className="booking-planner__ticket-label">YOUR SALON ITINERARY <Scissors size={16} /></span>
           <strong>{service}</strong>
           <span>{selectedMode.title}</span>
           <div className="booking-planner__ticket-rule" />
           <div><span>WHEN</span><b>{readableDate(date)}</b><small>{time ? `${time} · India time` : 'Your preferred time'}</small></div>
-          <div><span>WHERE</span><b>{special && location === 'At your venue' ? venue || 'Your event venue' : 'Joie Salon'}</b><small>{special ? `${guests} ${guests === '1' ? 'person' : 'people'} · By arrangement` : 'Arya Nagar, Rajkot'}</small></div>
-          <span className="booking-planner__ticket-foot"><Clock3 size={13} /> A request today. A fresh look ahead.</span>
+          <div><span>WHERE</span><b>{special && location === 'At your venue' ? venue || 'Your event venue' : 'Joie Salon'}</b><small>{special ? `${guests} ${guests === '1' ? 'person' : 'people'} · By arrangement` : 'Jyoti Nagar, Rajkot'}</small></div>
+          <span className="booking-planner__ticket-foot"><Clock3 size={13} /> A request today. A glowing look ahead.</span>
         </div>
         <a className="salon-visit__link" href={BUSINESS_INFO.phoneHref}>Prefer a conversation? {BUSINESS_INFO.phoneDisplay} <ArrowUpRight size={14} /></a>
       </div>
@@ -99,7 +99,7 @@ export function BookingPlanner() {
         <fieldset>
           <legend><span>02</span> Make it yours</legend>
           <div className="booking-planner__fields">
-            <label className="booking-planner__wide">{special ? 'Grooming experience' : 'Choose your service'}<select value={service} onChange={e => setService(e.target.value)}>{SERVICES[mode].map(item => <option key={item}>{item}</option>)}</select></label>
+            <label className="booking-planner__wide">{special ? 'Bridal & event service' : 'Choose your service'}<select value={service} onChange={e => setService(e.target.value)}>{SERVICES[mode].map(item => <option key={item}>{item}</option>)}</select></label>
             <label>Preferred date<input aria-label="Preferred date" type="date" required min={today || undefined} value={date} onChange={e => setDate(e.target.value)} /></label>
             <label>Preferred time · IST<input aria-label="Preferred time in India" type="time" required value={time} onChange={e => setTime(e.target.value)} /></label>
             {special && <>

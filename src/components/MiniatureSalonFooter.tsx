@@ -379,7 +379,7 @@ export const MiniatureSalonFooter: React.FC<MiniatureSalonFooterProps> = ({
             </a>
           ))}
           <button type="button" className="msf-wake-btn" onClick={handleWakeUp}>
-            ✨ Wake up the salon
+            Wake up the salon
           </button>
         </div>
       </div>
@@ -514,7 +514,6 @@ export const MiniatureSalonFooter: React.FC<MiniatureSalonFooterProps> = ({
                   <line key={y} x1="4" y1={y} x2="20" y2={y} stroke="#d4a673" strokeWidth="2.2" />
                 ))}
               </svg>
-              <span className="msf-sparkle" style={{ top: '-18%', left: '22%' }} aria-hidden="true">✦</span>
             </div>
 
             <div className="msf-letter-slot">
@@ -544,7 +543,6 @@ export const MiniatureSalonFooter: React.FC<MiniatureSalonFooterProps> = ({
 
             <div className="msf-letter-slot">
               <span className="msf-letter">N</span>
-              <span className="msf-sparkle" style={{ top: '-12%', right: '8%', animationDelay: '-1.1s' }} aria-hidden="true">✦</span>
             </div>
           </div>
 
