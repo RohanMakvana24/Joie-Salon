@@ -27,9 +27,6 @@
   min-height: 0;
   height: auto;
 }
-#main-content #top > .relative {
-  padding-block: 112px 72px;
-}
 #main-content .signature-packages__grid {
   max-width: none;
 }
@@ -52,7 +49,6 @@
 }
 @media (max-width: 639px) {
   :root { --site-gutter: 20px; --site-section-space: 56px; }
-  #main-content #top > .relative { padding-block: 100px 52px; }
   #main-content #gallery .gallery-immersive-stage { border-radius: 14px; }
   #main-content .community-deck__track {
     --social-mobile-card: min(340px, calc(100vw - 80px));
@@ -63,30 +59,6 @@
 }
 
 /* A quieter editorial finish across the existing salon sections. */
-#top .hero-title h1 > span {
-  font-weight: 750;
-  text-shadow: none;
-  filter: none;
-  -webkit-text-stroke: 0;
-  background: none;
-  -webkit-text-fill-color: currentColor;
-}
-#top .hero-title .text-3d-sharper { color: #faf3e6; }
-#top .hero-title .text-3d-everyday { color: #d9b375; }
-#top .hero-title .font-script-lookgood {
-  font-size: clamp(2.2rem, 4vw, 3.7rem);
-  margin-top: 8px;
-  margin-left: 4px;
-  transform: none;
-  color: #efdfc2;
-  text-shadow: none;
-  filter: none;
-}
-#top a[href^='https://wa.me/'] {
-  background: #dabb86;
-  box-shadow: 0 6px 20px #00000024;
-}
-#top a[href^='https://wa.me/']:hover { background: #e8cfa4; }
 #experience h2 {
   font-size: clamp(32px, 3.7vw, 48px);
   font-weight: 600;
@@ -96,9 +68,12 @@
   text-wrap: balance;
 }
 #experience h2 > span {
-  color: #a77b44;
+  color: #CBD5E1;
   background: none;
   -webkit-text-fill-color: currentColor;
+}
+html[data-theme="light"] #experience h2 > span {
+  color: #232C3B;
 }
 #experience h3 { text-transform: none; font-size: 22px; letter-spacing: -.025em; }
 #experience h3 + p { font-size: 13px; line-height: 1.85; }

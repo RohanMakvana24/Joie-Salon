@@ -25,11 +25,11 @@ export const ClientDemoBanner: React.FC = () => {
   return (
     <aside
       aria-label="Demo notice for salon owner"
-      className="fixed bottom-4 right-4 sm:right-6 z-50 max-w-sm sm:max-w-md bg-[#16110D]/95 text-[#F7F1E8] border border-[#DFAF63]/50 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md animate-fade-in"
+      className="fixed bottom-4 right-4 sm:right-6 z-50 max-w-sm sm:max-w-md bg-[#16110D]/95 text-[#F5F6F7] border border-white/20 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md animate-fade-in"
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2 text-[#E5B96F]">
-          <div className="w-7 h-7 rounded-lg bg-[#DFAF63]/20 flex items-center justify-center shrink-0">
+        <div className="flex items-center gap-2 text-[#CBD5E1]">
+          <div className="w-7 h-7 rounded-lg bg-[#232C3B] border border-white/15 flex items-center justify-center shrink-0 text-[#F8F6F2]">
             <Scissors size={16} />
           </div>
           <span className="font-mono text-xs uppercase tracking-wider font-bold">
@@ -51,7 +51,7 @@ export const ClientDemoBanner: React.FC = () => {
         <strong>Joie Salon Demo:</strong> The layout, speed, and local Rajkot SEO are fully optimized. All images, services, and team details will be updated with your original salon photos and official rates upon your approval!
       </p>
 
-      <div className="mt-3 pt-2.5 border-t border-[#DFAF63]/20 flex items-center justify-between">
+      <div className="mt-3 pt-2.5 border-t border-white/15 flex items-center justify-between">
         <span className="flex items-center gap-1.5 text-[11px] text-[#25D366] font-medium">
           <Check size={13} />
           100% Ready for WhatsApp Bookings
@@ -59,7 +59,7 @@ export const ClientDemoBanner: React.FC = () => {
         <button
           type="button"
           onClick={handleDismiss}
-          className="text-[11px] font-bold uppercase tracking-wider text-[#E5B96F] hover:underline cursor-pointer"
+          className="px-3 py-1 rounded-full bg-[#232C3B] hover:bg-[#2F3B4F] border border-white/20 text-[11px] font-bold uppercase tracking-wider text-[#F8F6F2] transition-colors cursor-pointer"
         >
           Got it
         </button>

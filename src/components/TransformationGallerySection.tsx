@@ -27,18 +27,22 @@ export const TransformationGallerySection = () => {
   const stageRef = useRef<HTMLDivElement>(null);
   const nearby = useElementInView(stageRef, { once: true, rootMargin: '240px' });
   return (
-  <section id="gallery" aria-labelledby="gallery-heading" className="relative overflow-hidden border-b border-[#DFAF63]/15 bg-[#0C0907] py-20 sm:py-28">
+  <section id="gallery" aria-labelledby="gallery-heading" className="relative overflow-hidden border-b border-white/10 bg-[#0C0907] py-20 sm:py-28">
     <div className="site-container relative">
       <div className="mx-auto mb-4 max-w-2xl px-5 text-center sm:mb-6">
-        <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.28em] text-[#E5B96F]">
+        <p
+          className={`mb-3 font-mono text-[11px] uppercase tracking-[0.28em] ${
+            theme === 'light' ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
+          }`}
+        >
           Style inspiration · Rajkot
         </p>
         <RisingInk
           as="h2"
           id="gallery-heading"
           text="THE CUT IN MOTION"
-          color={theme === 'light' ? '#2D2118' : '#F7F1E8'}
-          colors={theme === 'light' ? ['#A17438', '#6B451F'] : ['#F4CC82', '#8B541A']}
+          color={theme === 'light' ? '#232C3B' : '#F5F6F7'}
+          colors={theme === 'light' ? ['#232C3B', '#475569'] : ['#F5F6F7', '#94A3B8']}
           lift={0.48}
           radius={1.5}
           className="font-display text-4xl leading-none sm:text-5xl md:text-[3.5rem]"
@@ -51,7 +55,7 @@ export const TransformationGallerySection = () => {
       <div ref={stageRef} className="gallery-immersive-stage relative h-[420px] sm:h-[560px]">
         {nearby ? <Suspense fallback={<GallerySkeleton />}><InfiniteMenu items={GALLERY_ITEMS} count={160} tileSize={0.63} roundness={0.2}
           zoom={1.65} pullBack={1} stretch={0.6} inertia={0.6} autoplay={3}
-          grayscale dim={0.5} intro showInfo theme={theme} accentColor={theme === 'light' ? '#2D2118' : '#E5B96F'} /></Suspense> : <GallerySkeleton />}
+          grayscale dim={0.5} intro showInfo theme={theme} accentColor={theme === 'light' ? '#232C3B' : '#CBD5E1'} /></Suspense> : <GallerySkeleton />}
       </div>
 
       <div className="mt-9 flex justify-center">

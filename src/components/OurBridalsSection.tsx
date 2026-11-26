@@ -752,27 +752,25 @@ export const OurBridalsSection: React.FC = () => {
         {/* Centered Header matching Signature Packages */}
         <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center gap-2.5 mb-3.5">
-            <span className="h-px w-7 bg-[#E5B96F]" />
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-[#E5B96F]">
+            <span className={`h-px w-7 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
+            <p
+              className={`font-mono text-xs uppercase tracking-[0.28em] ${
+                isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
+              }`}
+            >
               BRIDAL COUTURE · RAJKOT
             </p>
-            <span className="h-px w-7 bg-[#E5B96F]" />
+            <span className={`h-px w-7 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
           </div>
 
           <h2
             id="bridals-heading"
             className={`font-display uppercase text-4xl sm:text-5xl md:text-[3.5rem] tracking-[-0.01em] leading-tight ${
-              isLight ? 'text-[#232C3B]' : 'text-[#F7F1E8]'
+              isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
             }`}
           >
             OUR{' '}
-            <span
-              className={`bg-gradient-to-b bg-clip-text text-transparent ${
-                isLight
-                  ? 'from-[#5C392E] via-[#4C2E26] to-[#2A170F]'
-                  : 'from-[#FFF2C6] via-[#E5B96F] to-[#C28B37]'
-              }`}
-            >
+            <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
               BRIDALS
             </span>
           </h2>

@@ -101,12 +101,12 @@ export const ServicesSection: React.FC = () => {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative bg-[#0C0907] py-20 md:py-28 border-b border-[#DFAF63]/15 overflow-hidden"
+      className="relative bg-[#0C0907] py-20 md:py-28 border-b border-white/10 overflow-hidden"
     >
-      {/* Subtle Ambient Gold Radial Glow */}
+      {/* Subtle Ambient Radial Glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 hidden md:block -translate-x-1/2 w-[900px] h-[380px] rounded-full bg-[#DFAF63]/[0.06] blur-[100px]"
+        className="pointer-events-none absolute -top-40 left-1/2 hidden md:block -translate-x-1/2 w-[900px] h-[380px] rounded-full bg-[#CBD5E1]/[0.05] blur-[100px]"
       />
 
       <div className="site-container relative z-10">
@@ -114,8 +114,8 @@ export const ServicesSection: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
           <div>
             <div className="inline-flex items-center gap-2.5 mb-3">
-              <span className="h-[1px] w-7 bg-[#E5B96F]" />
-              <p className="font-mono text-xs uppercase tracking-[0.26em] text-[#E5B96F]">
+              <span className={`h-[1px] w-7 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
+              <p className={`font-mono text-xs uppercase tracking-[0.26em] ${isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}`}>
                 HAIR, SKIN &amp; BRIDAL MENU · RAJKOT, GUJARAT
               </p>
             </div>
@@ -124,13 +124,7 @@ export const ServicesSection: React.FC = () => {
               className="font-display uppercase text-4xl sm:text-5xl md:text-[3.5rem] text-[#F7F1E8] tracking-[-0.01em] leading-none"
             >
               OUR{' '}
-              <span
-                className={`bg-gradient-to-b bg-clip-text text-transparent ${
-                  isLight
-                    ? 'from-[#5C392E] via-[#4C2E26] to-[#2A170F]'
-                    : 'from-[#FFF2C6] via-[#E5B96F] to-[#C28B37]'
-                }`}
-              >
+              <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
                 SERVICES
               </span>
             </h2>
@@ -142,7 +136,7 @@ export const ServicesSection: React.FC = () => {
               role="tablist"
               aria-label="Filter salon services by category"
               className={`grid grid-cols-2 sm:inline-flex sm:flex-wrap items-center gap-1.5 rounded-2xl sm:rounded-full border p-1.5 w-full sm:w-auto self-start lg:self-auto ${
-                isLight ? 'border-[#232C3B]/15 bg-white' : 'border-[#DFAF63]/25 bg-[#140F0C]'
+                isLight ? 'border-[#232C3B]/15 bg-white' : 'border-white/15 bg-[#14171F]'
               }`}
             >
               {CATEGORY_TABS.map((tab) => {
@@ -156,12 +150,10 @@ export const ServicesSection: React.FC = () => {
                     onClick={() => { setSelectedCategory(tab.id); setActiveCard(0); resetDrag(); }}
                     className={`px-3 py-2.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-full text-[11px] sm:text-xs font-semibold tracking-[0.03em] sm:tracking-[0.06em] text-center transition-all cursor-pointer focus-ring ${
                       isActive
-                        ? isLight
-                          ? 'bg-gradient-to-r from-[#363D49] via-[#2E3440] to-[#232C3B] text-[#F5F7FA] shadow-[0_4px_16px_rgba(35,44,59,0.25)]'
-                          : 'bg-gradient-to-r from-[#E8C27A] via-[#DFAF63] to-[#C58E3D] text-[#090705] shadow-[0_4px_16px_rgba(223,175,99,0.3)]'
+                        ? 'bg-[#232C3B] text-[#F8F6F2] shadow-[0_4px_16px_rgba(35,44,59,0.28)]'
                         : isLight
                         ? 'text-[#4B5563] hover:text-[#232C3B]'
-                        : 'text-[#C9B8A6] hover:text-[#F7F1E8]'
+                        : 'text-[#B6C0CE] hover:text-[#F5F6F7]'
                     }`}
                   >
                     {tab.label}
@@ -261,19 +253,19 @@ export const ServicesSection: React.FC = () => {
 
         <div className="mt-7 flex flex-col items-center gap-4 md:hidden">
           <div className="flex items-center gap-4">
-            <button type="button" aria-label="Previous service" onClick={() => setActiveCard((activeCard - 1 + visibleServices.length) % visibleServices.length)} className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#DFAF63]/30 text-[#E5B96F] focus-ring"><ArrowLeft size={18} strokeWidth={1.5} aria-hidden="true" /></button>
+            <button type="button" aria-label="Previous service" onClick={() => setActiveCard((activeCard - 1 + visibleServices.length) % visibleServices.length)} className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border focus-ring ${isLight ? 'border-[#232C3B]/25 text-[#232C3B]' : 'border-white/25 text-[#F5F6F7]'}`}><ArrowLeft size={18} strokeWidth={1.5} aria-hidden="true" /></button>
             <div className="flex items-center gap-2" aria-label="Choose a service">
               {visibleServices.map((service, index) => (
-                <button key={service.id} type="button" aria-label={`Show ${service.title}`} aria-pressed={activeCard === index} onClick={() => setActiveCard(index)} className={`h-2 rounded-full transition-all duration-300 focus-ring ${activeCard === index ? 'w-7 bg-[#E5B96F]' : 'w-2 bg-[#DFAF63]/25'}`} />
+                <button key={service.id} type="button" aria-label={`Show ${service.title}`} aria-pressed={activeCard === index} onClick={() => setActiveCard(index)} className={`h-2 rounded-full transition-all duration-300 focus-ring ${activeCard === index ? (isLight ? 'w-7 bg-[#232C3B]' : 'w-7 bg-[#F5F6F7]') : (isLight ? 'w-2 bg-[#232C3B]/25' : 'w-2 bg-white/25')}`} />
               ))}
             </div>
-            <button type="button" aria-label="Next service" onClick={() => setActiveCard((activeCard + 1) % visibleServices.length)} className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#DFAF63]/30 text-[#E5B96F] focus-ring"><ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" /></button>
+            <button type="button" aria-label="Next service" onClick={() => setActiveCard((activeCard + 1) % visibleServices.length)} className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border focus-ring ${isLight ? 'border-[#232C3B]/25 text-[#232C3B]' : 'border-white/25 text-[#F5F6F7]'}`}><ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" /></button>
           </div>
           <p className="text-[10px] uppercase tracking-[0.24em] text-[#C9B8A6]" aria-live="polite">Swipe to explore · {activeCard + 1} / {visibleServices.length}</p>
         </div>
 
         {/* Bottom Custom Consultation & Direct Booking Strip */}
-        <div className="luxury-card-shadow mt-10 sm:mt-12 rounded-2xl border border-[#DFAF63]/25 bg-[#140F0C] p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="luxury-card-shadow mt-10 sm:mt-12 rounded-2xl border border-[#232C3B]/15 bg-[#140F0C] p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="max-w-2xl">
             <p className="text-base sm:text-lg font-bold text-[#F7F1E8]">
               Looking for a custom haircut, bridal makeup trial, or skin ritual in Rajkot?
@@ -288,7 +280,7 @@ export const ServicesSection: React.FC = () => {
               href={BUSINESS_INFO.bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl sm:rounded-full bg-gradient-to-r from-[#E8C27A] via-[#DFAF63] to-[#C58E3D] text-[#090705] font-bold text-xs uppercase tracking-[0.08em] hover:brightness-110 transition-all shadow-[0_8px_24px_rgba(223,175,99,0.28)] focus-ring"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl sm:rounded-full bg-[#232C3B] hover:bg-[#161C26] text-[#F8F6F2] border border-white/15 font-bold text-xs uppercase tracking-[0.08em] transition-all shadow-[0_8px_24px_rgba(35,44,59,0.28)] focus-ring"
             >
               <Calendar className="w-4 h-4 shrink-0" />
               <span className="truncate">Booking</span>
@@ -296,9 +288,13 @@ export const ServicesSection: React.FC = () => {
             </a>
             <a
               href={BUSINESS_INFO.phoneHref}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl sm:rounded-full border border-[#DFAF63]/45 text-[#F7F1E8] hover:border-[#E5B96F] hover:text-[#E5B96F] font-semibold text-xs uppercase tracking-[0.08em] transition-colors focus-ring"
+              className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl sm:rounded-full border font-semibold text-xs uppercase tracking-[0.08em] transition-colors focus-ring ${
+                isLight
+                  ? 'border-[#232C3B]/30 text-[#232C3B] hover:border-[#232C3B]'
+                  : 'border-white/25 text-[#F5F6F7] hover:border-white/60'
+              }`}
             >
-              <PhoneCall className="w-3.5 h-3.5 text-[#E5B96F] shrink-0" />
+              <PhoneCall className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate">{BUSINESS_INFO.phoneDisplay}</span>
             </a>
           </div>

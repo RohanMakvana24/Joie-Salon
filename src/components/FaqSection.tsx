@@ -54,7 +54,7 @@ export const FaqSection: React.FC = () => {
       className="relative py-20 md:py-28 border-b transition-colors duration-300"
       style={{
         backgroundColor: isLight ? '#F5F6F7' : '#0C0907',
-        borderColor: isLight ? 'rgba(35, 44, 59, 0.12)' : 'rgba(223, 175, 99, 0.15)',
+        borderColor: isLight ? 'rgba(35, 44, 59, 0.12)' : 'rgba(255, 255, 255, 0.1)',
       }}
     >
       <div className="site-container relative z-10">
@@ -62,10 +62,10 @@ export const FaqSection: React.FC = () => {
           {/* Left Sticky Column: Title, Category Filters & Concierge Card */}
           <div className="lg:col-span-5 lg:sticky lg:top-24">
             <div className="inline-flex items-center gap-2.5 mb-3">
-              <span className={`h-[1px] w-7 ${isLight ? 'bg-[#363D49]' : 'bg-[#E5B96F]'}`} />
+              <span className={`h-[1px] w-7 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
               <p
                 className={`font-mono text-xs uppercase tracking-[0.26em] ${
-                  isLight ? 'text-[#363D49]' : 'text-[#E5B96F]'
+                  isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
                 }`}
               >
                 EVERYTHING YOU NEED TO KNOW
@@ -75,17 +75,11 @@ export const FaqSection: React.FC = () => {
             <h2
               id="faq-heading"
               className={`font-display uppercase text-4xl sm:text-5xl md:text-[3.25rem] tracking-[-0.01em] leading-[1.02] ${
-                isLight ? 'text-[#232C3B]' : 'text-[#F7F1E8]'
+                isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
               }`}
             >
               FREQUENTLY ASKED{' '}
-              <span
-                className={`bg-gradient-to-b bg-clip-text text-transparent ${
-                  isLight
-                    ? 'from-[#5C392E] via-[#4C2E26] to-[#2A170F]'
-                    : 'from-[#FFF2C6] via-[#E5B96F] to-[#C28B37]'
-                }`}
-              >
+              <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
                 QUESTIONS
               </span>
             </h2>
@@ -116,11 +110,11 @@ export const FaqSection: React.FC = () => {
                     className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-[0.04em] transition-all cursor-pointer focus-ring ${
                       isActive
                         ? isLight
-                          ? 'bg-[#232C3B] text-[#F5F7FA] shadow-[0_4px_12px_rgba(35,44,59,0.2)]'
-                          : 'bg-[#E5B96F] text-[#0C0907] shadow-[0_4px_14px_rgba(229,185,111,0.25)]'
+                          ? 'bg-[#232C3B] text-[#F8F6F2] shadow-[0_4px_12px_rgba(35,44,59,0.2)]'
+                          : 'bg-[#232C3B] text-[#F8F6F2] border border-white/25 shadow-[0_4px_14px_rgba(0,0,0,0.4)]'
                         : isLight
                         ? 'bg-white text-[#4B5563] border border-[#232C3B]/15 hover:text-[#232C3B]'
-                        : 'bg-[#16110D] text-[#C9B8A6] border border-[#DFAF63]/20 hover:text-[#F7F1E8]'
+                        : 'bg-[#16110D] text-[#C9B8A6] border border-white/15 hover:text-[#F5F6F7]'
                     }`}
                   >
                     {tab.label}
@@ -134,12 +128,12 @@ export const FaqSection: React.FC = () => {
               className={`mt-8 p-6 rounded-2xl border transition-colors ${
                 isLight
                   ? 'bg-white border-[#232C3B]/12 shadow-[0_8px_24px_rgba(35,44,59,0.05)]'
-                  : 'bg-[#140F0C] border-[#DFAF63]/25'
+                  : 'bg-[#140F0C] border-white/15'
               }`}
             >
               <p
                 className={`font-display text-lg font-bold leading-snug ${
-                  isLight ? 'text-[#232C3B]' : 'text-[#F7F1E8]'
+                  isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
                 }`}
               >
                 Still have a specific question?
@@ -157,7 +151,11 @@ export const FaqSection: React.FC = () => {
                   href={BUSINESS_INFO.bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-10 items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#137A3D] hover:bg-[#106632] text-white font-semibold text-xs uppercase tracking-wider transition-colors focus-ring"
+                  className={`inline-flex min-h-10 items-center justify-center gap-2 px-5 py-2.5 rounded-full font-semibold text-xs uppercase tracking-wider transition-colors focus-ring ${
+                    isLight
+                      ? 'bg-[#232C3B] hover:bg-[#161C26] text-[#F8F6F2]'
+                      : 'bg-[#232C3B] hover:bg-[#2F3B4F] text-[#F8F6F2] border border-white/20'
+                  }`}
                 >
                   <FaWhatsapp size={15} />
                   <span>WhatsApp Us</span>
@@ -167,7 +165,7 @@ export const FaqSection: React.FC = () => {
                   className={`inline-flex min-h-10 items-center justify-center gap-2 px-5 py-2.5 rounded-full border font-semibold text-xs uppercase tracking-wider transition-colors focus-ring ${
                     isLight
                       ? 'bg-[#EAEDF0] hover:bg-[#DFE4EA] text-[#232C3B] border-[#232C3B]/20'
-                      : 'bg-[#211812] hover:bg-[#2C2018] text-[#E5B96F] border-[#DFAF63]/35'
+                      : 'bg-white/5 hover:bg-white/10 text-[#F5F6F7] border-white/25'
                   }`}
                 >
                   <PhoneCall size={14} />
@@ -189,10 +187,10 @@ export const FaqSection: React.FC = () => {
                     isOpen
                       ? isLight
                         ? 'bg-white border-[#232C3B]/25 shadow-[0_12px_30px_-12px_rgba(35,44,59,0.12)]'
-                        : 'bg-[#16110D] border-[#DFAF63]/55 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.6)]'
+                        : 'bg-[#16110D] border-white/25 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.6)]'
                       : isLight
                       ? 'bg-white/70 border-[#232C3B]/10 hover:bg-white hover:border-[#232C3B]/20'
-                      : 'bg-[#120E0B]/80 border-[#DFAF63]/15 hover:border-[#DFAF63]/35'
+                      : 'bg-[#120E0B]/80 border-white/10 hover:border-white/25'
                   }`}
                 >
                   <button
@@ -206,8 +204,8 @@ export const FaqSection: React.FC = () => {
                         className={`font-mono text-xs font-semibold pt-1 shrink-0 ${
                           isOpen
                             ? isLight
-                              ? 'text-[#5C392E]'
-                              : 'text-[#E5B96F]'
+                              ? 'text-[#232C3B]'
+                              : 'text-[#CBD5E1]'
                             : isLight
                             ? 'text-[#4B5563]/70'
                             : 'text-[#C9B8A6]/60'
@@ -220,10 +218,10 @@ export const FaqSection: React.FC = () => {
                           isOpen
                             ? isLight
                               ? 'text-[#232C3B]'
-                              : 'text-[#FFF2C6]'
+                              : 'text-[#F5F6F7]'
                             : isLight
                             ? 'text-[#232C3B]/90'
-                            : 'text-[#F7F1E8]'
+                            : 'text-[#E2E8F0]'
                         }`}
                       >
                         {faq.question}
@@ -235,11 +233,11 @@ export const FaqSection: React.FC = () => {
                       className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                         isOpen
                           ? isLight
-                            ? 'bg-[#232C3B] text-[#F5F7FA]'
-                            : 'bg-[#E5B96F] text-[#0C0907]'
+                            ? 'bg-[#232C3B] text-[#F8F6F2]'
+                            : 'bg-[#232C3B] text-[#F8F6F2] border border-white/25'
                           : isLight
                           ? 'bg-[#EAEDF0] text-[#232C3B]'
-                          : 'bg-[#DFAF63]/10 text-[#E5B96F]'
+                          : 'bg-white/10 text-[#F5F6F7]'
                       }`}
                     >
                       {isOpen ? <Minus size={15} /> : <Plus size={15} />}

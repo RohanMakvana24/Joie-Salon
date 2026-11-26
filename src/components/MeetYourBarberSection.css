@@ -1,5 +1,5 @@
-﻿.meet-salon { --meet-bg: #0c0907; --meet-ink: #f5ecdf; --meet-muted: #b1a18e; --meet-gold: #e0b675; --meet-panel: #17120e; --meet-line: #cda3632d; padding: 88px 24px; background: var(--meet-bg); color: var(--meet-ink); border-bottom: 1px solid var(--meet-line); }
-html[data-theme='light'] .meet-salon { --meet-bg: #faf6ee; --meet-ink: #2f2319; --meet-muted: #7a6856; --meet-gold: #926733; --meet-panel: #fffdf7; --meet-line: #b58b5333; }
+.meet-salon { --meet-bg: #0c0907; --meet-ink: #f5f6f7; --meet-muted: #b1a18e; --meet-gold: #cbd5e1; --meet-panel: #17120e; --meet-line: rgba(255, 255, 255, 0.14); padding: 88px 24px; background: var(--meet-bg); color: var(--meet-ink); border-bottom: 1px solid var(--meet-line); }
+html[data-theme='light'] .meet-salon { --meet-bg: #faf6ee; --meet-ink: #232c3b; --meet-muted: #5a6475; --meet-gold: #232c3b; --meet-panel: #fffdf7; --meet-line: rgba(35, 44, 59, 0.16); }
 .meet-salon__inner { max-width: 1180px; margin-inline: auto; }
 .meet-salon__header { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
 .meet-salon__eyebrow { color: var(--meet-gold); font-size: 9px; letter-spacing: .21em; font-weight: 600; line-height: 1.7; }
@@ -41,16 +41,16 @@ html[data-theme='light'] .meet-salon { --meet-bg: #faf6ee; --meet-ink: #2f2319; 
 .meet-salon__planner-title p { margin-top: 4px; color: var(--meet-muted); font-size: 10px; line-height: 1.7; }
 .meet-salon__topics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 22px; }
 .meet-salon__topics button { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 12px; border: 1px solid var(--meet-line); border-radius: 10px; color: var(--meet-muted); font-size: 10px; font-weight: 500; text-align: left; transition: background-color .2s, border-color .2s; cursor: pointer; }
-.meet-salon__topics button[aria-pressed='true'] { background: #c69a5420; border-color: var(--meet-gold); color: var(--meet-ink); }
+.meet-salon__topics button[aria-pressed='true'] { background: rgba(35, 44, 59, 0.12); border-color: var(--meet-gold); color: var(--meet-ink); }
 .meet-salon__checkbox { display: grid; place-items: center; width: 16px; height: 16px; flex-shrink: 0; border-radius: 4px; border: 1px solid var(--meet-line); }
-.meet-salon__topics button[aria-pressed='true'] .meet-salon__checkbox { background: #e0b675; color: #251a10; border-color: #e0b675; }
+.meet-salon__topics button[aria-pressed='true'] .meet-salon__checkbox { background: #232c3b; color: #f8f6f2; border-color: #232c3b; }
 .meet-salon__selected { display: block; font-size: 9px; color: var(--meet-muted); margin-top: 12px; }
 .meet-salon__note { color: var(--meet-muted); font-size: 11px; line-height: 1.9; margin: 19px 0; min-height: 44px; }
 .meet-salon__actions { display: flex; gap: 10px; }
 .meet-salon__actions button, .meet-salon__actions a { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 45px; padding: 12px 16px; border-radius: 10px; font-size: 10px; font-weight: 600; cursor: pointer; }
-.meet-salon__actions button { border: 1px solid var(--meet-line); color: var(--meet-gold); }
-.meet-salon__actions a { flex: 1; background: #e5b96f; color: #251a10; transition: background-color .2s; }
-.meet-salon__actions a:hover { background: #f1d09a; }
+.meet-salon__actions button { border: 1px solid var(--meet-line); color: var(--meet-ink); }
+.meet-salon__actions a { flex: 1; background: #232c3b; color: #f8f6f2; border: 1px solid rgba(255, 255, 255, 0.2); transition: background-color .2s; }
+.meet-salon__actions a:hover { background: #161c26; }
 .meet-salon__copy-error { font-size: 10px; color: var(--meet-muted); margin-top: 10px; }
 .meet-salon button:focus-visible, .meet-salon a:focus-visible { outline: 2px solid var(--meet-gold); outline-offset: 4px; }
 @media (max-width: 900px) { .meet-salon__story { gap: 20px; } .meet-salon__stage { height: 460px; } .meet-salon__sticker { right: -5px; top: 130px; padding: 10px; font-size: 8px; } .meet-salon__orbit--one { width: 320px; height: 320px; top: 80px; } .meet-salon__orbit--two { width: 270px; height: 270px; left: 25px; top: 105px; } .meet-salon__arch { inset: 55px 5px 40px 15px; } .meet-salon__arch > span { font-size: 70px; } .meet-salon__services, .meet-salon__booking { padding: 24px; } .meet-salon__actions { flex-wrap: wrap; } }

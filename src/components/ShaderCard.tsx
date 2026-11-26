@@ -363,9 +363,9 @@ export const ShaderCard: React.FC<ShaderCardProps> = ({
       className={`group luxury-card-shadow relative flex flex-col justify-between rounded-[28px] bg-[#0B0907] border p-6 sm:p-8 overflow-hidden select-none ${
         isSignature
           ? flameTheme === 'gold'
-            ? 'border-[#E5B96F]/55'
+            ? 'border-white/30'
             : 'border-[#C084FC]/50'
-          : 'border-white/[0.12] hover:border-[#E5B96F]/45'
+          : 'border-white/[0.12] hover:border-white/30'
       } ${className}`}
     >
       {/* LAYER 1: Real-Time Silky 60fps Luminous Rising Flame Shader Canvas */}
@@ -402,7 +402,7 @@ export const ShaderCard: React.FC<ShaderCardProps> = ({
                 <span
                   className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-[0.12em] border ${
                     flameTheme === 'gold'
-                      ? 'bg-[#E5B96F]/20 text-[#FCE3A6] border-[#E5B96F]/45'
+                      ? 'bg-[#232C3B] text-[#F8F6F2] border-white/25'
                       : 'bg-[#A855F7]/25 text-[#F3E8FF] border-[#C084FC]/50'
                   }`}
                 >

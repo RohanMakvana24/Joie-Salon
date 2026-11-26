@@ -42,11 +42,9 @@ export const Header: React.FC<HeaderProps> = ({
   const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
   const navigationCleanupRef = useRef<(() => void) | null>(null);
   const isLight = theme === 'light';
-  const isHeroNav = !isScrolled && !isInteriorPage;
-  // In the Hero section (before scrolling), keep the navbar 100% transparent with dark/gold foreground against hero artwork.
-  // When scrolled, seamlessly match the user's selected theme (dark studio glass or warm light glass).
-  const surfaceTheme: ThemeMode = isScrolled || isInteriorPage ? theme : 'dark';
-  const useLightSurface = surfaceTheme === 'light';
+  // Keep the default 3-zone navbar seamlessly blended (transparent) over the hero before scrolling,
+  // adapting its foreground ink directly to the active Light or Dark theme.
+  const useLightSurface = isLight;
 
   useEffect(() => () => navigationCleanupRef.current?.(), []);
 
@@ -189,18 +187,25 @@ export const Header: React.FC<HeaderProps> = ({
       onClick={handleSectionNavigation}
       className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300 ${
         !isScrolled && !isInteriorPage
-          ? 'joie-hero-nav bg-transparent border-b border-transparent shadow-none'
+          ? useLightSurface
+            ? 'bg-gradient-to-b from-[#F5F6F7]/85 via-[#F5F6F7]/35 to-transparent border-b border-transparent shadow-none'
+            : 'bg-gradient-to-b from-[#0C0907]/85 via-[#0C0907]/35 to-transparent border-b border-transparent shadow-none'
           : useLightSurface
           ? 'bg-[#F5F6F7]/94 backdrop-blur-md border-b border-[#232C3B]/15 shadow-[0_4px_20px_rgba(35,44,59,0.08)]'
-          : 'bg-[#0C0907]/92 backdrop-blur-md border-b border-[#DFAF63]/20 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
+          : 'bg-[#0C0907]/92 backdrop-blur-md border-b border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
       }`}
     >
-      <div ref={headerBarRef} className="joie-hero-nav__bar site-container flex items-center justify-between gap-4 sm:gap-6 py-2 sm:py-2.5">
-        {/* Zone 1: Redesigned Luxury Barber Crest & Wordmark */}
+      <div
+        ref={headerBarRef}
+        className={`site-container flex items-center justify-between gap-4 sm:gap-6 transition-[padding] duration-300 ${
+          !isScrolled && !isInteriorPage ? 'py-3.5 sm:py-4' : 'py-2 sm:py-2.5'
+        }`}
+      >
+        {/* Zone 1: Default Left-Aligned Joie Salon Brand Wordmark */}
         <BrandLogo
-          theme={useLightSurface || (isHeroNav && isLight) ? 'light' : 'dark'}
+          theme={useLightSurface ? 'light' : 'dark'}
           href={isInteriorPage ? '/' : '#top'}
-          className="translate-y-[1.5px]"
+          className="translate-y-[1px]"
         />
 
         {/* Zone 2: Center Navigation Links */}
@@ -219,10 +224,10 @@ export const Header: React.FC<HeaderProps> = ({
                   isActive
                     ? useLightSurface
                       ? 'text-[#232C3B] font-semibold'
-                      : 'text-[#E5B96F] font-semibold'
+                      : 'text-[#F5F6F7] font-semibold'
                     : useLightSurface
                     ? 'text-[#232C3B]/75 hover:text-[#232C3B]'
-                    : 'text-[#F7F1E8]/85 hover:text-[#E5B96F]'
+                    : 'text-[#F5F6F7]/75 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -230,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <span
                     aria-hidden="true"
                     className={`absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full transition-all duration-300 ${
-                      useLightSurface ? 'bg-[#232C3B]' : 'bg-[#E5B96F]'
+                      useLightSurface ? 'bg-[#232C3B]' : 'bg-[#F5F6F7]'
                     }`}
                   />
                 )}
@@ -250,17 +255,17 @@ export const Header: React.FC<HeaderProps> = ({
             className={`inline-flex items-center justify-center gap-1.5 w-9 h-9 lg:w-auto lg:px-3.5 rounded-full border text-xs font-medium tracking-[0.04em] transition-all cursor-pointer focus-ring ${
               useLightSurface
                 ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
-                : 'border-[#DFAF63]/50 bg-[#120E0B]/60 text-[#F7F1E8] hover:border-[#E5B96F] hover:text-[#E5B96F]'
+                : 'border-white/25 bg-[#181B22]/75 text-[#F5F6F7] hover:border-white/50 hover:bg-[#232C3B]'
             }`}
           >
             {isLight ? (
               <>
-                <Moon className={`w-4 h-4 shrink-0 ${useLightSurface ? 'text-[#232C3B]' : 'text-[#E5B96F]'}`} />
+                <Moon className="w-4 h-4 shrink-0 text-[#232C3B]" />
                 <span className="hidden lg:inline">Dark</span>
               </>
             ) : (
               <>
-                <Sun className={`w-4 h-4 shrink-0 ${useLightSurface ? 'text-[#232C3B]' : 'text-[#E5B96F]'}`} />
+                <Sun className="w-4 h-4 shrink-0 text-[#F5F6F7]" />
                 <span className="hidden lg:inline">Light</span>
               </>
             )}
@@ -272,29 +277,17 @@ export const Header: React.FC<HeaderProps> = ({
             rel="noopener noreferrer"
             className={`relative overflow-hidden hidden sm:inline-flex items-center justify-center gap-2 h-9 px-4 rounded-full border text-xs font-semibold tracking-[0.06em] transition-all group focus-ring ${
               useLightSurface
-                ? 'border-[#232C3B] bg-[#232C3B] text-[#F5F7FA] hover:bg-[#363D49] hover:text-white shadow-[0_4px_16px_rgba(35,44,59,0.18)]'
-                : 'border-[#DFAF63]/60 bg-[#120E0B]/80 hover:bg-[#DFAF63] text-[#F7F1E8] hover:text-[#0C0907] shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
+                ? 'border-[#232C3B] bg-[#232C3B] text-[#F8F6F2] hover:bg-[#161C26] shadow-[0_4px_16px_rgba(35,44,59,0.18)]'
+                : 'border-white/25 bg-[#232C3B] hover:bg-[#2F3B4F] text-[#F8F6F2] shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
             }`}
           >
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"
             />
-            <Calendar
-              className={`w-3.5 h-3.5 transition-colors ${
-                useLightSurface
-                  ? 'text-[#E5B96F] group-hover:text-[#0C0907]'
-                  : 'text-[#DFAF63] group-hover:text-[#0C0907]'
-              }`}
-            />
+            <Calendar className="w-3.5 h-3.5 text-[#F8F6F2]/90 transition-colors" />
             <span>WhatsApp Booking</span>
-            <ArrowRight
-              className={`w-3.5 h-3.5 group-hover:translate-x-0.5 transition-all ${
-                useLightSurface
-                  ? 'text-[#E5B96F] group-hover:text-[#0C0907]'
-                  : 'text-[#DFAF63] group-hover:text-[#0C0907]'
-              }`}
-            />
+            <ArrowRight className="w-3.5 h-3.5 text-[#F8F6F2]/90 group-hover:translate-x-0.5 transition-all" />
           </a>
 
           <button
@@ -306,8 +299,8 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             className={`xl:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border transition-colors cursor-pointer focus-ring ${
               useLightSurface
-                ? 'border-[#C28B37]/50 bg-[#F2EAE0] text-[#1A130E] hover:bg-[#E6D9C6]'
-                : 'border-[#DFAF63]/50 bg-[#120E0B]/60 text-[#F7F1E8] hover:border-[#E5B96F] hover:text-[#E5B96F]'
+                ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
+                : 'border-white/25 bg-[#181B22]/75 text-[#F5F6F7] hover:border-white/50 hover:bg-[#232C3B]'
             }`}
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -328,8 +321,8 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label="Mobile section navigation"
             className={`relative z-[100] xl:hidden max-h-[calc(100dvh-var(--salon-header-h))] overflow-y-auto border-b px-5 pt-3 pb-6 shadow-2xl transition-all ${
               useLightSurface
-                ? 'bg-[#FAF6EE]/98 border-[#C28B37]/35 text-[#1A130E]'
-                : 'bg-[#120E0B]/98 border-[#DFAF63]/40 text-[#F7F1E8]'
+                ? 'bg-[#F5F6F7]/98 border-[#232C3B]/15 text-[#232C3B]'
+                : 'bg-[#12151C]/98 border-white/15 text-[#F5F6F7]'
             }`}
           >
             <ul className="flex flex-col space-y-1">
@@ -345,27 +338,27 @@ export const Header: React.FC<HeaderProps> = ({
                       className={`flex items-center justify-between min-h-[44px] px-3 py-2.5 text-sm font-medium rounded-lg transition-colors focus-ring ${
                         isActive
                           ? useLightSurface
-                            ? 'bg-[#EAE0D0] text-[#B87314] font-semibold'
-                            : 'bg-[#241A14] text-[#E5B96F] font-semibold'
+                            ? 'bg-[#232C3B]/10 text-[#232C3B] font-semibold'
+                            : 'bg-[#232C3B] text-[#F5F6F7] font-semibold'
                           : useLightSurface
-                          ? 'text-[#1A130E] hover:bg-[#EFE6D5] hover:text-[#B87314]'
-                          : 'text-[#F7F1E8] hover:bg-[#1E1612] hover:text-[#E5B96F]'
+                          ? 'text-[#232C3B] hover:bg-[#232C3B]/6'
+                          : 'text-[#F5F6F7] hover:bg-white/8'
                       }`}
                     >
                       <span>{link.label}</span>
-                      <span aria-hidden="true" className="text-[#C28B37] text-xs font-mono">0{idx + 1}</span>
+                      <span aria-hidden="true" className="opacity-55 text-xs font-mono">0{idx + 1}</span>
                     </a>
                   </li>
                 );
               })}
             </ul>
-            <div className="mt-4 pt-3 border-t border-[#C28B37]/20 flex flex-col sm:flex-row gap-2.5">
+            <div className="mt-4 pt-3 border-t border-current/15 flex flex-col sm:flex-row gap-2.5">
               <a
                 href={BUSINESS_INFO.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.1em] bg-gradient-to-r from-[#E8C27A] to-[#C89643] text-[#0C0907] rounded-full transition-colors whitespace-nowrap focus-ring shadow-[0_4px_16px_rgba(200,150,67,0.35)]"
+                className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.1em] bg-[#232C3B] hover:bg-[#161C26] text-[#F8F6F2] border border-white/20 rounded-full transition-colors whitespace-nowrap focus-ring shadow-[0_4px_16px_rgba(35,44,59,0.28)]"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Book on WhatsApp</span>
@@ -375,8 +368,8 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex-1 min-h-[44px] inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.1em] border rounded-full transition-colors whitespace-nowrap focus-ring ${
                   useLightSurface
-                    ? 'border-[#1A130E]/40 text-[#1A130E] hover:border-[#B87314]'
-                    : 'border-[#DFAF63]/60 text-[#F7F1E8] hover:border-[#E5B96F]'
+                    ? 'border-[#232C3B]/35 text-[#232C3B] hover:border-[#232C3B]'
+                    : 'border-white/30 text-[#F5F6F7] hover:border-white/60'
                 }`}
               >
                 Call {BUSINESS_INFO.phoneDisplay}

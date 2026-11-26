@@ -104,7 +104,7 @@ export const JoieSalonMap: React.FC = () => {
         className={`pointer-events-none absolute top-3.5 left-3.5 z-[400] inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wide backdrop-blur-md border shadow-sm ${
           isLight
             ? 'bg-white/90 text-[#232C3B] border-[#232C3B]/15'
-            : 'bg-[#140F0C]/90 text-[#F7F1E8] border-[#DFAF63]/30'
+            : 'bg-[#140F0C]/90 text-[#F5F6F7] border-white/15'
         }`}
       >
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -116,7 +116,7 @@ export const JoieSalonMap: React.FC = () => {
         className={`absolute bottom-10 right-3.5 z-[400] flex flex-col gap-1.5 p-1 rounded-xl border backdrop-blur-md shadow-md ${
           isLight
             ? 'bg-white/92 border-[#232C3B]/15 text-[#232C3B]'
-            : 'bg-[#140F0C]/92 border-[#DFAF63]/30 text-[#F7F1E8]'
+            : 'bg-[#140F0C]/92 border-white/15 text-[#F5F6F7]'
         }`}
         role="group"
         aria-label="Map zoom controls"
@@ -158,8 +158,8 @@ export const JoieSalonMap: React.FC = () => {
         rel="noopener noreferrer"
         className={`absolute bottom-3.5 left-3.5 z-[400] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-semibold tracking-wide shadow-md transition-transform hover:-translate-y-0.5 ${
           isLight
-            ? 'bg-[#232C3B] text-[#F5F7FA] hover:bg-[#363D49]'
-            : 'bg-[#E5B96F] text-[#0C0907] hover:brightness-110'
+            ? 'bg-[#232C3B] text-[#F8F6F2] hover:bg-[#161C26]'
+            : 'bg-[#232C3B] text-[#F8F6F2] border border-white/20 hover:bg-[#2F3B4F]'
         }`}
       >
         <Navigation size={12} aria-hidden="true" />

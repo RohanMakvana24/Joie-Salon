@@ -1,5 +1,5 @@
-.salon-social { --social-bg:#f6f2eb; --social-ink:#2c241c; --social-muted:#7e7366; --social-line:#e0d8cb; --social-card:#fffdf9; --social-gold:#9b7544; padding:80px 0 40px; background:var(--social-bg); color:var(--social-ink); border-bottom:1px solid var(--social-line); overflow:hidden; }
-html[data-theme='dark'] .salon-social { --social-bg:#100d0a; --social-ink:#f5eee3; --social-muted:#b5a795; --social-line:#3f3428; --social-card:#211b15; --social-gold:#dbb77f; }
+.salon-social { --social-bg:#f6f2eb; --social-ink:#232c3b; --social-muted:#5a6475; --social-line:#d8dde4; --social-card:#fffdf9; --social-gold:#232c3b; padding:80px 0 40px; background:var(--social-bg); color:var(--social-ink); border-bottom:1px solid var(--social-line); overflow:hidden; }
+html[data-theme='dark'] .salon-social { --social-bg:#100d0a; --social-ink:#f5f6f7; --social-muted:#b5a795; --social-line:rgba(255,255,255,0.14); --social-card:#211b15; --social-gold:#cbd5e1; }
 .salon-social__inner { max-width:1280px; margin:auto; padding:0 32px; }
 .salon-social__header { display:flex; justify-content:space-between; align-items:flex-end; gap:40px; padding:0 28px; }
 .salon-social__eyebrow { display:flex; align-items:center; gap:11px; color:var(--social-gold); font-size:9px; font-weight:600; letter-spacing:.2em; margin:0 0 19px; }
@@ -53,11 +53,11 @@ html[data-theme='dark'] .salon-social { --social-bg:#100d0a; --social-ink:#f5eee
 .community-card__editorial > span { display:block; color:var(--card-muted); font-size:7px; font-weight:500; letter-spacing:.15em; }
 .community-card__editorial h4 { font:500 18px/1.25 'Outfit',sans-serif; letter-spacing:-.025em; margin:7px 0 0; }
 .community-card__editorial > p { font-size:10px; line-height:1.8; color:var(--card-muted); margin:8px 0 0; }
-.community-card__follow { display:flex; align-items:center; justify-content:space-between; gap:8px; flex:0 0 39px; width:100%; margin-top:auto; padding:10px 13px; border:1px solid transparent; border-radius:4px; background:#30261d; color:#fff9ed; font-size:10px; line-height:1.5; font-weight:600; text-decoration:none; transition:background .2s; }
-[data-platform='instagram'] .community-card__follow { background:#e5c79e; color:#2d231a; }
-html[data-theme='dark'] .community-deck__slot:not([data-platform='instagram']) .community-card__follow { border-color:#67513b; background:#33271c; }
-.community-card__follow:hover { background:#4a3827; }
-[data-platform='instagram'] .community-card__follow:hover { background:#f1d6b0; }
+.community-card__follow { display:flex; align-items:center; justify-content:space-between; gap:8px; flex:0 0 39px; width:100%; margin-top:auto; padding:10px 13px; border:1px solid rgba(255,255,255,0.18); border-radius:4px; background:#232c3b; color:#f8f6f2; font-size:10px; line-height:1.5; font-weight:600; text-decoration:none; transition:background .2s,border-color .2s; }
+[data-platform='instagram'] .community-card__follow { background:#232c3b; color:#f8f6f2; border-color:rgba(255,255,255,0.22); }
+html[data-theme='dark'] .community-deck__slot:not([data-platform='instagram']) .community-card__follow { border-color:rgba(255,255,255,0.2); background:#232c3b; }
+.community-card__follow:hover { background:#161c26; }
+[data-platform='instagram'] .community-card__follow:hover { background:#2f3b4f; border-color:rgba(255,255,255,0.38); }
 .community-card__community { position:relative; display:flex; flex-direction:column; justify-content:center; height:100%; padding:15px; overflow:hidden; background:#eef1f2; color:#32424e; }
 .community-card__community > svg { position:absolute; right:-8px; bottom:-19px; width:84px; height:112px; opacity:.055; }
 .community-card__community > span:first-of-type { position:relative; font-size:6px; font-weight:600; letter-spacing:.12em; color:#6f818e; }

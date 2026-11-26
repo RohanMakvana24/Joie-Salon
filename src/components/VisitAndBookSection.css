@@ -7,10 +7,10 @@
 .salon-visit {
   --visit-bg: #0c0907;
   --visit-panel: #17110c;
-  --visit-ink: #f7efe2;
+  --visit-ink: #f5f6f7;
   --visit-muted: #bcac99;
-  --visit-line: rgba(223, 175, 99, 0.2);
-  --visit-gold: #e5b96f;
+  --visit-line: rgba(255, 255, 255, 0.14);
+  --visit-gold: #cbd5e1;
   width: 100%;
   padding: clamp(54px, 6vw, 92px) 0 clamp(44px, 5vw, 72px);
   background: var(--visit-bg);
@@ -24,7 +24,7 @@ html[data-theme='light'] .salon-visit {
   --visit-ink: #232C3B;
   --visit-muted: #4B5563;
   --visit-line: rgba(35, 44, 59, 0.14);
-  --visit-gold: #363D49;
+  --visit-gold: #232C3B;
 }
 
 .salon-visit__inner {
@@ -276,20 +276,30 @@ html[data-theme='light'] .salon-visit {
 }
 
 .salon-visit__button--solid {
-  border-color: var(--visit-gold);
-  background: var(--visit-gold);
-  color: #20160d;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #232C3B;
+  color: #F8F6F2;
+}
+
+html[data-theme='light'] .salon-visit__button--solid {
+  border-color: #232C3B;
 }
 
 .salon-visit__button:hover {
-  background: var(--visit-gold);
-  color: #20160d;
-  box-shadow: 0 8px 24px rgba(139, 98, 43, 0.24);
+  background: #232C3B;
+  border-color: #232C3B;
+  color: #F8F6F2;
+  box-shadow: 0 8px 24px rgba(35, 44, 59, 0.24);
 }
 
 .salon-visit__button--solid:hover {
-  background: #f1cf96;
-  border-color: #f1cf96;
+  background: #161C26;
+  border-color: #161C26;
+}
+
+html[data-theme='dark'] .salon-visit__button--solid:hover {
+  background: #2F3B4F;
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .salon-visit__link {
@@ -335,7 +345,7 @@ html[data-theme='light'] .salon-visit {
   border: 1px solid var(--visit-line);
   border-radius: 18px;
   background:
-    radial-gradient(120% 140% at 0% 0%, rgba(229, 185, 111, 0.14) 0%, rgba(229, 185, 111, 0) 58%),
+    radial-gradient(120% 140% at 0% 0%, rgba(35, 44, 59, 0.08) 0%, rgba(35, 44, 59, 0) 58%),
     var(--visit-panel);
 }
 

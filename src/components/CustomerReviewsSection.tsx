@@ -1,84 +1,53 @@
-﻿import { ArrowUpRight } from 'lucide-react';
-import { BUSINESS_INFO, FAITHFUL_REVIEWS } from '../data/barbershopData';
-import {
-  TestimonialsMarquee,
-  type TestimonialItem,
-} from './ui/grid-testimonials-marquee';
+'use client';
 
-const REVIEW_COLORS = ['#1a73e8', '#a142f4', '#00897b', '#c5221f', '#e37400', '#455a64'];
+import { BUSINESS_INFO, FAITHFUL_REVIEWS } from '../data/barbershopData';
+import { TestimonialsMarquee } from './ui/testimonials-with-marquee';
+import type { MarqueeTestimonial } from './ui/testimonials-with-marquee-utils/animated-testimonials';
 
 const cleanQuote = (quote: string) =>
   quote
-    .replace(/^["“]+|["”]+$/g, '')
+    .replace(/\\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^["“'']+|["”'']+$/g, '')
     .trim();
 
-const testimonials: TestimonialItem[] = FAITHFUL_REVIEWS.map((review, index) => ({
-  id: review.id,
-  name: review.reviewerName,
-  handle: review.relativeDateSnapshot,
-  avatarColor: REVIEW_COLORS[index % REVIEW_COLORS.length],
-  content: cleanQuote(review.verbatimQuote),
-  highlights: review.mentionedHighlights,
-}));
+const formatReviewerName = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/)
+    .map((word) =>
+      word.length <= 2
+        ? word.toUpperCase()
+        : word[0].toUpperCase() + word.slice(1).toLowerCase()
+    )
+    .join(' ');
 
-const rowSplit = Math.ceil(testimonials.length / 2);
-const firstRow = testimonials.slice(0, rowSplit);
-const secondRow = testimonials.slice(rowSplit);
+const salonTestimonials: MarqueeTestimonial[] = FAITHFUL_REVIEWS
+  .map((review) => ({
+    id: review.id,
+    name: formatReviewerName(review.reviewerName),
+    handle: `${review.relativeDateSnapshot} · Google Review`,
+    description: cleanQuote(review.verbatimQuote),
+    rating: 5,
+  }))
+  .filter(
+    (review) =>
+      review.description.length > 0 &&
+      !review.description.toLowerCase().includes('unsatisfactory')
+  );
 
 export function CustomerReviewsSection() {
   return (
-    <section
+    <TestimonialsMarquee
       id="reviews"
-      aria-labelledby="reviews-heading"
-      className="relative overflow-hidden border-y border-border bg-background py-20 md:py-28"
-    >
-      {/* Warm accent wash behind the heading */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-72 bg-gradient-to-b from-primary/10 via-primary/[0.03] to-transparent"
-      />
-
-      <header className="relative z-10 mx-auto max-w-3xl px-5 text-center">
-        <p className="flex items-center justify-center gap-3.5 text-[9.5px] font-semibold uppercase tracking-[0.26em] text-primary">
-          <span aria-hidden="true" className="h-px w-7 bg-border" />
-          Words from the chair
-          <span aria-hidden="true" className="h-px w-7 bg-border" />
-        </p>
-
-        <h2
-          id="reviews-heading"
-          className="mt-5 font-display text-[clamp(36px,4.3vw,62px)] font-semibold leading-[1.03] tracking-[-0.055em] text-foreground"
-        >
-          Inspiring Client
-          <br />
-          <span className="text-primary">Experiences.</span>
-        </h2>
-
-        <p className="mt-5 text-[13px] text-muted-foreground">
-          Good hair. Great conversations. A reason to come back.
-        </p>
-      </header>
-
-      <div className="site-container relative z-10 mt-12 md:mt-14">
-        <TestimonialsMarquee
-          firstRow={firstRow}
-          secondRow={secondRow}
-          duration={95}
-          pauseOnHover
-        />
-      </div>
-
-      <div className="relative z-10 mt-8 px-5 text-center">
-        <a
-          className="inline-flex items-center gap-2 border-b border-border pb-2 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-primary transition-colors hover:border-primary"
-          href={BUSINESS_INFO.googleReviewsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          More client stories
-          <ArrowUpRight size={15} aria-hidden="true" />
-        </a>
-      </div>
-    </section>
+      eyebrow="GOOGLE REVIEWS · RAJKOT, GUJARAT"
+      title="Trusted by our clients in Rajkot"
+      subtitle="Word-for-word experiences from guests who visit Joie Salon for precision cuts, bridal styling, and relaxing salon care."
+      testimonials={salonTestimonials}
+      ctaLabel="Read all reviews on Google"
+      ctaHref={BUSINESS_INFO.googleReviewsUrl}
+    />
   );
 }
+
+export default CustomerReviewsSection;

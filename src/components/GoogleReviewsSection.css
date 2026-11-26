@@ -7,11 +7,11 @@
 .grev {
   --grev-bg: #0c0907;
   --grev-card: #17110c;
-  --grev-ink: #f7efe2;
+  --grev-ink: #f5f6f7;
   --grev-muted: #bcac99;
-  --grev-gold: #e5b96f;
-  --grev-line: rgba(223, 175, 99, 0.2);
-  --grev-line-strong: rgba(223, 175, 99, 0.42);
+  --grev-gold: #cbd5e1;
+  --grev-line: rgba(255, 255, 255, 0.14);
+  --grev-line-strong: rgba(255, 255, 255, 0.24);
   position: relative;
   padding: clamp(48px, 5.6vw, 84px) clamp(18px, 4vw, 64px);
   background: var(--grev-bg);
@@ -22,11 +22,11 @@
 html[data-theme='light'] .grev {
   --grev-bg: #f2ebdd;
   --grev-card: #fffdf8;
-  --grev-ink: #2d2118;
-  --grev-muted: #75634f;
-  --grev-gold: #88602b;
-  --grev-line: rgba(155, 120, 56, 0.22);
-  --grev-line-strong: rgba(155, 120, 56, 0.4);
+  --grev-ink: #232c3b;
+  --grev-muted: #5a6475;
+  --grev-gold: #232c3b;
+  --grev-line: rgba(35, 44, 59, 0.16);
+  --grev-line-strong: rgba(35, 44, 59, 0.28);
 }
 
 .grev__shell {
@@ -43,7 +43,7 @@ html[data-theme='light'] .grev {
   border: 1px solid var(--grev-line-strong);
   border-radius: 22px;
   background:
-    radial-gradient(120% 130% at 0% 0%, rgba(229, 185, 111, 0.1) 0%, rgba(229, 185, 111, 0) 55%),
+    radial-gradient(120% 130% at 0% 0%, rgba(35, 44, 59, 0.08) 0%, rgba(35, 44, 59, 0) 55%),
     var(--grev-card);
   box-shadow: 0 24px 60px rgba(28, 18, 8, 0.16);
 }
@@ -285,9 +285,9 @@ html[data-theme='light'] .grev {
 }
 
 .grev__nav:hover {
-  background: var(--grev-gold);
-  border-color: var(--grev-gold);
-  color: #17110a;
+  background: #232C3B;
+  border-color: #232C3B;
+  color: #F8F6F2;
   transform: translateY(-1px);
 }
 

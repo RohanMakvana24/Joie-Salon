@@ -7,6 +7,7 @@ import {
   filterProductsByCategory,
   buildProductWhatsAppUrl,
 } from '../data/barbershopData';
+import { useTheme } from '../hooks/useActivity';
 
 const CATEGORY_TABS: { id: ProductCategoryFilter; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -24,14 +25,14 @@ const PRODUCT_CUTOUT: Record<string, string> = {
   'keratin-repair-hair-serum': '/assets/products/ai-v2/keratin-repair-hair-serum.webp',
 };
 
-/** Warm metallics so the orbit band morphs between visibly distinct, on-brand tones. */
+/** Slate charcoal tones so the orbit band morphs subtly within the unified brand palette. */
 const PRODUCT_ACCENT: Record<string, string> = {
-  'matte-molding-hair-clay': '#D9A34B',
-  'royal-oud-argan-beard-oil': '#C2874A',
-  'charcoal-detan-face-scrub': '#B3703F',
-  'sea-salt-volume-spray': '#E0B36B',
-  'sandalwood-cooling-aftershave': '#A9722F',
-  'keratin-repair-hair-serum': '#CE9A5E',
+  'matte-molding-hair-clay': '#232C3B',
+  'royal-oud-argan-beard-oil': '#334155',
+  'charcoal-detan-face-scrub': '#1E293B',
+  'sea-salt-volume-spray': '#3B485E',
+  'sandalwood-cooling-aftershave': '#2A3547',
+  'keratin-repair-hair-serum': '#475569',
 };
 
 const WISHLIST_STORAGE_KEY = 'classic-cut-product-wishlist';
@@ -69,6 +70,8 @@ function splitProductName(name: string): { title: string; subtitle: string } {
 }
 
 export const ProductsSection: React.FC = () => {
+  const theme = useTheme();
+  const isLight = theme === 'light';
   const [selectedCategory, setSelectedCategory] = useState<ProductCategoryFilter>('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [wishlistIds, setWishlistIds] = useState<string[]>([]);
@@ -123,7 +126,7 @@ export const ProductsSection: React.FC = () => {
           kitchen: product.holdOrFinish,
           description: product.description,
           ingredients: product.keyBenefits,
-          accent: PRODUCT_ACCENT[product.id] ?? '#D9A34B',
+          accent: PRODUCT_ACCENT[product.id] ?? '#232C3B',
         };
       }),
     [visibleProducts]
@@ -163,17 +166,23 @@ export const ProductsSection: React.FC = () => {
         <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
             <div className="mb-3 inline-flex items-center gap-2.5">
-              <span className="h-[1px] w-7 bg-[#B88235]" />
-              <p className="font-mono text-xs uppercase tracking-[0.26em] text-[#D9A34B]">
+              <span className={`h-[1px] w-7 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
+              <p
+                className={`font-mono text-xs uppercase tracking-[0.26em] ${
+                  isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
+                }`}
+              >
                 SALON ESSENTIALS · RAJKOT, GUJARAT
               </p>
             </div>
             <h2
               id="products-heading"
-              className="font-display text-4xl uppercase leading-none tracking-[-0.01em] text-[var(--color-foreground)] sm:text-5xl md:text-[3.5rem]"
+              className={`font-display text-4xl uppercase leading-none tracking-[-0.01em] sm:text-5xl md:text-[3.5rem] ${
+                isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
+              }`}
             >
               OUR{' '}
-              <span className="bg-gradient-to-b from-[#D9A34B] via-[#B45309] to-[#78350F] bg-clip-text text-transparent">
+              <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
                 PRODUCTS
               </span>
             </h2>
@@ -200,7 +209,7 @@ export const ProductsSection: React.FC = () => {
                     onClick={() => setSelectedCategory(tab.id)}
                     className={`cursor-pointer rounded-xl px-3 py-2.5 text-center text-[11px] font-semibold tracking-[0.03em] transition-all focus-ring sm:rounded-full sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.06em] ${
                       isActive
-                        ? 'bg-[#F59E0B] text-[#1A130E] shadow-[0_4px_16px_rgba(245,158,11,0.3)]'
+                        ? 'bg-[#232C3B] text-[#F8F6F2] border border-white/15 shadow-[0_4px_16px_rgba(35,44,59,0.28)]'
                         : 'text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]'
                     }`}
                   >
@@ -210,7 +219,11 @@ export const ProductsSection: React.FC = () => {
               })}
             </div>
 
-            <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#D9A34B]">
+            <p
+              className={`inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] ${
+                isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
+              }`}
+            >
               <MousePointerClick className="h-3.5 w-3.5" aria-hidden="true" />
               Swipe or tap to browse
             </p>
@@ -250,11 +263,19 @@ export const ProductsSection: React.FC = () => {
         <div className="mt-10 flex flex-col justify-between gap-6 rounded-2xl bg-[var(--color-card)] p-6 shadow-sm sm:mt-12 sm:p-8 lg:flex-row lg:items-center">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F59E0B]/12 text-[#D9A34B]">
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-full ${
+                  isLight ? 'bg-[#232C3B]/10 text-[#232C3B]' : 'bg-white/10 text-[#CBD5E1]'
+                }`}
+              >
                 <SprayCan className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#D9A34B]">
+                <p
+                  className={`text-[10px] uppercase tracking-[0.2em] ${
+                    isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'
+                  }`}
+                >
                   Featured · {activeProduct?.categoryLabel ?? 'Signature collection'}
                 </p>
                 <p className="mt-1 text-lg font-semibold text-[var(--color-foreground)]">
@@ -279,7 +300,11 @@ export const ProductsSection: React.FC = () => {
             }
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F59E0B] via-[#B45309] to-[#78350F] px-6 py-3 text-xs font-bold uppercase tracking-[0.08em] text-[#1A130E] shadow-[0_8px_24px_rgba(180,83,9,0.28)] transition-all hover:brightness-110 focus-ring sm:rounded-full"
+            className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-xs font-bold uppercase tracking-[0.08em] text-[#F8F6F2] transition-all focus-ring sm:rounded-full ${
+              isLight
+                ? 'bg-[#232C3B] hover:bg-[#161C26] shadow-[0_8px_24px_rgba(35,44,59,0.24)]'
+                : 'bg-[#232C3B] hover:bg-[#2F3B4F] border border-white/20 shadow-[0_8px_24px_rgba(0,0,0,0.4)]'
+            }`}
           >
             <Calendar className="w-4 h-4 shrink-0" />
             <span className="truncate">Chat on WhatsApp</span>

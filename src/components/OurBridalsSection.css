@@ -8,10 +8,10 @@
   --b-morph: cubic-bezier(0.7, 0, 0.15, 1);
   --b-studio: #0B0806;
   --b-paper: #16110D;
-  --b-ink: #F7F1E8;
+  --b-ink: #F5F6F7;
   --b-muted: #B8A48D;
-  --b-accent: #E5B96F;
-  --b-ring-line: rgba(229, 185, 111, 0.22);
+  --b-accent: #CBD5E1;
+  --b-ring-line: rgba(203, 213, 225, 0.22);
   --b-slip-w: 336px;
   --b-slip-r: 24px;
   --b-slip-room: calc(var(--b-slip-w) + var(--b-slip-r) + 24px);
