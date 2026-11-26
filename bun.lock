@@ -11,6 +11,7 @@
         "clsx": "^2.1.1",
         "gsap": "^3.15.1",
         "leaflet": "^1.9.4",
+        "leafthrough": "^0.1.8",
         "lucide-react": "^0.546.0",
         "motion": "^12.23.24",
         "next": "^15.2.1",
@@ -262,6 +263,8 @@
     "jiti": ["jiti@2.7.0", "", { "bin": { "jiti": "lib/jiti-cli.mjs" } }, "sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ=="],
 
     "leaflet": ["leaflet@1.9.4", "", {}, "sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA=="],
+
+    "leafthrough": ["leafthrough@0.1.8", "", { "peerDependencies": { "react": ">=18", "svelte": ">=4", "three": ">=0.160.0", "vue": ">=3.3" }, "optionalPeers": ["react", "svelte", "vue"] }, "sha512-iKWdCHU5eItsXxfA5e6l4mVXE0TtZOobE8XaMUT/ywRM/cl3jzHztq7YdKr2KVFrwJqlYYHtgeb+3oNR2U/Elw=="],
 
     "lightningcss": ["lightningcss@1.33.0", "", { "dependencies": { "detect-libc": "^2.0.3" }, "optionalDependencies": { "lightningcss-android-arm64": "1.33.0", "lightningcss-darwin-arm64": "1.33.0", "lightningcss-darwin-x64": "1.33.0", "lightningcss-freebsd-x64": "1.33.0", "lightningcss-linux-arm-gnueabihf": "1.33.0", "lightningcss-linux-arm64-gnu": "1.33.0", "lightningcss-linux-arm64-musl": "1.33.0", "lightningcss-linux-x64-gnu": "1.33.0", "lightningcss-linux-x64-musl": "1.33.0", "lightningcss-win32-arm64-msvc": "1.33.0", "lightningcss-win32-x64-msvc": "1.33.0" } }, "sha512-WkUDrojuJs0xkgGf2udWxa3yGBRxPtxUkB79i6aCZLRgc7PM8fZe9TosfPDcvEpQZbuFASnHYmRLBLUbmLOIIA=="],
 
