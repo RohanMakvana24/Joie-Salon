@@ -138,7 +138,7 @@ test('filterProductsByCategory and buildProductWhatsAppUrl filter and format sal
   assert.ok(skinProducts.every((p) => p.category === 'skin'));
 
   const waUrl = buildProductWhatsAppUrl(['Matte Molding Hair Clay', 'Moroccan Argan & Rose Hair Elixir']);
-  assert.ok(waUrl.startsWith('https://wa.me/918282848453?text='));
+  assert.ok(waUrl.startsWith('https://wa.me/919624396903?text='));
   assert.ok(decodeURIComponent(waUrl).includes('Matte Molding Hair Clay'));
   assert.ok(decodeURIComponent(waUrl).includes('Moroccan Argan & Rose Hair Elixir'));
 });

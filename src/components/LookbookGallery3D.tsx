@@ -13,6 +13,11 @@ import {
 
 type ShelfMode = 'single' | 'duo' | 'trio';
 
+function shouldTurnBack(visiblePages: number[], pageCount: number, reversing: boolean): boolean {
+  if (visiblePages.includes(pageCount - 1)) return true;
+  return !visiblePages.includes(0) && reversing;
+}
+
 interface LookbookGallery3DProps {
   theme: 'light' | 'dark';
 }
@@ -142,12 +147,14 @@ function FallbackEditorialReader({
 }) {
   const volume = LOOKBOOK_VOLUMES[activeVolumeIdx];
   const [pageIdx, setPageIdx] = useState(0);
+  const [reversing, setReversing] = useState(false);
   const leftCanvasRef = useRef<HTMLCanvasElement>(null);
   const rightCanvasRef = useRef<HTMLCanvasElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     setPageIdx(0);
+    setReversing(false);
   }, [activeVolumeIdx]);
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 680;
@@ -194,6 +201,12 @@ function FallbackEditorialReader({
     });
   }, [isMobile, volume.pages.length]);
 
+  const turnBack = shouldTurnBack(visiblePages, volume.pages.length, reversing);
+  const continueReading = () => {
+    setReversing(turnBack);
+    if (turnBack) goPrev();
+    else goNext();
+  };
   const caption = getVisibleCaptions(volume, visiblePages);
   const borderColor = theme === 'light' ? 'border-[#232C3B]/15' : 'border-white/15';
   const textPrimary = theme === 'light' ? 'text-[#232C3B]' : 'text-[#F5F6F7]';
@@ -216,7 +229,7 @@ function FallbackEditorialReader({
         }
       }}
     >
-      <div className="flex max-w-full items-center justify-center gap-1 px-2 sm:gap-2">
+      <div className="flex max-w-full items-center justify-center gap-1 sm:gap-2 sm:px-2">
         {visiblePages.length === 2 && (
           <canvas
             ref={leftCanvasRef}
@@ -227,8 +240,8 @@ function FallbackEditorialReader({
         )}
         <canvas
           ref={rightCanvasRef}
-          onClick={goNext}
-          className={`min-w-0 max-h-[452px] w-auto cursor-pointer rounded-r-sm shadow-2xl border ${borderColor}`}
+          onClick={continueReading}
+          className={`min-w-0 max-h-[485px] w-auto cursor-pointer rounded-r-sm shadow-2xl border sm:max-h-[452px] ${borderColor}`}
           aria-label={volume.pages[visiblePages[visiblePages.length - 1]]?.alt}
         />
       </div>
@@ -253,12 +266,12 @@ function FallbackEditorialReader({
         </span>
         <button
           type="button"
-          onClick={goNext}
-          disabled={pageIdx >= volume.pages.length - 1}
+          onClick={continueReading}
           className={`inline-flex h-10 w-10 items-center justify-center rounded-full border ${borderColor} ${textPrimary} disabled:opacity-35`}
-          aria-label="Next page"
+          aria-label={turnBack ? 'Turn back one page' : 'Next page'}
+          title={turnBack ? 'Turn back one page' : 'Next page'}
         >
-          <ChevronRight className="h-4 w-4" />
+          {turnBack ? <RotateCcw className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
       </div>
 
@@ -295,6 +308,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
   });
   const [hoveredSideIdx, setHoveredSideIdx] = useState<number | null>(null);
   const [webglReady, setWebglReady] = useState<boolean>(true);
+  const [reversing, setReversing] = useState(false);
 
   const shelfModeRef = useRef<ShelfMode>('trio');
   const activeIdxRef = useRef<number>(1);
@@ -369,6 +383,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
 
       activeIdxRef.current = nextIdx;
       setActiveBookIdx(nextIdx);
+      setReversing(false);
       nextBook.magazine.enabled = true;
 
       // Update UI immediately with destination volume state
@@ -447,7 +462,6 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, 1, 0.2, 40);
-    camera.zoom = 1.05;
     camera.position.set(0, 0, 5.2);
     camera.lookAt(0, 0, 0);
 
@@ -785,6 +799,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mode === 'single' ? 2 : 2.25));
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
+      camera.zoom = mode === 'single' ? 1.14 : 1.05;
 
       const fovRad = THREE.MathUtils.degToRad(camera.fov);
       const tanHalfV = Math.tan(fovRad / 2);
@@ -1023,6 +1038,14 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
     };
   }, [selectBook]);
 
+  const continueReading = useCallback(() => {
+    const magazine = runtimesRef.current[activeIdxRef.current]?.magazine;
+    if (!magazine || magazine.turning) return;
+    const turnBack = shouldTurnBack(magazine.visiblePages, magazine.pageCount, reversing);
+    const turned = turnBack ? magazine.prev() : magazine.next();
+    if (turned) setReversing(turnBack);
+  }, [reversing]);
+
   // Keyboard navigation when focused inside the lookbook gallery region
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -1034,7 +1057,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
 
       if (e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault();
-        active.magazine.next();
+        continueReading();
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
         active.magazine.prev();
@@ -1048,13 +1071,13 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
         selectBook(Number(e.key) - 1);
       }
     },
-    [selectBook],
+    [continueReading, selectBook],
   );
 
   const activeVolume = LOOKBOOK_VOLUMES[activeBookIdx];
   const activeCaption = getVisibleCaptions(activeVolume, pageInfo.visiblePages);
   const isAtStart = pageInfo.page === 0;
-  const isAtEnd = pageInfo.visiblePages.includes(activeVolume.pages.length - 1);
+  const turnBack = shouldTurnBack(pageInfo.visiblePages, pageInfo.pageCount, reversing);
 
   const borderTone = theme === 'light' ? 'border-[#232C3B]/15' : 'border-white/15';
   const primaryText = theme === 'light' ? 'text-[#232C3B]' : 'text-[#F5F6F7]';
@@ -1083,7 +1106,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       {/* 3D Interactive Book Canvas Stage */}
       <div
         ref={canvasHostRef}
-        className="relative mx-auto h-[390px] w-full sm:h-[470px] lg:h-[530px]"
+        className="relative mx-auto h-[420px] w-full sm:h-[470px] lg:h-[530px]"
       />
 
       {/* Side-book hover label cue on desktop/tablet */}
@@ -1112,7 +1135,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
         </p>
 
         {/* Page Turn Controls & Subtle Counter */}
-        <div className="mt-5 flex items-center justify-center gap-3 sm:gap-5">
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-5">
           <button
             type="button"
             onClick={() => runtimesRef.current[activeBookIdx]?.magazine.prev()}
@@ -1132,12 +1155,12 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
 
           <button
             type="button"
-            onClick={() => runtimesRef.current[activeBookIdx]?.magazine.next()}
-            disabled={isAtEnd}
-            aria-label="Next page"
+            onClick={continueReading}
+            aria-label={turnBack ? 'Turn back one page' : 'Next page'}
+            title={turnBack ? 'Turn back one page' : 'Next page'}
             className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${borderTone} ${primaryText} hover:scale-105 disabled:pointer-events-none disabled:opacity-30`}
           >
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            {turnBack ? <RotateCcw className="h-4 w-4" aria-hidden="true" /> : <ChevronRight className="h-4 w-4" aria-hidden="true" />}
           </button>
 
           <button

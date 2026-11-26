@@ -1,4 +1,4 @@
-# Classic Cut Salon — Client પાસેથી લેવાની checklist
+# Joie Salon — Client પાસેથી લેવાની checklist
 
 આ websiteમાં હાલ કેટલીક AI/demo images, services, products અને descriptions છે. નીચેની વિગતો salon owner પાસેથી confirm કર્યા પછી final content મૂકવાનું છે.
 
@@ -69,7 +69,7 @@ WhatsAppમાં શક્ય હોય ત્યાં **Document / original f
 
 ## Clientને મોકલવા માટે ટૂંકો message
 
-નમસ્તે! Classic Cut Salonની website final કરવા માટે નીચેની વિગતો મોકલશો:
+નમસ્તે! Joie Salonની website final કરવા માટે નીચેની વિગતો મોકલશો:
 
 1. Official salon name, owner contact, booking WhatsApp number અને calling number.
 2. Full address, Google Maps link, daily timings અને weekly off.

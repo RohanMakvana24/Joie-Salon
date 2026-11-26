@@ -457,7 +457,9 @@ export const OurBridalsSection: React.FC = () => {
       const fModel = focusModelRef.current;
       if (!fStage || !fModel) return;
       const r = fStage.getBoundingClientRect();
-      const h = Math.max(180, Math.min(r.height, r.width / (4 / 7)));
+      const stageStyle = getComputedStyle(fStage);
+      const modelWidth = r.width - parseFloat(stageStyle.paddingLeft) - parseFloat(stageStyle.paddingRight);
+      const h = Math.min(Math.max(180, r.height), modelWidth / (4 / 7));
       fModel.style.setProperty('--model-h', `${h.toFixed(0)}px`);
 
       if (!s.reduced && srcRect && srcRect.height > 0) {
@@ -1028,7 +1030,7 @@ export const OurBridalsSection: React.FC = () => {
                           }}
                           type="button"
                           className={`bridal-tag ${hotDot === p ? 'is-hot' : ''}`}
-                          style={{ left: `${detail.x}%`, top: `${detail.y}%`, '--pi': p } as React.CSSProperties}
+                          style={{ '--tag-x': `${detail.x}%`, '--tag-y': `${detail.y}%`, '--pi': p } as React.CSSProperties}
                           aria-label={`${pad(p)}: ${detail.name} — ${detail.note}`}
                           onPointerEnter={() => activateHot(p, false)}
                           onFocus={() => activateHot(p, false)}

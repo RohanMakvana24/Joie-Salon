@@ -370,6 +370,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
     coverInk: '#FAF5F1',
     paperTone: '#FAF7F3',
     darkPageTone: '#1F1919',
+    preservePhotoFraming: true,
     pages: [
       {
         id: 'vol3-cover',

@@ -1,6 +1,6 @@
-# Classic Cut Salon — Next.js
+# Joie Salon — Next.js
 
-Next.js App Router migration of the Classic Cut Salon Rajkot website. The original Vite project remains separate and unchanged.
+Website for Joie Salon, a ladies hair, skin and bridal studio in Rajkot, built with the Next.js App Router.
 
 ## Run locally
 
@@ -31,12 +31,12 @@ After deployment, verify the domain in Google Search Console (optionally set `GO
 
 ## WhatsApp booking contact
 
-All booking links use `BUSINESS_INFO.bookingUrl` in `src/data/barbershopData.ts`: https://wa.me/918282848453. The public salon phone (+91 82828 48453) was cross-checked on 14 November 2026 against https://gujaratipedia.com/rajkot/barbers/ and https://book4mern.vercel.app/shop/classic-cut-salon. These listings confirm the phone number, not WhatsApp account activation. No test message was sent. Booking remains a WhatsApp request confirmed by the salon's reply; there is no automatic slot reservation.
+Booking links use `BUSINESS_INFO.bookingUrl` in `src/data/barbershopData.ts`. Guests request appointments via WhatsApp at +91 96243 96903. The salon confirms appointments by replying.
 
 The public demo banner and illustrative staff roster are not mounted on the homepage. Restore the team section after the owner supplies actual staff details and photos.
 
 ## Blog publishing
 
-Visit `/blog` for the journal. Articles are statically generated at `/blog/[slug]` with individual metadata, article structured data, related stories and sitemap entries. Add or edit entries in `src/data/blogPosts.ts`, then rebuild and deploy. Each entry needs a unique, stable lowercase hyphenated slug, title, description, category, actual publication date (`YYYY-MM-DD`), public image path, descriptive image alt text, introduction and sections with unique IDs. The initial three guides use illustrative assets and AI-assisted text; the article pages disclose this. Have the owner review content before launch.
+Visit `/blog` for the journal. Articles are statically generated at `/blog/[slug]` with individual metadata, article structured data, related stories and sitemap entries. Add or edit entries in `src/data/blogPosts.ts`, then rebuild and deploy. Each entry needs a unique, stable lowercase hyphenated slug, title, description, category, publication date (`YYYY-MM-DD`), public image path, descriptive image alt text, introduction and sections with unique IDs. Article covers are labelled as style illustrations.
 
 There is no admin login, database, email collection or newsletter delivery in this version. Domain-dependent SEO fields still require `SITE_URL` at build time.

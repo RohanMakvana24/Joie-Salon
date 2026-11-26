@@ -18,7 +18,7 @@ const CATEGORY_TABS: { id: ProductCategoryFilter; label: string }[] = [
 
 const PRODUCT_CUTOUT: Record<string, string> = {
   'matte-molding-hair-clay': '/assets/products/joie/matte-molding-hair-clay.png',
-  'argan-rose-hair-elixir': '/assets/products/joie/argan-rose-hair-elixir.jpg',
+  'argan-rose-hair-elixir': '/assets/products/joie/argan-rose-hair-elixir-transparent.webp',
   'charcoal-detan-face-scrub': '/assets/products/joie/charcoal-detan-face-scrub.png',
   'sea-salt-volume-spray': '/assets/products/joie/sea-salt-volume-spray.png',
   'rose-glow-soothing-mist': '/assets/products/joie/rose-glow-soothing-mist.jpg',

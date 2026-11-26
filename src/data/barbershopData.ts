@@ -96,7 +96,7 @@ export const BUSINESS_INFO: BusinessContactInfo = {
   neighborhood: 'Jyoti Nagar · Behind Crystal Mall, Rajkot',
   phoneDisplay: '+91 82828 48453',
   phoneHref: 'tel:+918282848453',
-  bookingUrl: 'https://wa.me/918282848453',
+  bookingUrl: 'https://wa.me/919624396903',
   instagramUrl: 'https://www.instagram.com/joiesalonrajkot/',
   instagramHandle: '@joiesalonrajkot',
   googleMapsUrl:
@@ -237,15 +237,15 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
     value: '+91 82828 48453 (tel:+918282848453)',
     category: 'supplied_fact',
     source: 'Verified salon phone listing',
-    draftBehavior: 'Use for direct Call and WhatsApp appointment booking CTAs.',
+    draftBehavior: 'Use for direct call links.',
   },
   {
     id: 'ev-booking',
     item: 'Primary Booking Hub',
-    value: 'https://wa.me/918282848453',
+    value: BUSINESS_INFO.bookingUrl,
     category: 'supplied_fact',
-    source: 'Verified salon phone & WhatsApp channel',
-    draftBehavior: 'Route primary Book Now actions to WhatsApp / direct salon phone.',
+    source: 'Supplied salon WhatsApp booking number',
+    draftBehavior: 'Route primary Book Now actions to WhatsApp.',
   },
   {
     id: 'ev-instagram',
@@ -340,8 +340,8 @@ export function validatePublicCopyCompliance(
   }
 
   // 3. Ensure primary booking URL points to verified Joie Salon Rajkot WhatsApp
-  if (info.bookingUrl !== 'https://wa.me/918282848453') {
-    violations.push('Primary booking URL must match https://wa.me/918282848453.');
+  if (info.bookingUrl !== BUSINESS_INFO.bookingUrl) {
+    violations.push(`Primary booking URL must match ${BUSINESS_INFO.bookingUrl}.`);
   }
 
   // 4. Ensure phone href matches +91 82828 48453
