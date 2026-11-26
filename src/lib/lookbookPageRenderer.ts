@@ -45,7 +45,7 @@ export function loadGalleryImage(src: string): Promise<HTMLImageElement> {
   return promise;
 }
 
-function drawCoverImage(
+function drawPageImage(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   x: number,
@@ -53,10 +53,21 @@ function drawCoverImage(
   w: number,
   h: number,
   focusY = 0.28,
+  preserveFraming = false,
 ) {
   const iw = img.naturalWidth || img.width;
   const ih = img.naturalHeight || img.height;
   if (!iw || !ih) return;
+
+  if (preserveFraming) {
+    const scale = Math.min(w / iw, h / ih);
+    const fittedW = iw * scale;
+    const fittedH = ih * scale;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, x + (w - fittedW) / 2, y + (h - fittedH) / 2, fittedW, fittedH);
+    return;
+  }
 
   const boxRatio = w / h;
   const imgRatio = iw / ih;
@@ -275,6 +286,7 @@ export async function renderLookbookPageToCanvas(
   const requiredSrcs = new Set<string>();
   if (page.primaryItem) requiredSrcs.add(page.primaryItem.image);
   page.collageItems?.forEach((item) => requiredSrcs.add(item.image));
+  page.indexItems?.forEach((item) => requiredSrcs.add(item.image));
 
   const loadedImages = new Map<string, HTMLImageElement>();
   await Promise.all(
@@ -338,7 +350,7 @@ export async function renderLookbookPageToCanvas(
 
     const coverImg = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
     if (coverImg) {
-      drawCoverImage(ctx, coverImg, plateX, plateY, plateW, plateH, 0.22);
+      drawPageImage(ctx, coverImg, plateX, plateY, plateW, plateH, 0.22, volume.preservePhotoFraming);
     } else {
       ctx.fillStyle = volume.coverClothDeep;
       ctx.fillRect(plateX, plateY, plateW, plateH);
@@ -407,44 +419,6 @@ export async function renderLookbookPageToCanvas(
   drawPaperSubtleTexture(ctx, width, height, volume.paperTone, isLeftPage);
   drawRunningChrome(ctx, width, height, volume, page, isLeftPage);
 
-  if (page.layout === 'feature') {
-    const imgW = width - padX * 2;
-    const imgH = height * 0.59;
-    const imgX = padX;
-    const imgY = height * 0.095;
-
-    const img = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-    if (img) {
-      drawCoverImage(ctx, img, imgX, imgY, imgW, imgH, 0.24);
-    }
-    ctx.strokeStyle = 'rgba(35, 28, 22, 0.14)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(imgX, imgY, imgW, imgH);
-
-    // Bold Feature Heading & Editorial Copy below photo
-    const textY = imgY + imgH + height * 0.055;
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#8B6D4B';
-    ctx.font = `600 ${Math.round(width * 0.02)}px "Plus Jakarta Sans", sans-serif`;
-    ctx.fillText(page.kicker ?? 'FEATURE PLATE', padX, textY);
-
-    ctx.fillStyle = '#1E1A16';
-    ctx.font = `700 ${Math.round(width * 0.056)}px "Cinzel", Georgia, serif`;
-    const headLines = wrapTextLines(ctx, page.heading ?? '', imgW);
-    headLines.slice(0, 2).forEach((line, idx) => {
-      ctx.fillText(line, padX, textY + height * (0.044 + idx * 0.048));
-    });
-
-    const bodyStart = textY + height * (0.05 + Math.min(headLines.length, 2) * 0.046);
-    ctx.fillStyle = '#4B433B';
-    ctx.font = `400 ${Math.round(width * 0.025)}px "Plus Jakarta Sans", sans-serif`;
-    const copyLines = wrapTextLines(ctx, page.body ?? '', imgW * 0.92);
-    copyLines.slice(0, 3).forEach((line, idx) => {
-      ctx.fillText(line, padX, bodyStart + idx * height * 0.03);
-    });
-    return;
-  }
-
   if (page.layout === 'full-image') {
     const imgW = width - padX * 2;
     const imgH = height * 0.72;
@@ -453,7 +427,7 @@ export async function renderLookbookPageToCanvas(
 
     const img = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
     if (img) {
-      drawCoverImage(ctx, img, imgX, imgY, imgW, imgH, 0.2);
+      drawPageImage(ctx, img, imgX, imgY, imgW, imgH, 0.2, volume.preservePhotoFraming);
     }
     ctx.strokeStyle = 'rgba(35, 28, 22, 0.16)';
     ctx.lineWidth = 1;
@@ -463,7 +437,7 @@ export async function renderLookbookPageToCanvas(
     ctx.textAlign = 'left';
     ctx.fillStyle = '#1E1A16';
     ctx.font = `600 ${Math.round(width * 0.032)}px "Cinzel", Georgia, serif`;
-    ctx.fillText(page.heading ?? '', padX, capY);
+    ctx.fillText(page.heading ?? '', padX, capY, imgW);
 
     ctx.fillStyle = '#564C42';
     ctx.font = `italic 400 ${Math.round(width * 0.022)}px "Plus Jakarta Sans", sans-serif`;
@@ -471,85 +445,6 @@ export async function renderLookbookPageToCanvas(
     capLines.slice(0, 2).forEach((line, idx) => {
       ctx.fillText(line, padX, capY + height * (0.032 + idx * 0.026));
     });
-    return;
-  }
-
-  if (page.layout === 'editorial') {
-    const innerW = width - padX * 2;
-    // Asymmetric editorial layout: image block + refined typography column
-    const imgOnTop = pageIndex % 4 === 2;
-    if (imgOnTop) {
-      const imgW = innerW * 0.86;
-      const imgH = height * 0.51;
-      const imgX = padX + innerW * 0.14;
-      const imgY = height * 0.098;
-      const img = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-      if (img) drawCoverImage(ctx, img, imgX, imgY, imgW, imgH, 0.24);
-      ctx.strokeStyle = 'rgba(35, 28, 22, 0.14)';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(imgX, imgY, imgW, imgH);
-
-      const copyY = imgY + imgH + height * 0.062;
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#8B6D4B';
-      ctx.font = `600 ${Math.round(width * 0.019)}px "Plus Jakarta Sans", sans-serif`;
-      ctx.fillText(page.kicker ?? 'ATELIER STUDY', padX, copyY);
-
-      ctx.fillStyle = '#1E1A16';
-      ctx.font = `700 ${Math.round(width * 0.046)}px "Cinzel", Georgia, serif`;
-      const headLines = wrapTextLines(ctx, page.heading ?? '', innerW * 0.88);
-      headLines.slice(0, 2).forEach((line, idx) => {
-        ctx.fillText(line, padX, copyY + height * (0.042 + idx * 0.044));
-      });
-
-      ctx.strokeStyle = volume.coverCloth;
-      ctx.globalAlpha = 0.25;
-      ctx.lineWidth = Math.max(1.2, width * 0.0018);
-      const ruleY = copyY + height * (0.056 + Math.min(headLines.length, 2) * 0.042);
-      ctx.beginPath();
-      ctx.moveTo(padX, ruleY);
-      ctx.lineTo(padX + width * 0.12, ruleY);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      ctx.fillStyle = '#4B433B';
-      ctx.font = `400 ${Math.round(width * 0.0245)}px "Plus Jakarta Sans", sans-serif`;
-      const bodyLines = wrapTextLines(ctx, page.body ?? '', innerW * 0.88);
-      bodyLines.slice(0, 3).forEach((line, idx) => {
-        ctx.fillText(line, padX, ruleY + height * (0.036 + idx * 0.03));
-      });
-    } else {
-      // Split: typography block upper, tall framed plate lower-right
-      const copyY = height * 0.135;
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#8B6D4B';
-      ctx.font = `600 ${Math.round(width * 0.019)}px "Plus Jakarta Sans", sans-serif`;
-      ctx.fillText(page.kicker ?? 'ATELIER STUDY', padX, copyY);
-
-      ctx.fillStyle = '#1E1A16';
-      ctx.font = `700 ${Math.round(width * 0.048)}px "Cinzel", Georgia, serif`;
-      const headLines = wrapTextLines(ctx, page.heading ?? '', innerW * 0.88);
-      headLines.slice(0, 2).forEach((line, idx) => {
-        ctx.fillText(line, padX, copyY + height * (0.044 + idx * 0.045));
-      });
-
-      ctx.fillStyle = '#4B433B';
-      ctx.font = `400 ${Math.round(width * 0.0245)}px "Plus Jakarta Sans", sans-serif`;
-      const bodyLines = wrapTextLines(ctx, page.body ?? '', innerW * 0.84);
-      bodyLines.slice(0, 3).forEach((line, idx) => {
-        ctx.fillText(line, padX, copyY + height * (0.135 + idx * 0.03));
-      });
-
-      const imgY = height * 0.355;
-      const imgH = height * 0.53;
-      const imgW = innerW * 0.88;
-      const imgX = padX;
-      const img = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-      if (img) drawCoverImage(ctx, img, imgX, imgY, imgW, imgH, 0.22);
-      ctx.strokeStyle = 'rgba(35, 28, 22, 0.14)';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(imgX, imgY, imgW, imgH);
-    }
     return;
   }
 
@@ -573,7 +468,7 @@ export async function renderLookbookPageToCanvas(
       if (!slot.item) return;
       const img = loadedImages.get(slot.item.image);
       if (img) {
-        drawCoverImage(ctx, img, slot.x, slot.y, slot.w, slot.h, 0.24);
+        drawPageImage(ctx, img, slot.x, slot.y, slot.w, slot.h, 0.24, volume.preservePhotoFraming);
       } else {
         ctx.fillStyle = '#EAE3D8';
         ctx.fillRect(slot.x, slot.y, slot.w, slot.h);
@@ -602,47 +497,39 @@ export async function renderLookbookPageToCanvas(
   if (page.layout === 'closing') {
     const innerW = width - padX * 2;
     const centerX = width * 0.5;
+    const gap = width * 0.035;
+    const tileW = (innerW - gap) / 2;
+    const tileH = height * 0.245;
+    const rowHeight = height * 0.33;
 
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#8B6D4B';
-    ctx.font = `600 ${Math.round(width * 0.02)}px "Plus Jakarta Sans", sans-serif`;
-    ctx.fillText(page.kicker ?? volume.roman, centerX, height * 0.17);
-
+    ctx.textAlign = 'left';
     ctx.fillStyle = '#1E1A16';
-    ctx.font = `700 ${Math.round(width * 0.054)}px "Cinzel", Georgia, serif`;
-    ctx.fillText(page.heading ?? 'Edition Index', centerX, height * 0.235);
-
-    ctx.strokeStyle = 'rgba(35, 28, 22, 0.2)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(centerX - width * 0.12, height * 0.275);
-    ctx.lineTo(centerX + width * 0.12, height * 0.275);
-    ctx.stroke();
+    ctx.font = `700 ${Math.round(width * 0.046)}px "Cinzel", Georgia, serif`;
+    ctx.fillText(page.heading ?? 'Gallery', padX, height * 0.127, innerW);
 
     const items = page.indexItems ?? [];
     items.forEach((item, idx) => {
-      const rowY = height * (0.36 + idx * 0.11);
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#8B6D4B';
-      ctx.font = `600 ${Math.round(width * 0.02)}px "Cinzel", Georgia, serif`;
-      ctx.fillText(`0${idx + 1}`, padX + width * 0.04, rowY);
+      const x = padX + (idx % 2) * (tileW + gap);
+      const y = height * 0.165 + Math.floor(idx / 2) * rowHeight;
+      const img = loadedImages.get(item.image);
+      if (img) {
+        drawPageImage(ctx, img, x, y, tileW, tileH, 0.23, volume.preservePhotoFraming);
+      } else {
+        ctx.fillStyle = '#EAE3D8';
+        ctx.fillRect(x, y, tileW, tileH);
+      }
 
       ctx.fillStyle = '#1E1A16';
-      ctx.font = `600 ${Math.round(width * 0.027)}px "Cinzel", Georgia, serif`;
-      ctx.fillText(item.title, padX + width * 0.12, rowY);
-
-      ctx.fillStyle = '#564C42';
-      ctx.font = `400 ${Math.round(width * 0.02)}px "Plus Jakarta Sans", sans-serif`;
-      const descLines = wrapTextLines(ctx, item.description, innerW * 0.72);
-      descLines.slice(0, 2).forEach((line, lIdx) => {
-        ctx.fillText(line, padX + width * 0.12, rowY + height * (0.028 + lIdx * 0.022));
+      ctx.font = `600 ${Math.round(width * 0.025)}px "Plus Jakarta Sans", sans-serif`;
+      wrapTextLines(ctx, item.title, tileW).slice(0, 2).forEach((line, lineIndex) => {
+        ctx.fillText(line, x, y + tileH + height * (0.027 + lineIndex * 0.024), tileW);
       });
     });
 
     ctx.textAlign = 'center';
     ctx.fillStyle = '#6E6256';
     ctx.font = `italic 400 ${Math.round(width * 0.021)}px "Plus Jakarta Sans", sans-serif`;
-    ctx.fillText(page.body ?? 'Joie Salon · Rajkot', centerX, height * 0.85);
+    ctx.fillText(page.body ?? 'Joie Salon · Rajkot', centerX, height * 0.89, innerW);
   }
 }
 
@@ -703,6 +590,8 @@ export class LookbookTextureBank {
         if (!needed.has(i) && this.renderedWidth[i] > 0) {
           paintPlaceholderCanvas(this.canvases[i], this.volume, i);
           this.renderedWidth[i] = 0;
+          // Dispose the immutable WebGL2 texStorage2D allocation before resizing back to 16x22.
+          this.textures[i].dispose();
           this.textures[i].needsUpdate = true;
         }
       }
@@ -713,9 +602,16 @@ export class LookbookTextureBank {
       const token = ++this.generation;
       this.inflight.set(idx, token);
       try {
+        const prevW = this.canvases[idx].width;
+        const prevH = this.canvases[idx].height;
         await renderLookbookPageToCanvas(this.canvases[idx], this.volume, idx, targetWidth);
         if (this.disposed) return;
         this.renderedWidth[idx] = targetWidth;
+        if (this.canvases[idx].width !== prevW || this.canvases[idx].height !== prevH) {
+          // Dispose the previous immutable WebGL2 texStorage2D allocation so Three.js
+          // allocates fresh storage matching the new canvas dimensions.
+          this.textures[idx].dispose();
+        }
         this.textures[idx].anisotropy = Math.min(4, this.maxAnisotropy);
         this.textures[idx].needsUpdate = true;
         this.onTextureUpdated();

@@ -376,11 +376,11 @@ export default function Pricing6({
         </div>
       </div>
 
-      {/* Horizontal Scrollable Package Track */}
+      {/* Package Track: horizontal scroll on mobile/tablet, 3-column grid on desktop */}
       <div
         ref={trackRef}
-        aria-label="Scrollable salon packages"
-        className="flex items-stretch gap-5 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain scroll-smooth"
+        aria-label="Salon packages"
+        className="flex items-stretch gap-5 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain scroll-smooth lg:grid lg:grid-cols-3 lg:overflow-visible lg:snap-none lg:pb-0"
       >
         {plans.map((plan, idx) => (
           <div
@@ -388,15 +388,15 @@ export default function Pricing6({
             ref={(el) => {
               cardRefs.current[idx] = el;
             }}
-            className="w-[84vw] max-w-[360px] sm:w-[400px] sm:max-w-none md:w-[440px] lg:w-[480px] shrink-0 snap-start"
+            className="w-[84vw] max-w-[360px] sm:w-[400px] sm:max-w-none md:w-[440px] lg:w-full shrink-0 snap-start lg:snap-align-none"
           >
             <PlanCard plan={plan} />
           </div>
         ))}
       </div>
 
-      {/* Carousel Controls & Slide Indicators */}
-      <div className="flex items-center justify-between gap-4 pt-1">
+      {/* Carousel Controls & Slide Indicators (mobile/tablet only) */}
+      <div className="flex items-center justify-between gap-4 pt-1 lg:hidden">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground tabular-nums">
           0{activeSlide + 1} / 0{plans.length} · Scroll or swipe packages
         </p>

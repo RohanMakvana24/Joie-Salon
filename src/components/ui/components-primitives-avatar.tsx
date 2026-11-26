@@ -1,6 +1,5 @@
 "use client";
 
-import { useId } from "react";
 import { motion } from "motion/react";
 
 export type AvatarColor =
@@ -219,8 +218,8 @@ function Avatar({
   className = "",
   label = "Joie package badge",
 }: AvatarProps) {
-  const uid = useId();
-  const noiseId = `av-n${uid.replace(/\W/g, "")}`;
+  const noiseId = `av-noise-${color}-${size}-${shape}`;
+  const grainId = `av-grain-${color}-${size}-${shape}`;
   const preset = PRESETS[color] ?? PRESETS.blue;
   const dims = SIZE[size] ?? SIZE.md;
 
@@ -279,7 +278,7 @@ function Avatar({
         >
           <defs>
             <filter
-              id={`grain-${uid.replace(/\W/g, "")}`}
+              id={grainId}
               x="0%"
               y="0%"
               width="100%"
@@ -297,7 +296,7 @@ function Avatar({
           <rect
             width="100%"
             height="100%"
-            filter={`url(#grain-${uid.replace(/\W/g, "")})`}
+            filter={`url(#${grainId})`}
           />
         </svg>
 

@@ -100,7 +100,7 @@ export const BUSINESS_INFO: BusinessContactInfo = {
   instagramUrl: 'https://www.instagram.com/joiesalonrajkot/',
   instagramHandle: '@joiesalonrajkot',
   googleMapsUrl:
-    'https://www.google.com/maps/search/?api=1&query=Joie+Salon+Jyoti+Nagar+Main+Road+Near+Masoom+School+Rajkot+360005',
+    'https://www.google.com/maps/place/JOIE+SALON/data=!4m6!3m5!1s0x3959cb2a0cca1f8b:0x8bcc0d4f34e7cbec!8m2!3d22.2842631!4d70.7610153!16s%2Fg%2F11y48p4nvq',
   googleReviewsUrl: 'https://www.google.com/search?q=Joie+Salon+Rajkot',
   whatsappStatus: 'pending_verification',
   hoursStatus: 'pending_confirmation',

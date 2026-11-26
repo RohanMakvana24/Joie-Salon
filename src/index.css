@@ -1283,10 +1283,6 @@ html[data-theme='light'] .products-mobile-showcase {
 
 .rising-ink > span { column-gap: .28em; row-gap: .08em; }
 .rising-ink__word { display: inline-flex; flex-wrap: nowrap; white-space: nowrap; }
-@media (max-width: 639px) {
-  #gallery-heading { font-size: clamp(26px, 7.4vw, 39px); line-height: 1.08; }
-  #gallery-heading > span { max-width: 12ch; margin-inline: auto; }
-}
 
 #gallery .infinite-menu__info { transition: opacity .25s ease; }
 #gallery .infinite-menu__info[data-moving='true'] { opacity: 0; visibility: hidden; transition: none; }

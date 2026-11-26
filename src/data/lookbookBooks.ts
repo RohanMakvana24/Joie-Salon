@@ -72,8 +72,6 @@ export const GALLERY_ITEMS: GalleryLookItem[] = [
 
 export type BookPageLayout =
   | 'front-cover'
-  | 'feature'
-  | 'editorial'
   | 'full-image'
   | 'collage'
   | 'closing'
@@ -106,6 +104,7 @@ export interface LookbookVolume {
   coverInk: string;
   paperTone: string;
   darkPageTone: string;
+  preservePhotoFraming?: boolean;
   pages: BookPageSpec[];
 }
 
@@ -159,7 +158,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol1-p1',
-        layout: 'feature',
+        layout: 'full-image',
         folio: '01',
         kicker: 'FEATURE PLATE',
         heading: featherLayers.title,
@@ -170,7 +169,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol1-p2',
-        layout: 'editorial',
+        layout: 'full-image',
         folio: '02',
         kicker: 'BALAYAGE STUDIO',
         heading: caramelBalayage.title,
@@ -203,7 +202,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol1-p5',
-        layout: 'editorial',
+        layout: 'full-image',
         folio: '05',
         kicker: 'EVENING VOLUME',
         heading: receptionBlowout.title,
@@ -217,10 +216,10 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
         layout: 'closing',
         folio: '06',
         kicker: 'INDEX · VOLUME I',
-        heading: 'Hair Atelier Notes',
+        heading: 'Hair & Colour Gallery',
         body: 'Curated transformations from Joie Salon, Jyoti Nagar Main Rd, Rajkot.',
         indexItems: [featherLayers, caramelBalayage, curtainBangs, receptionBlowout],
-        alt: 'Volume I Closing Index',
+        alt: 'Volume I Photo Gallery',
         text: 'Volume I Index: Feather Layers & Blowout, Caramel Honey Balayage, Curtain Bangs & Waves, Reception Couture Blowout.',
       },
       {
@@ -247,6 +246,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
     coverInk: '#FAF3EA',
     paperTone: '#FBF7F0',
     darkPageTone: '#1E1416',
+    preservePhotoFraming: true,
     pages: [
       {
         id: 'vol2-cover',
@@ -260,7 +260,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol2-p1',
-        layout: 'feature',
+        layout: 'full-image',
         folio: '01',
         kicker: 'BRIDAL FEATURE',
         heading: royalMaroon.title,
@@ -282,7 +282,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol2-p3',
-        layout: 'editorial',
+        layout: 'full-image',
         folio: '03',
         kicker: 'SANGEET EDITION',
         heading: sangeetGlam.title,
@@ -304,7 +304,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol2-p5',
-        layout: 'editorial',
+        layout: 'full-image',
         folio: '05',
         kicker: 'DAYLIGHT CEREMONY',
         heading: haldiGlow.title,
@@ -315,13 +315,35 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol2-p6',
-        layout: 'closing',
+        layout: 'full-image',
         folio: '06',
+        kicker: 'RECEPTION HAIR',
+        heading: receptionBlowout.title,
+        body: receptionBlowout.description,
+        primaryItem: receptionBlowout,
+        alt: `${receptionBlowout.title}: ${receptionBlowout.description}`,
+        text: `${receptionBlowout.title}. ${receptionBlowout.description}`,
+      },
+      {
+        id: 'vol2-p7',
+        layout: 'full-image',
+        folio: '07',
+        kicker: 'ENGAGEMENT MAKEUP',
+        heading: engagementSculpt.title,
+        body: engagementSculpt.description,
+        primaryItem: engagementSculpt,
+        alt: `${engagementSculpt.title}: ${engagementSculpt.description}`,
+        text: `${engagementSculpt.title}. ${engagementSculpt.description}`,
+      },
+      {
+        id: 'vol2-p8',
+        layout: 'closing',
+        folio: '08',
         kicker: 'INDEX · VOLUME II',
-        heading: 'Bridal Studio Index',
+        heading: 'Bridal Gallery',
         body: 'Dedicated private bridal lounge at Joie Salon, Rajkot.',
         indexItems: [royalMaroon, mograGajra, sangeetGlam, haldiGlow],
-        alt: 'Volume II Closing Index',
+        alt: 'Volume II Photo Gallery',
         text: 'Volume II Index: Royal Maroon Bridal, Mogra Gajra Bridal Bun, Sangeet Caramel Glam, Haldi Dewy Glow.',
       },
       {
@@ -361,7 +383,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol3-p1',
-        layout: 'feature',
+        layout: 'full-image',
         folio: '01',
         kicker: 'SKIN FEATURE',
         heading: hydraGlow.title,
@@ -372,7 +394,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol3-p2',
-        layout: 'editorial',
+        layout: 'full-image',
         folio: '02',
         kicker: 'NAIL ATELIER',
         heading: roseNails.title,
@@ -405,7 +427,7 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
       },
       {
         id: 'vol3-p5',
-        layout: 'editorial',
+        layout: 'full-image',
         folio: '05',
         kicker: 'ENGAGEMENT EDIT',
         heading: engagementSculpt.title,
@@ -419,10 +441,10 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
         layout: 'closing',
         folio: '06',
         kicker: 'INDEX · VOLUME III',
-        heading: 'Couture & Skin Index',
+        heading: 'Skin & Nail Gallery',
         body: 'Book a tailored consultation at Joie Salon, Rajkot.',
         indexItems: [hydraGlow, roseNails, mehndiNails, engagementSculpt],
-        alt: 'Volume III Closing Index',
+        alt: 'Volume III Photo Gallery',
         text: 'Volume III Index: Hydra-Glow Facial & Brows, Rose & Gold Nail Couture, Mehndi Nail Couture, Engagement Brow Sculpt.',
       },
       {

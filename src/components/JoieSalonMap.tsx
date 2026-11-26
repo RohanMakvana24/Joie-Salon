@@ -7,8 +7,8 @@ import { Plus, Minus, LocateFixed, Navigation, ArrowUpRight } from 'lucide-react
 import { BUSINESS_INFO } from '../data/barbershopData';
 import { useTheme } from '../hooks/useActivity';
 
-// Verified coordinates for Jyoti Nagar Main Road, Behind Crystal Mall, Rajkot 360005
-const SALON_COORDS: [number, number] = [22.2798, 70.7632];
+// Pin coordinates from the supplied Google Maps place listing.
+const SALON_COORDS: [number, number] = [22.2842631, 70.7610153];
 const DEFAULT_ZOOM = 16;
 
 const OSM_TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';

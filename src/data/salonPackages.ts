@@ -200,7 +200,7 @@ function toPlan6(pkg: GroomingPackage): Plan6 {
     ctaDark: styling.ctaDark,
     features: pkg.features,
     footerNote: pkg.rateHint,
-    footerDesc: pkg.gujaratiSubtitle,
+    footerDesc: pkg.subtitle,
   };
 }
 

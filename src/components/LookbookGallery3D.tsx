@@ -216,19 +216,19 @@ function FallbackEditorialReader({
         }
       }}
     >
-      <div className="flex items-center justify-center gap-1 sm:gap-2 px-2">
+      <div className="flex max-w-full items-center justify-center gap-1 px-2 sm:gap-2">
         {visiblePages.length === 2 && (
           <canvas
             ref={leftCanvasRef}
             onClick={goPrev}
-            className={`max-h-[430px] w-auto cursor-pointer rounded-l-sm shadow-2xl border ${borderColor}`}
+            className={`min-w-0 max-h-[452px] w-auto cursor-pointer rounded-l-sm shadow-2xl border ${borderColor}`}
             aria-label={volume.pages[visiblePages[0]]?.alt}
           />
         )}
         <canvas
           ref={rightCanvasRef}
           onClick={goNext}
-          className={`max-h-[430px] w-auto cursor-pointer rounded-r-sm shadow-2xl border ${borderColor}`}
+          className={`min-w-0 max-h-[452px] w-auto cursor-pointer rounded-r-sm shadow-2xl border ${borderColor}`}
           aria-label={volume.pages[visiblePages[visiblePages.length - 1]]?.alt}
         />
       </div>
@@ -447,6 +447,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, 1, 0.2, 40);
+    camera.zoom = 1.05;
     camera.position.set(0, 0, 5.2);
     camera.lookAt(0, 0, 0);
 
