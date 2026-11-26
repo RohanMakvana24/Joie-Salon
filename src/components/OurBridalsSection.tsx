@@ -153,7 +153,7 @@ export const OurBridalsSection: React.FC = () => {
       const cy = topPad + innerH * 0.5;
       const ry = innerH * (mobile ? 0.30 : 0.34);
       const rx = Math.min(W * (mobile ? 0.33 : 0.32), ry * (mobile ? 1.15 : 1.9));
-      const frontH = Math.min(H * (mobile ? 0.42 : 0.50), W * (mobile ? 0.70 : 0.82));
+      const frontH = Math.min(H * (mobile ? 0.47 : 0.56), W * (mobile ? 0.78 : 0.92));
       const front = frontH / modelH;
 
       if (stageRef.current) {

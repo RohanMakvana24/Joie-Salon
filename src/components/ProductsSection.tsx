@@ -17,12 +17,12 @@ const CATEGORY_TABS: { id: ProductCategoryFilter; label: string }[] = [
 ];
 
 const PRODUCT_CUTOUT: Record<string, string> = {
-  'matte-molding-hair-clay': '/assets/products/ai-v2/matte-molding-hair-clay.webp',
-  'royal-oud-argan-beard-oil': '/assets/products/ai-v2/royal-oud-argan-beard-oil.webp',
-  'charcoal-detan-face-scrub': '/assets/products/ai-v2/charcoal-detan-face-scrub.webp',
-  'sea-salt-volume-spray': '/assets/products/ai-v2/sea-salt-volume-spray.webp',
-  'sandalwood-cooling-aftershave': '/assets/products/ai-v2/sandalwood-cooling-aftershave.webp',
-  'keratin-repair-hair-serum': '/assets/products/ai-v2/keratin-repair-hair-serum.webp',
+  'matte-molding-hair-clay': '/assets/products/joie/matte-molding-hair-clay.png',
+  'royal-oud-argan-beard-oil': '/assets/products/joie/royal-oud-argan-beard-oil.png',
+  'charcoal-detan-face-scrub': '/assets/products/joie/charcoal-detan-face-scrub.png',
+  'sea-salt-volume-spray': '/assets/products/joie/sea-salt-volume-spray.png',
+  'sandalwood-cooling-aftershave': '/assets/products/joie/sandalwood-cooling-aftershave.png',
+  'keratin-repair-hair-serum': '/assets/products/joie/keratin-repair-hair-serum.png',
 };
 
 /** Slate charcoal tones so the orbit band morphs subtly within the unified brand palette. */
@@ -50,7 +50,7 @@ function readWishlist(): string[] {
   }
 }
 
-const FALLBACK_PHOTO = '/assets/products/ai-v2/matte-molding-hair-clay.webp';
+const FALLBACK_PHOTO = '/assets/products/joie/matte-molding-hair-clay.png';
 
 /**
  * Split a product name into the two title weights the carousel renders:

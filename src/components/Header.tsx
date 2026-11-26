@@ -252,22 +252,16 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={onToggleTheme}
             aria-label={isLight ? 'Switch to dark theme' : 'Switch to light theme'}
             title={isLight ? 'Switch to Dark Studio theme' : 'Switch to Warm Light theme'}
-            className={`inline-flex items-center justify-center gap-1.5 w-9 h-9 lg:w-auto lg:px-3.5 rounded-full border text-xs font-medium tracking-[0.04em] transition-all cursor-pointer focus-ring ${
+            className={`inline-flex items-center justify-center w-9 h-9 rounded-full border text-xs font-medium tracking-[0.04em] transition-all cursor-pointer focus-ring ${
               useLightSurface
                 ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
                 : 'border-white/25 bg-[#181B22]/75 text-[#F5F6F7] hover:border-white/50 hover:bg-[#232C3B]'
             }`}
           >
             {isLight ? (
-              <>
-                <Moon className="w-4 h-4 shrink-0 text-[#232C3B]" />
-                <span className="hidden lg:inline">Dark</span>
-              </>
+              <Moon className="w-4 h-4 shrink-0 text-[#232C3B]" />
             ) : (
-              <>
-                <Sun className="w-4 h-4 shrink-0 text-[#F5F6F7]" />
-                <span className="hidden lg:inline">Light</span>
-              </>
+              <Sun className="w-4 h-4 shrink-0 text-[#F5F6F7]" />
             )}
           </button>
 
@@ -286,7 +280,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"
             />
             <Calendar className="w-3.5 h-3.5 text-[#F8F6F2]/90 transition-colors" />
-            <span>WhatsApp Booking</span>
+            <span>Booking</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#F8F6F2]/90 group-hover:translate-x-0.5 transition-all" />
           </a>
 
@@ -361,7 +355,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-[0.1em] bg-[#232C3B] hover:bg-[#161C26] text-[#F8F6F2] border border-white/20 rounded-full transition-colors whitespace-nowrap focus-ring shadow-[0_4px_16px_rgba(35,44,59,0.28)]"
               >
                 <Calendar className="w-3.5 h-3.5" />
-                <span>Book on WhatsApp</span>
+                <span>Booking</span>
               </a>
               <a
                 href={BUSINESS_INFO.phoneHref}

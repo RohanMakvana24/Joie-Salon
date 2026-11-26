@@ -26,7 +26,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     gujaratiName: 'રોયલ મરૂન બ્રાઇડલ',
     occasion: 'Wedding Phera & Reception',
     duration: '150–180 mins',
-    image: '/assets/brand/joie-royal-maroon-bridal.webp',
+    image: '/assets/bridals/royal-maroon-bridal.png',
     foot: 0,
     details: [
       { name: 'HD Airbrush Base', kind: 'Makeup', note: 'Sweat-proof 16-hr luminous finish', x: 55, y: 25 },
@@ -40,7 +40,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     gujaratiName: 'સંગીત કેરામેલ ગ્લેમ',
     occasion: 'Sangeet & Cocktail Night',
     duration: '90–120 mins',
-    image: '/assets/characters/services/ladies-color.png',
+    image: '/assets/bridals/sangeet-caramel-glam.png',
     foot: 0.02,
     details: [
       { name: 'Caramel Balayage Waves', kind: 'Hair', note: 'Glossy Hollywood soft waves', x: 46, y: 20 },
@@ -54,7 +54,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     gujaratiName: 'રિસેપ્શન કોચર બ્લોઆઉટ',
     occasion: 'Reception & Engagement',
     duration: '75–90 mins',
-    image: '/assets/characters/services/ladies-haircut.png',
+    image: '/assets/bridals/reception-couture-blowout.png',
     foot: 0.02,
     details: [
       { name: 'Bouncy Layer Volume', kind: 'Haircut', note: 'Face-framing feather layers', x: 42, y: 18 },
@@ -68,7 +68,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     gujaratiName: 'હલ્દી ડ્યુઈ ગ્લો',
     occasion: 'Pre-Bridal & Haldi',
     duration: '60–75 mins',
-    image: '/assets/characters/services/ladies-facial.png',
+    image: '/assets/bridals/haldi-dewy-glow.png',
     foot: 0.02,
     details: [
       { name: 'Hydra-Glow Prep', kind: 'Skincare', note: '24K serum & lymphatic massage', x: 66, y: 24 },
@@ -82,7 +82,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     gujaratiName: 'મહેંદી નેઇલ કોચર',
     occasion: 'Mehndi & Bridal Nails',
     duration: '60–90 mins',
-    image: '/assets/characters/services/ladies-nails.png',
+    image: '/assets/bridals/mehndi-nail-couture.png',
     foot: 0.02,
     details: [
       { name: 'Bridal Gel Extensions', kind: 'Nails', note: 'Rose-nude French & chrome', x: 68, y: 22 },
@@ -96,7 +96,7 @@ export const BRIDAL_LOOKS: BridalLook[] = [
     gujaratiName: 'એન્ગેજમેન્ટ બ્રાઉ સ્કલ્પ્ટ',
     occasion: 'Ring Ceremony & Shoot',
     duration: '60–90 mins',
-    image: '/assets/characters/services/ladies-threading.png',
+    image: '/assets/bridals/engagement-sculpt.png',
     foot: 0.02,
     details: [
       { name: 'Precision Brow Arch', kind: 'Brows', note: 'Soft feathered brow framing', x: 47, y: 12 },
