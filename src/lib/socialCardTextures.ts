@@ -64,7 +64,7 @@ function arrow(context: CanvasRenderingContext2D, x: number, y: number, color: s
 export async function createSocialCardTextures(profile: SocialCardProfile, index: number, theme: ThemeMode, iconSvg: string, review?: { name: string; quote: string }) {
   await Promise.all([document.fonts.load('500 60px "Outfit"'), document.fonts.load('600 40px "Plus Jakarta Sans"')]);
   const [logo, quiff, crop, side, slick, icon] = await Promise.all([
-    loadImage('/assets/brand/classic-cut-icon-cropped.webp'),
+    loadImage('/assets/brand/joie-salon-icon-gold.webp'),
     profile.id === 'instagram' ? loadImage('/assets/hairstyles/modern-quiff.webp') : null,
     profile.id === 'instagram' ? loadImage('/assets/hairstyles/textured-crop.webp') : null,
     profile.id === 'instagram' ? loadImage('/assets/hairstyles/classic-side-part.webp') : null,
@@ -86,7 +86,7 @@ export async function createSocialCardTextures(profile: SocialCardProfile, index
   rounded(c, 68, 240, 126, 126, 63, '#292119');
   c.beginPath(); c.arc(131, 303, 62, 0, Math.PI * 2); c.lineWidth = 2; c.strokeStyle = '#b89660'; c.stroke();
   if (logo) c.drawImage(logo, 91, 258, 80, 90);
-  text(c, 'Classic Cut Salon', 224, 288, 45, ink, 600);
+  text(c, 'Joie Salon', 224, 288, 45, ink, 600);
   text(c, profile.handle, 224, 340, 31, muted, 400, 'Plus Jakarta Sans');
 
   if (profile.id === 'instagram') {
@@ -104,7 +104,7 @@ export async function createSocialCardTextures(profile: SocialCardProfile, index
     text(c, '“', 112, 552, 150, '#b59a6c', 400, 'Georgia');
     lines(c, review?.quote ?? 'Every visit has a story.', 116, 594, 776, 49, '#59452a', 63);
     rounded(c, 116, 736, 43, 43, 22, '#ddcfb1'); text(c, (review?.name ?? 'Client')[0], 129, 767, 26, '#6f5a36');
-    text(c, review?.name ?? 'Classic Cut client', 177, 768, 26, '#85755d');
+    text(c, review?.name ?? 'Joie Salon client', 177, 768, 26, '#85755d');
     c.textAlign = 'right'; text(c, 'Google review', 908, 768, 23, '#a2957d'); c.textAlign = 'left';
   } else {
     cover(c, slick, 68, 422, 888, 400, 16);
@@ -119,7 +119,7 @@ export async function createSocialCardTextures(profile: SocialCardProfile, index
   rounded(c, 68, 1220, 888, 135, 16, dark ? gold : '#30261d');
   text(c, profile.action, 116, 1304, 34, dark ? '#30251b' : '#fff7ea', 600, 'Plus Jakarta Sans');
   arrow(c, 882, 1287, dark ? '#30251b' : '#fff7ea');
-  text(c, 'CLASSIC CUT / SOCIAL CLUB', 68, 1405, 20, muted);
+  text(c, 'JOIE SALON / SOCIAL CLUB', 68, 1405, 20, muted);
 
   await yieldToBrowser();
   const back = document.createElement('canvas'); back.width = WIDTH * TEXTURE_SCALE; back.height = HEIGHT * TEXTURE_SCALE;
@@ -130,14 +130,14 @@ export async function createSocialCardTextures(profile: SocialCardProfile, index
   if (icon) b.drawImage(icon, 68, 124, 48, 48);
   b.textAlign = 'right'; text(b, profile.platform.toUpperCase(), 956, 158, 27, gold); b.textAlign = 'center';
   if (logo) b.drawImage(logo, 406, 327, 212, 240);
-  text(b, 'CLASSIC CUT', 512, 698, 89, '#fff7e9', 600);
+  text(b, 'JOIE SALON', 512, 698, 89, '#fff7e9', 600);
   text(b, 'MEN’S SALON · RAJKOT', 512, 759, 30, gold);
   lines(b, profile.headline, 512, 896, 770, 53, '#f5e6cf', 67);
   text(b, profile.handle, 512, 1060, 31, '#bead94', 400, 'Plus Jakarta Sans');
   text(b, 'Tap to turn · Drag to swing', 512, 1140, 24, '#9f8d74');
   b.textAlign = 'left'; rounded(b, 68, 1220, 888, 135, 16, gold);
   text(b, profile.action, 116, 1304, 34, '#30251b', 600, 'Plus Jakarta Sans'); arrow(b, 882, 1287, '#30251b');
-  text(b, 'CLASSIC CUT / SOCIAL CLUB', 68, 1405, 20, '#a48d6d');
+  text(b, 'JOIE SALON / SOCIAL CLUB', 68, 1405, 20, '#a48d6d');
 
   const strap = document.createElement('canvas'); strap.width = 320; strap.height = 192;
   const s = strap.getContext('2d'); if (!s) throw new Error('Canvas unavailable');

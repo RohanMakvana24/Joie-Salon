@@ -59,7 +59,7 @@ export function BookingPlanner() {
     }
     setError('');
     const message = [
-      'Hi Classic Cut Salon! I would like to request a booking.',
+      'Hi Joie Salon! I would like to request a booking.',
       '', `Booking: ${selectedMode.title}`, `Service: ${service}`,
       `Preferred date: ${readableDate(date)}`, `Preferred time: ${time} IST`,
       `Name: ${name.trim()}`, `Contact: ${phone.trim()}`,
@@ -83,7 +83,7 @@ export function BookingPlanner() {
           <span>{selectedMode.title}</span>
           <div className="booking-planner__ticket-rule" />
           <div><span>WHEN</span><b>{readableDate(date)}</b><small>{time ? `${time} · India time` : 'Your preferred time'}</small></div>
-          <div><span>WHERE</span><b>{special && location === 'At your venue' ? venue || 'Your event venue' : 'Classic Cut Salon'}</b><small>{special ? `${guests} ${guests === '1' ? 'person' : 'people'} · By arrangement` : 'Arya Nagar, Rajkot'}</small></div>
+          <div><span>WHERE</span><b>{special && location === 'At your venue' ? venue || 'Your event venue' : 'Joie Salon'}</b><small>{special ? `${guests} ${guests === '1' ? 'person' : 'people'} · By arrangement` : 'Arya Nagar, Rajkot'}</small></div>
           <span className="booking-planner__ticket-foot"><Clock3 size={13} /> A request today. A fresh look ahead.</span>
         </div>
         <a className="salon-visit__link" href={BUSINESS_INFO.phoneHref}>Prefer a conversation? {BUSINESS_INFO.phoneDisplay} <ArrowUpRight size={14} /></a>

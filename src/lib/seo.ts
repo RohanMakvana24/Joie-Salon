@@ -11,6 +11,6 @@ function getSiteUrl(): string | undefined {
 }
 
 export const SITE_URL = getSiteUrl();
-export const SEO_TITLE = "Best Men's Salon in Rajkot | Classic Cut Salon, Pedak Road";
+export const SEO_TITLE = "Best Men's Salon in Rajkot | Joie Salon, Pedak Road";
 export const SEO_DESCRIPTION =
   "Rated 4.9★ best men's salon on Pedak Road, Arya Nagar, Rajkot. Master skin fades, precision haircuts, royal beard grooming, groom packages & de-tan facials. Call +91 82828 48453.";

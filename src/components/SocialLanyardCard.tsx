@@ -47,7 +47,7 @@ export function SocialLanyardCard({ profile, children }: {
         <div className="social-lanyard__front" inert={back} aria-hidden={back || undefined}>{children}</div>
         <div className="social-lanyard__back" inert={!back} aria-hidden={!back || undefined}>
           <Scissors size={32} strokeWidth={1.4} aria-hidden="true" />
-          <span>CLASSIC CUT SALON</span><h3>Good cuts.<br />Better connections.</h3>
+          <span>JOIE SALON</span><h3>Good cuts.<br />Better connections.</h3>
           <p>Find us on {profile.platform}.<br />{profile.handle}</p>
           <a href={profile.href} target="_blank" rel="noopener noreferrer">{profile.action}<ArrowUpRight size={16} /></a>
         </div>
@@ -55,7 +55,7 @@ export function SocialLanyardCard({ profile, children }: {
     </div>
     <div className="social-lanyard__controls">
       <button type="button" aria-label={`Turn ${profile.platform} card to ${back ? 'front' : 'back'}`} aria-pressed={back} onClick={() => setBack(value => !value)}><RotateCw size={13} aria-hidden="true" /><span>{back ? 'Front' : 'Turn card'}</span></button>
-      <a href={profile.href} target="_blank" rel="noopener noreferrer" aria-label={`${profile.action} — Classic Cut Salon`}>{profile.action.replace(' on ', ' ')}<ArrowUpRight size={13} aria-hidden="true" /></a>
+      <a href={profile.href} target="_blank" rel="noopener noreferrer" aria-label={`${profile.action} — Joie Salon`}>{profile.action.replace(' on ', ' ')}<ArrowUpRight size={13} aria-hidden="true" /></a>
     </div>
   </div>;
 }

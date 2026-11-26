@@ -27,7 +27,7 @@ export interface BusinessContactInfo {
   };
 }
 
-export type ServiceCategoryFilter = 'all' | 'haircuts' | 'beard' | 'specialty';
+export type ServiceCategoryFilter = 'all' | 'hair' | 'skin' | 'bridal';
 
 export interface ServiceItem {
   id: string;
@@ -83,27 +83,27 @@ export interface GallerySlotItem {
 }
 
 export const BUSINESS_INFO: BusinessContactInfo = {
-  name: 'Classic Cut Salon',
-  shortName: 'CLASSIC CUT',
-  descriptor: 'SALON',
-  streetAddress: 'Pedak Cross Road, Opp. Umiya R.O., Arya Nagar',
+  name: 'Joie Salon',
+  shortName: 'JOIE SALON',
+  descriptor: 'FOR LADIES',
+  streetAddress: 'Jyoti Nagar Main Road, Near Masoom School, Behind Crystal Mall',
   locality: 'Rajkot',
   region: 'Gujarat',
-  postalCode: '360003',
+  postalCode: '360005',
   country: 'India',
   fullAddress:
-    'Pedak Cross Road, Opp. Umiya R.O., Ranchod Nagar Society, Arya Nagar, Rajkot, Gujarat 360003',
-  neighborhood: 'Arya Nagar · Pedak Road, Rajkot',
+    'Jyoti Nagar Main Road, Near Masoom School, Behind Crystal Mall, Ghanshyam Nagar, Rajkot, Gujarat 360005',
+  neighborhood: 'Jyoti Nagar · Behind Crystal Mall, Rajkot',
   phoneDisplay: '+91 82828 48453',
   phoneHref: 'tel:+918282848453',
   // Public contact matches https://gujaratipedia.com/rajkot/barbers/ (checked 2026-11-14).
   // The listing confirms the phone number; WhatsApp activation still needs owner confirmation.
   bookingUrl: 'https://wa.me/918282848453',
-  instagramUrl: 'https://www.instagram.com/classiccutmenssalon/',
-  instagramHandle: '@classiccutmenssalon',
+  instagramUrl: 'https://www.instagram.com/joiesalonrajkot/',
+  instagramHandle: '@joiesalonrajkot',
   googleMapsUrl:
-    'https://www.google.com/maps/search/?api=1&query=Classic+Cut+Salon+Pedak+Cross+Road+Arya+Nagar+Rajkot+Gujarat+360003',
-  googleReviewsUrl: 'https://www.google.com/search?q=Classic+Cut+Salon+Rajkot',
+    'https://www.google.com/maps/search/?api=1&query=Joie+Salon+Jyoti+Nagar+Main+Road+Near+Masoom+School+Rajkot+360005',
+  googleReviewsUrl: 'https://www.google.com/search?q=Joie+Salon+Rajkot',
   whatsappStatus: 'pending_verification',
   hoursStatus: 'pending_confirmation',
   googleSnapshot: {
@@ -124,80 +124,80 @@ export const DEFAULT_HERO_CROP: HeroCropConfig = {
 
 export const SERVICE_ITEMS: ServiceItem[] = [
   {
-    id: 'classic-modern-haircuts',
+    id: 'ladies-haircuts-styling',
     indexLabel: '01',
-    title: 'HAIR CUTS & RESTYLING',
-    category: 'haircuts',
+    title: 'HAIR CUTS & BLOW-DRY STYLING',
+    category: 'hair',
     description:
-      'Tailored scissor and clipper cuts, textured quiffs, and modern restyling shaped around your face structure and hair texture.',
+      'Customised layer cuts, feather cuts, step cuts, curtain bangs, and bouncy salon blow-dry finishes shaped around your face and hair texture.',
     evidenceBasis:
-      'Rajkot clients consistently highlight sharp modern restyling, clean blow-dry finishes, and personal consultation.',
+      'Rajkot clients love effortless volume, clean split-end trims, and long-lasting blow-dry styling.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
-    duration: '30-45 mins',
+    duration: '40-55 mins',
     iconName: 'scissors',
   },
   {
-    id: 'skin-taper-fades',
+    id: 'hair-color-keratin',
     indexLabel: '02',
-    title: 'PRECISION FADES & TAPERS',
-    category: 'haircuts',
+    title: 'HAIR COLOUR, BALAYAGE & KERATIN',
+    category: 'hair',
     description:
-      'Zero-gap skin fades, drop fades, mid fades, and classic tapers blended seamlessly with crisp razor hairline detailing.',
+      'Global hair colour, dimensional balayage, soft highlights, root touch-ups, keratin smoothing, and deep-nourishing hair spa rituals.',
     evidenceBasis:
-      'Popular across Rajkot for seamless fade transitions and long-lasting, clean contours.',
+      'Popular across Rajkot for ammonia-free shine, frizz control, and silky smooth texture.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
-    duration: '40-50 mins',
+    duration: '90-150 mins',
     featuredOrangeCard: true,
     iconName: 'layers',
   },
   {
-    id: 'beard-trim-grooming',
+    id: 'facials-skin-rituals',
     indexLabel: '03',
-    title: 'BEARD STYLING & ROYAL SHAVE',
-    category: 'beard',
+    title: 'LUXURY FACIALS & HYDRA GLOW',
+    category: 'skin',
     description:
-      'Balanced beard sculpting, length tapering, hot-towel royal shave, and razor-sharp cheek and neck lineups.',
+      'Skin-type clean-ups, hydra-glow facials, brightening de-tan treatments, and relaxing facial massage for luminous, refreshed skin.',
     evidenceBasis:
-      'Clients praise detailed beard shaping and sharp straight-razor lineups.',
+      'Tailored skincare rituals designed for Rajkot weather, sun protection, and festive radiance.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
-    duration: '20-30 mins',
+    duration: '45-60 mins',
     iconName: 'shield',
   },
   {
-    id: 'haircut-beard-combo',
+    id: 'threading-waxing-care',
     indexLabel: '04',
-    title: 'FULL CUT & BEARD SESSION',
-    category: 'beard',
+    title: 'THREADING, WAXING & BODY CARE',
+    category: 'skin',
     description:
-      'Coordinated haircut, skin fade, beard sculpting, and refreshing hair wash & styling in a single complete session.',
+      'Gentle precision eyebrow shaping, upper-lip & full-face threading, Rica & chocolate waxing, and soothing post-care hydration.',
     evidenceBasis:
-      'Top choice for weekly grooming, festive looks, and complete Rajkot makeover sessions.',
+      'Hygienic single-use applicators and gentle techniques trusted for sensitive skin.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
-    duration: '50-60 mins',
+    duration: '25-45 mins',
     iconName: 'scissors',
   },
   {
-    id: 'kids-family-cuts',
+    id: 'bridal-party-makeup',
     indexLabel: '05',
-    title: "CHILDREN'S & YOUTH CUTS",
-    category: 'specialty',
+    title: 'BRIDAL & PARTY MAKEUP STUDIO',
+    category: 'bridal',
     description:
-      'Patient, friendly, and stylish haircuts for kids, students, and teens in a welcoming AC salon at Arya Nagar, Rajkot.',
+      'HD and airbrush bridal makeup, sangeet & reception glam, floral bun & hair updo styling, plus traditional saree and dupatta draping.',
     evidenceBasis:
-      'Families across Ranchod Nagar and Pedak Road trust Classic Cut Salon for comfortable kids’ haircuts.',
+      'Camera-ready, sweat-resistant finishes crafted for Rajkot weddings, engagements, and festive nights.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
-    duration: '25-35 mins',
+    duration: '90-150 mins',
     iconName: 'users',
   },
   {
-    id: 'consultation-lineup',
+    id: 'manicure-pedicure-nails',
     indexLabel: '06',
-    title: 'FACIAL, DE-TAN & GROOM PACKAGE',
-    category: 'specialty',
+    title: 'MANICURE, PEDICURE & NAIL ART',
+    category: 'bridal',
     description:
-      'Revitalizing men’s de-tan cleanup, charcoal facial, nourishing hair spa, and custom style consultation for weddings & events.',
+      'Relaxing spa manicure & pedicure, cuticle care, long-wear gel polish, French tips, and custom bridal or festive nail art.',
     evidenceBasis:
-      'Complete skin and hair care treatments tailored for Rajkot weather and special occasions.',
+      'Complete hand, foot, and nail pampering in a calm, hygienic ladies studio.',
     priceNote: 'Confirm current rate via WhatsApp or Call',
     duration: '45-60 mins',
     iconName: 'compass',
@@ -220,7 +220,7 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
   {
     id: 'ev-name',
     item: 'Business Name',
-    value: 'Classic Cut Salon (Classic Cut Men’s Salon)',
+    value: 'Joie Salon (Joie Salon Men’s Salon)',
     category: 'supplied_fact',
     source: 'Rajkot local business listing',
     draftBehavior: 'Display prominently in Header, Hero, Structured Data, and Footer.',
@@ -252,9 +252,9 @@ export const EVIDENCE_INVENTORY: EvidenceRecord[] = [
   {
     id: 'ev-instagram',
     item: 'Instagram Profile',
-    value: 'https://www.instagram.com/classiccutmenssalon/',
+    value: 'https://www.instagram.com/joiesalonrajkot/',
     category: 'supplied_fact',
-    source: 'Classic Cut Men’s Salon Instagram',
+    source: 'Joie Salon Men’s Salon Instagram',
     draftBehavior: 'Use for social links and Transformation Gallery authentic work showcase.',
   },
   {
@@ -276,7 +276,7 @@ export const INITIAL_GALLERY_SLOTS: GallerySlotItem[] = [
     aspectRatio: '4:5',
     status: 'awaiting_authentic_photo',
     framingNote:
-      'Reserved for genuine paired client before/after photo from Classic Cut Salon, Arya Nagar, Rajkot. AI or stock haircut images are strictly excluded.',
+      'Reserved for genuine paired client before/after photo from Joie Salon, Arya Nagar, Rajkot. AI or stock haircut images are strictly excluded.',
   },
   {
     id: 'slot-beard-sculpt',
@@ -296,7 +296,7 @@ export const INITIAL_GALLERY_SLOTS: GallerySlotItem[] = [
     aspectRatio: '4:5',
     status: 'awaiting_authentic_photo',
     framingNote:
-      'Reserved for authentic client transformation from @classiccutmenssalon in Rajkot. Preview real cuts on Instagram below.',
+      'Reserved for authentic client transformation from @joiesalonrajkot in Rajkot. Preview real cuts on Instagram below.',
   },
 ];
 
@@ -341,7 +341,7 @@ export function validatePublicCopyCompliance(
     }
   }
 
-  // 3. Ensure primary booking URL points to verified Classic Cut Salon Rajkot WhatsApp
+  // 3. Ensure primary booking URL points to verified Joie Salon Rajkot WhatsApp
   if (info.bookingUrl !== 'https://wa.me/918282848453') {
     violations.push('Primary booking URL must match https://wa.me/918282848453.');
   }
@@ -554,12 +554,12 @@ export function getThemePaletteTokens(mode: ThemeMode): ThemePaletteTokens {
   if (mode === 'light') {
     return {
       mode: 'light',
-      canvasBg: '#FAF6EE',
+      canvasBg: '#F5F6F7',
       panelBg: '#FFFFFF',
-      textPrimary: '#1A130E',
-      textMuted: '#5C4B3B',
-      accentPrimary: '#D97706',
-      accentGold: '#B88235',
+      textPrimary: '#232C3B',
+      textMuted: '#4B5563',
+      accentPrimary: '#2E3440',
+      accentGold: '#505664',
     };
   }
   return {
@@ -661,7 +661,7 @@ export const PRODUCT_ITEMS: ProductItem[] = [
     holdOrFinish: 'Light Hold · Natural Flow',
     priceInr: '₹329',
     description:
-      'Used at every Classic Cut Salon chair before blow-drying to build effortless lift, beachy flow, and thermal shield against dryer heat.',
+      'Used at every Joie Salon chair before blow-drying to build effortless lift, beachy flow, and thermal shield against dryer heat.',
     keyBenefits: [
       'Boosts crown volume on fine or flat hair',
       'Protects hair fibers during blow-dry styling',
@@ -726,7 +726,7 @@ export function buildProductWhatsAppUrl(
   const cleanNames = productNames.map((n) => n.trim()).filter(Boolean);
   const message =
     cleanNames.length > 0
-      ? `Hi Classic Cut Salon (Rajkot), I would like to check availability / reserve these grooming products at your Arya Nagar salon: ${cleanNames.join(', ')}.`
-      : `Hi Classic Cut Salon (Rajkot), I would like to inquire about your salon grooming products.`;
+      ? `Hi Joie Salon (Rajkot), I would like to check availability / reserve these grooming products at your Arya Nagar salon: ${cleanNames.join(', ')}.`
+      : `Hi Joie Salon (Rajkot), I would like to inquire about your salon grooming products.`;
   return `${baseBookingUrl}?text=${encodeURIComponent(message)}`;
 }

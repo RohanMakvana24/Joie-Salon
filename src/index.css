@@ -453,58 +453,58 @@ main > section {
 }
 
 /* ==========================================================================
-   Light Theme ("Warm Ivory Daylight") Overrides
+   Light Theme ("Joie Salon Slate Charcoal & Crisp Off-White") Overrides
    ========================================================================== */
 
 html[data-theme="light"] {
-  --background: #FAF6EE;
-  --foreground: #1A130E;
+  --background: #F5F6F7;
+  --foreground: #232C3B;
   --card: #FFFFFF;
-  --card-foreground: #1A130E;
-  --border: rgba(45, 33, 24, 0.12);
-  --muted: #F3ECE0;
-  --muted-foreground: #5C4B3B;
-  --primary: #D97706;
-  --primary-foreground: #FFFFFF;
-  --color-canvas: #FAF6EE;
+  --card-foreground: #232C3B;
+  --border: rgba(35, 44, 59, 0.14);
+  --muted: #EAEDF0;
+  --muted-foreground: #4B5563;
+  --primary: #2E3440;
+  --primary-foreground: #F5F7FA;
+  --color-canvas: #F5F6F7;
   --color-panel: #FFFFFF;
-  --color-panel-elevated: #F3ECE0;
-  --color-brick-base: #EFE6D5;
-  --color-brick-mortar: #DFD2BC;
-  --color-primary-orange: #D97706;
-  --color-primary-orange-hover: #B45309;
-  --color-warm-gold: #A67224;
-  --color-main-text: #1A130E;
-  --color-muted-text: #5C4B3B;
-  --color-dark-ink: #1A130E;
-  background-color: #FAF6EE;
-  color: #1A130E;
+  --color-panel-elevated: #EAEDF0;
+  --color-brick-base: #E8ECEF;
+  --color-brick-mortar: #D5DCE2;
+  --color-primary-orange: #2E3440;
+  --color-primary-orange-hover: #3B4252;
+  --color-warm-gold: #505664;
+  --color-main-text: #232C3B;
+  --color-muted-text: #4B5563;
+  --color-dark-ink: #232C3B;
+  background-color: #F5F6F7;
+  color: #232C3B;
 }
 
 html[data-theme="light"] body {
-  background-color: #FAF6EE;
-  color: #1A130E;
+  background-color: #F5F6F7;
+  color: #232C3B;
 }
 
-/* Non-Hero sections & Footer adapt to Warm Ivory Daylight palette.
+/* Non-Hero sections & Footer adapt to Joie Salon Slate Charcoal & Crisp Off-White palette.
    The footer is excluded: it is a deliberately dark, cinematic sign-off in
    both themes. */
 html[data-theme="light"] main section:not(#top) {
-  background-color: #FAF6EE !important;
-  color: #1A130E !important;
-  border-color: rgba(184, 130, 53, 0.28) !important;
+  background-color: #F5F6F7 !important;
+  color: #232C3B !important;
+  border-color: rgba(35, 44, 59, 0.14) !important;
 }
 
 html[data-theme="light"] main section:not(#top).bg-dark-brick {
-  background-color: #F4EDE0 !important;
+  background-color: #EDF0F3 !important;
   background-image:
-    radial-gradient(circle at 50% 35%, rgba(255, 250, 240, 0.7) 0%, rgba(244, 237, 224, 0.95) 85%),
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.85) 0%, rgba(237, 240, 243, 0.96) 85%),
     repeating-linear-gradient(
       180deg,
-      rgba(215, 198, 172, 0.55) 0px,
-      rgba(215, 198, 172, 0.55) 3px,
-      rgba(247, 241, 230, 0.85) 3px,
-      rgba(241, 233, 218, 0.85) 32px
+      rgba(203, 213, 225, 0.45) 0px,
+      rgba(203, 213, 225, 0.45) 3px,
+      rgba(245, 246, 247, 0.9) 3px,
+      rgba(237, 240, 243, 0.9) 32px
     ) !important;
 }
 
@@ -522,9 +522,9 @@ html[data-theme="light"] main section:not(#top) .from-\[\#1C1510\],
 html[data-theme="light"] main section:not(#top) .from-\[\#211810\] {
   background-color: #FFFFFF !important;
   background-image: none !important;
-  color: #1A130E !important;
-  border-color: rgba(194, 139, 55, 0.16) !important;
-  box-shadow: 0 2px 6px rgba(26, 19, 14, 0.025), 0 10px 26px -6px rgba(26, 19, 14, 0.05) !important;
+  color: #232C3B !important;
+  border-color: rgba(35, 44, 59, 0.14) !important;
+  box-shadow: 0 2px 6px rgba(35, 44, 59, 0.03), 0 10px 26px -6px rgba(35, 44, 59, 0.06) !important;
 }
 
 /* Keep the Studio Bottle Pedestal stage & map overlay badges rich dark espresso so gold foil and map pins pop in both modes */
@@ -548,7 +548,7 @@ html[data-theme="light"] main section:not(#top) .text-\[\#F7F1E8\],
 html[data-theme="light"] main section:not(#top) .text-\[\#F7F1E8\]\/85,
 html[data-theme="light"] main section:not(#top) .text-\[\#E8E2D9\],
 html[data-theme="light"] footer .text-\[\#F7F1E8\] {
-  color: #1A130E !important;
+  color: #232C3B !important;
 }
 
 html[data-theme="light"] main section:not(#top) .text-\[\#C9B8A6\],
@@ -556,14 +556,14 @@ html[data-theme="light"] main section:not(#top) .text-\[\#DFD3C5\],
 html[data-theme="light"] main section:not(#top) .text-\[\#C3B6A8\],
 html[data-theme="light"] footer .text-\[\#C9B8A6\],
 html[data-theme="light"] footer .text-\[\#C3B6A8\] {
-  color: #4E3E30 !important;
+  color: #4B5563 !important;
 }
 
 html[data-theme="light"] main section:not(#top) .text-\[\#D9A34B\],
 html[data-theme="light"] main section:not(#top) .text-\[\#E5B96F\],
 html[data-theme="light"] footer .text-\[\#D9A34B\],
 html[data-theme="light"] footer .text-\[\#E5B96F\] {
-  color: #9A6519 !important;
+  color: #363D49 !important;
 }
 
 /* ==========================================================================

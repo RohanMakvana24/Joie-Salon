@@ -1,5 +1,8 @@
-﻿#services { --service-ink: #f4eadc; --service-muted: #b8a48d; --service-gold: #e2ba7e; --service-panel: #1b1510; --service-line: #c9a16d30; }
-html[data-theme='light'] #services { --service-ink: #2f231a; --service-muted: #806c56; --service-gold: #946731; --service-panel: #fffdf8; --service-line: #b58d5833; }
+#services { --service-ink: #f4eadc; --service-muted: #b8a48d; --service-gold: #e2ba7e; --service-panel: #1b1510; --service-line: #c9a16d30; }
+html[data-theme='light'] #services { --service-ink: #232C3B; --service-muted: #4B5563; --service-gold: #363D49; --service-panel: #FFFFFF; --service-line: rgba(35, 44, 59, 0.14); }
+html[data-theme='light'] .service-character-card__arch { background: linear-gradient(145deg, #434C5E, #2E3440); }
+html[data-theme='light'] .service-character-card[data-featured='true'] .service-character-card__arch { background: linear-gradient(145deg, #363D49, #232C3B); }
+html[data-theme='light'] .service-character-card__signature { background: #232C3B; color: #F5F7FA; }
 #services .service-deck { column-gap: 30px; row-gap: 46px; padding-inline: 0; }
 .service-character-card { display: flex; flex-direction: column; height: 100%; isolation: isolate; }
 .service-character-card__stage { position: relative; height: 263px; flex-shrink: 0; z-index: 2; }

@@ -10,42 +10,42 @@ export const SALON_FAQS: SalonFaqItem[] = [
     id: 'walkin-vs-appointment',
     question: 'Do I need to book in advance, or are walk-ins welcome?',
     answer:
-      'Walk-ins are always warmly welcomed! However, to skip peak wait times—especially on Friday evenings, weekends, and during wedding or festival seasons in Rajkot—we strongly recommend booking your preferred time slot via WhatsApp or direct phone call (+91 82828 48453).',
+      'Walk-ins are always welcome! However, to avoid waiting—especially on Friday evenings, weekends, and during wedding or Navratri seasons in Rajkot—we recommend booking your preferred slot via WhatsApp or phone call (+91 82828 48453).',
     category: 'booking',
   },
   {
-    id: 'exact-location-parking',
-    question: 'Where is Classic Cut Salon located, and is parking available?',
+    id: 'bridal-prebridal-packages',
+    question: 'What is included in your Bridal & Pre-Bridal packages?',
     answer:
-      'We are conveniently located at Pedak Cross Road, Opposite Umiya R.O., Ranchod Nagar Society, Arya Nagar, Rajkot (Gujarat 360003), near Balak Hanuman and Shree Atal Bihari Vajpayee Auditorium. Ample, convenient two-wheeler and four-wheeler parking is available directly in front of the salon.',
-    category: 'location',
+      'Our Royal Bridal & Pre-Bridal Edit includes a detailed makeup & hairstyle trial consultation, sweat-proof HD or airbrush bridal makeup, floral bun or hair updo styling, saree & dupatta draping, plus pre-bridal hydra-glow facials and mani-pedi care. We suggest booking 2–3 weeks before your wedding.',
+    category: 'services',
   },
   {
-    id: 'groom-wedding-packages',
-    question: 'What is included in your Groom & Wedding Makeover packages?',
+    id: 'hair-color-keratin-safety',
+    question: 'Are your hair colour, balayage, and keratin treatments ammonia-free?',
     answer:
-      'Our Signature Groom Package includes an unhurried style consultation, precision haircut/fade tailored to your wedding attire (Safa and reception suit), royal beard contouring with hot-towel steam, activated charcoal de-tan facial cleanup, and a restorative pro-keratin hair spa. We recommend booking 7–10 days before your wedding ceremonies.',
+      'Yes! We use gentle, salon-grade ammonia-free colour formulas and nourishing keratin/botox smoothing treatments tailored to Indian hair textures—giving you lasting shine and frizz control without harsh damage.',
     category: 'services',
   },
   {
     id: 'hygiene-standards',
-    question: 'What hygiene and sanitation standards do you follow?',
+    question: 'What hygiene and sanitation standards do you follow for ladies services?',
     answer:
-      'Client hygiene and safety are non-negotiable at Classic Cut Salon. We strictly use fresh, single-use surgical razor blades for every client, sanitize clippers and scissors with medical-grade disinfectant after each cut, provide fresh sanitized towels and neck strips, and maintain a spotless, fully air-conditioned environment.',
+      'Hygiene is our top priority at Joie Salon. We use fresh, single-use threading threads and waxing spatulas for every guest, medical-grade sanitization for manicure/pedicure tools and brushes, fresh sanitized towels, and a private, comfortable AC studio.',
     category: 'hygiene',
   },
   {
-    id: 'reference-photo-styling',
-    question: 'Can I show a photo or Instagram reel of the hairstyle I want?',
+    id: 'exact-location-parking',
+    question: 'Where is Joie Salon located, and is parking available?',
     answer:
-      'Yes, absolutely! We love when clients bring reference photos. Our stylists will assess your hair texture, thickness, face shape, and daily routine to recreate the look so that it suits you naturally and is easy to maintain with a helmet or daily commute.',
-    category: 'services',
+      'We are located at Jyoti Nagar Main Road, Near Masoom School, Behind Crystal Mall, Ghanshyam Nagar, Rajkot (Gujarat 360005), open Mon–Sun 10:00 AM to 8:00 PM. Convenient two-wheeler and four-wheeler parking is available right outside the salon.',
+    category: 'location',
   },
   {
     id: 'payment-methods',
     question: 'What payment options do you accept?',
     answer:
-      'We accept all modern digital payment options including Google Pay, PhonePe, Paytm, BHIM UPI, debit/credit cards, and cash.',
+      'We accept all UPI apps (Google Pay, PhonePe, Paytm, BHIM), debit/credit cards, and cash.',
     category: 'booking',
   },
 ];

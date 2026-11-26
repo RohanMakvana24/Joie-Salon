@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Classic Cut Salon — Visit & Book
+   Joie Salon — Visit & Book
    Full-bleed band: oversized heading, storefront illustration with a live
    pin on the left, address panel on the right, booking strip underneath.
    ========================================================================== */
@@ -19,12 +19,12 @@
 }
 
 html[data-theme='light'] .salon-visit {
-  --visit-bg: #faf6ee;
-  --visit-panel: #fffdf8;
-  --visit-ink: #2d2118;
-  --visit-muted: #75634f;
-  --visit-line: rgba(155, 120, 56, 0.22);
-  --visit-gold: #88602b;
+  --visit-bg: #F5F6F7;
+  --visit-panel: #FFFFFF;
+  --visit-ink: #232C3B;
+  --visit-muted: #4B5563;
+  --visit-line: rgba(35, 44, 59, 0.14);
+  --visit-gold: #363D49;
 }
 
 .salon-visit__inner {

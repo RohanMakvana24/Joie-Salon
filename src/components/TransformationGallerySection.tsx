@@ -11,7 +11,7 @@ const GALLERY_ITEMS = [
   { image: '/assets/hairstyles/rajkot-precision-fade.jpg', title: 'Rajkot Precision Fade', description: 'Seamless skin fade with razor-sharp hairline lineup.' },
   { image: '/assets/hairstyles/rajkot-royal-beard.jpg', title: 'Royal Beard Sculpting', description: 'Hot-towel straight-razor contouring & beard spa.' },
   { image: '/assets/hairstyles/rajkot-groom-styling.jpg', title: 'Groom Wedding Styling', description: 'Complete royal makeover for weddings and receptions.' },
-  { image: '/assets/location/rajkot-salon-experience.jpg', title: 'Classic Cut Lounge', description: 'Luxury grooming chair experience on Pedak Road.' },
+  { image: '/assets/location/rajkot-salon-experience.jpg', title: 'Joie Salon Lounge', description: 'Luxury grooming chair experience on Pedak Road.' },
   { image: '/assets/hairstyles/textured-crop.webp', title: 'Textured Crop', description: 'Choppy texture with a clean low fade.' },
   { image: '/assets/hairstyles/modern-quiff.webp', title: 'Modern Quiff', description: 'Lifted volume with neatly tapered sides.' },
   { image: '/assets/hairstyles/classic-side-part.webp', title: 'Classic Side Part', description: 'A clean part with a polished finish.' },

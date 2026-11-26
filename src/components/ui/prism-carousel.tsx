@@ -60,7 +60,7 @@ export function PrismCarousel({
     <div
       className={`prism-carousel ${className}`}
       aria-roledescription="carousel"
-      aria-label="Classic Cut transformations"
+      aria-label="Joie Salon transformations"
       onMouseEnter={() => pauseOnHover && setPaused(true)}
       onMouseLeave={() => pauseOnHover && setPaused(false)}
       onFocusCapture={() => setPaused(true)}

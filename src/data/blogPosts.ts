@@ -14,19 +14,19 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'best-mens-salon-in-rajkot-pedak-road',
-    title: "Why Classic Cut Salon is Ranked Among the Best Men's Salons in Rajkot",
-    description: "Looking for the top-rated men’s salon in Rajkot? Discover why Classic Cut Salon on Pedak Road, Arya Nagar is rated 4.9 stars for precision fades, beard sculpting and royal grooming.",
+    title: "Why Joie Salon is Ranked Among the Best Men's Salons in Rajkot",
+    description: "Looking for the top-rated men’s salon in Rajkot? Discover why Joie Salon on Pedak Road, Arya Nagar is rated 4.9 stars for precision fades, beard sculpting and royal grooming.",
     category: 'Rajkot Salons',
     publishedAt: '2026-11-13',
     image: '/assets/location/rajkot-salon-experience.jpg',
-    imageAlt: "Classic Cut Salon luxury barbershop interior on Pedak Road, Rajkot",
-    intro: "Rajkot's grooming culture has seen a dramatic elevation. Men across Saurashtra no longer settle for a generic quick cut; they demand master precision, tailored face-shape consultation, spotless hygiene, and an atmosphere that commands relaxation. Located at Pedak Cross Road, Arya Nagar, Classic Cut Salon has become the definitive grooming destination for gentlemen, professionals, and students across Rajkot.",
+    imageAlt: "Joie Salon luxury barbershop interior on Pedak Road, Rajkot",
+    intro: "Rajkot's grooming culture has seen a dramatic elevation. Men across Saurashtra no longer settle for a generic quick cut; they demand master precision, tailored face-shape consultation, spotless hygiene, and an atmosphere that commands relaxation. Located at Pedak Cross Road, Arya Nagar, Joie Salon has become the definitive grooming destination for gentlemen, professionals, and students across Rajkot.",
     sections: [
       {
         id: 'rajkot-barbering-standard',
         heading: 'Setting a New Benchmark for Barbershops in Rajkot',
         paragraphs: [
-          'In busy commercial hubs like Pedak Road, Ranchod Nagar, Patel Nagar, and Arya Nagar, finding a salon that balances contemporary urban hair design with warm, genuine hospitality is rare. Classic Cut Salon was built on a simple premise: master craftsmanship and disciplined technique for every single client who sits in the chair.',
+          'In busy commercial hubs like Pedak Road, Ranchod Nagar, Patel Nagar, and Arya Nagar, finding a salon that balances contemporary urban hair design with warm, genuine hospitality is rare. Joie Salon was built on a simple premise: master craftsmanship and disciplined technique for every single client who sits in the chair.',
           'From young college students traveling from Yagnik Road and Kalawad Road for trending textured crops, to business leaders preparing for high-stakes meetings, our salon provides a dedicated, unhurried service where your personal style preferences are prioritized.',
         ],
       },
@@ -47,7 +47,7 @@ export const BLOG_POSTS: BlogPost[] = [
         id: 'royal-beard-experience',
         heading: 'Signature Royal Shave & Kathiyawadi Beard Contouring',
         paragraphs: [
-          'In Rajkot, a well-groomed beard is a symbol of dignity, style, and presence. Classic Cut Salon is celebrated for its signature Royal Beard Sculpting ritual. We begin with warm herbal steam and essential oil prep to soften dense facial hair, followed by straight-razor cheek and neckline alignment.',
+          'In Rajkot, a well-groomed beard is a symbol of dignity, style, and presence. Joie Salon is celebrated for its signature Royal Beard Sculpting ritual. We begin with warm herbal steam and essential oil prep to soften dense facial hair, followed by straight-razor cheek and neckline alignment.',
           'We finish each beard session with pure Mysore sandalwood cooling balm and cold-pressed argan oil, sealing the follicles and leaving your beard remarkably soft, conditioned, and geometrically sharp.',
         ],
       },
@@ -55,7 +55,7 @@ export const BLOG_POSTS: BlogPost[] = [
         id: 'convenient-pedak-road-location',
         heading: 'Visit Us at Pedak Cross Road, Arya Nagar',
         paragraphs: [
-          'Conveniently situated opposite Umiya R.O. near Balak Hanuman and Shree Atal Bihari Vajpayee Auditorium, Classic Cut Salon features a fully air-conditioned, sanitized modern lounge designed for complete comfort.',
+          'Conveniently situated opposite Umiya R.O. near Balak Hanuman and Shree Atal Bihari Vajpayee Auditorium, Joie Salon features a fully air-conditioned, sanitized modern lounge designed for complete comfort.',
           'To avoid weekend waiting times, clients can easily reserve their preferred chair via WhatsApp or direct phone call (+91 82828 48453). Experience why hundreds of Rajkot locals trust us for their weekly grooming rituals.',
         ],
       },
@@ -68,7 +68,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: 'Haircuts & Styling',
     publishedAt: '2026-11-13',
     image: '/assets/hairstyles/rajkot-precision-fade.jpg',
-    imageAlt: 'Sharp mid skin fade with textured crop haircut at Classic Cut Salon Rajkot',
+    imageAlt: 'Sharp mid skin fade with textured crop haircut at Joie Salon Rajkot',
     intro: "Hair trends in Rajkot are evolving fast. With influences from global street style, cricket icons, and Bollywood cinema, Saurashtra's youth are embracing sharp skin fades, textured crops, and effortless tapers. Here is your definitive guide to the top men's haircuts trending across Rajkot in 2026 and how to ask your barber for the exact look.",
     sections: [
       {
@@ -97,7 +97,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: 'Helmet-Proof Hair for Daily Rajkot Commuters',
         paragraphs: [
           'Riding a two-wheeler along 150 Feet Ring Road, Kalawad Road, or Pedak Road in helmet conditions can instantly flatten most hairstyles. The secret to helmet-proof hair is choosing pliable styling products over stiff hair gels.',
-          'Avoid sticky lacquers that crack under helmet pressure. Instead, ask our barbers at Classic Cut Salon for a haircut structured around your natural cowlick and styled with water-soluble matte clay that can be remolded with fingers in five seconds once your helmet is off.',
+          'Avoid sticky lacquers that crack under helmet pressure. Instead, ask our barbers at Joie Salon for a haircut structured around your natural cowlick and styled with water-soluble matte clay that can be remolded with fingers in five seconds once your helmet is off.',
         ],
       },
       {
@@ -124,7 +124,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: 'The Signature Kathiyawadi Beard Contour',
         paragraphs: [
           'Men in Saurashtra take immense pride in their moustaches and beards. The royal Kathiyawadi beard contour emphasizes a pronounced, masculine jawline with neat, natural upper cheek boundaries and a sharp, clean fade into the sideburns.',
-          'At Classic Cut Salon, our barbers use single-use surgical steel blades in straight razors to carve symmetrical lines that complement your cheekbones and jaw angles without cutting unnaturally low into the neck.',
+          'At Joie Salon, our barbers use single-use surgical steel blades in straight razors to carve symmetrical lines that complement your cheekbones and jaw angles without cutting unnaturally low into the neck.',
         ],
       },
       {
@@ -159,7 +159,7 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: '2026-11-13',
     image: '/assets/hairstyles/rajkot-groom-styling.jpg',
     imageAlt: 'Indian groom wedding hair styling and royal beard makeover in Rajkot',
-    intro: "Your wedding day is one of the most memorable milestones of your life. Between high-definition cameras, drone photography, and bright stage lighting, every detail of your hair, beard, and skin will be in sharp focus. Here is our master grooming roadmap designed by Classic Cut Salon for Rajkot grooms.",
+    intro: "Your wedding day is one of the most memorable milestones of your life. Between high-definition cameras, drone photography, and bright stage lighting, every detail of your hair, beard, and skin will be in sharp focus. Here is our master grooming roadmap designed by Joie Salon for Rajkot grooms.",
     sections: [
       {
         id: 'wedding-grooming-timeline',
@@ -192,9 +192,9 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         id: 'reserve-groom-package',
-        heading: 'Booking Your Groom Session at Classic Cut Salon Rajkot',
+        heading: 'Booking Your Groom Session at Joie Salon Rajkot',
         paragraphs: [
-          'Wedding seasons in Gujarat (especially November through March) get booked weeks in advance. Message Classic Cut Salon on WhatsApp (+91 82828 48453) to reserve your personalized groom appointment and pre-wedding consultation.',
+          'Wedding seasons in Gujarat (especially November through March) get booked weeks in advance. Message Joie Salon on WhatsApp (+91 82828 48453) to reserve your personalized groom appointment and pre-wedding consultation.',
         ],
       },
     ],
@@ -205,8 +205,8 @@ export const BLOG_POSTS: BlogPost[] = [
     description: "Combating sun-tan from daily two-wheeler commuting and hair dryness from Saurashtra hard water: the ultimate salon guide to charcoal de-tan and restorative hair spas.",
     category: 'Skin & Hair Care',
     publishedAt: '2026-11-13',
-    image: '/assets/brand/classic-cut-luxury-logo.jpg',
-    imageAlt: 'Classic Cut Salon luxury emblem and grooming care in Rajkot',
+    image: '/assets/brand/joie-salon-luxury-card.jpg',
+    imageAlt: 'Joie Salon luxury emblem and grooming care in Rajkot',
     intro: "Rajkot's climate presents unique challenges for men: intense ultraviolet sunlight, high summer temperatures, persistent road dust, and mineral-heavy Saurashtra tap water. Professional skin cleanups and restorative hair spas are not luxuries—they are essential maintenance for the modern man.",
     sections: [
       {
@@ -214,7 +214,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: 'Overcoming Commuter Sun Tan & Road Dust',
         paragraphs: [
           'Daily commuting on motorcycles and scooters across Rajkot exposes the forehead, neck, and forearms to severe UV radiation and exhaust grime. Standard face washes only remove surface dust, allowing melanin pigmentation and stubborn tan to settle into deeper dermal layers.',
-          'At Classic Cut Salon, our Charcoal De-Tan Cleanup utilizes activated bamboo carbon to draw out embedded microscopic micro-pollutants, while gentle fruit alpha-hydroxy acids break down oxidized dead skin cells to restore your natural skin tone.',
+          'At Joie Salon, our Charcoal De-Tan Cleanup utilizes activated bamboo carbon to draw out embedded microscopic micro-pollutants, while gentle fruit alpha-hydroxy acids break down oxidized dead skin cells to restore your natural skin tone.',
         ],
       },
       {
@@ -236,7 +236,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: 'The 3-Step Weekly Grooming Routine for Rajkot Men',
         paragraphs: [
           'Consistency is key. Combine your regular salon visits with simple daily habits: wash with a gentle face cleanser twice daily, apply a nourishing beard oil, and protect your scalp with a lightweight UV hair serum.',
-          'Drop by Classic Cut Salon on Pedak Road, Arya Nagar, Rajkot, for a quick cleanup or full rejuvenation session, and feel refreshed from head to toe.',
+          'Drop by Joie Salon on Pedak Road, Arya Nagar, Rajkot, for a quick cleanup or full rejuvenation session, and feel refreshed from head to toe.',
         ],
       },
     ],

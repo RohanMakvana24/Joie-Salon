@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'best men salon in rajkot',
     'hair salon rajkot',
     'pedak road salon rajkot',
-    'classic cut salon rajkot',
+    'Joie Salon salon rajkot',
     'beard styling rajkot',
     'skin fade haircut rajkot',
     'groom wedding package rajkot',
@@ -41,10 +41,10 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/assets/brand/classic-cut-luxury-logo.jpg',
-        width: 1024,
-        height: 1024,
-        alt: 'Classic Cut Salon Rajkot - Best Men Salon on Pedak Road',
+        url: '/assets/brand/joie-salon-luxury-card.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Joie Salon Rajkot - Best Men Salon on Pedak Road',
       },
     ],
   },
@@ -52,11 +52,16 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: SEO_TITLE,
     description:
-      'Book your next haircut, fade, or beard styling session at Classic Cut Salon, Rajkot. Call +91 82828 48453.',
-    images: ['/assets/brand/classic-cut-luxury-logo.jpg'],
+      'Book your next haircut, fade, or beard styling session at Joie Salon, Rajkot. Call +91 82828 48453.',
+    images: ['/assets/brand/joie-salon-luxury-card.jpg'],
   },
   icons: {
-    icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230C0907' stroke='%23DFAF63' stroke-width='4'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' fill='%23DFAF63' font-family='Impact,sans-serif' font-size='28' font-weight='bold' letter-spacing='1'%3ECC%3C/text%3E%3C/svg%3E",
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/assets/brand/joie-salon-icon-gold.png', type: 'image/png' },
+      { url: '/assets/brand/joie-salon-icon-gold.webp', type: 'image/webp' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -66,7 +71,7 @@ const salonSchema = {
   ...(SITE_URL ? {
     '@id': `${SITE_URL}/#salon`,
     url: `${SITE_URL}/`,
-    logo: `${SITE_URL}/assets/brand/classic-cut-icon-cropped.png`,
+    logo: `${SITE_URL}/assets/brand/joie-salon-logo.png`,
   } : {}),
 };
 

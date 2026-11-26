@@ -59,7 +59,7 @@ interface HalftoneWordmarkProps {
   warm?: string;
 }
 
-export default function HalftoneWordmark({ wordmark = 'CLASSIC CUT', background, ink, warm = '#C58E3D' }: HalftoneWordmarkProps) {
+export default function HalftoneWordmark({ wordmark = 'JOIE SALON', background, ink, warm = '#C58E3D' }: HalftoneWordmarkProps) {
   const [ready, setReady] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);

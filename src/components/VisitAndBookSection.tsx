@@ -1,15 +1,27 @@
-import { SkeletonImage } from './ui/skeleton-image';
+'use client';
+
 import React, { useState } from 'react';
-import { MapPin, Phone, Navigation, ArrowUpRight, Plus, Minus, RotateCcw, Copy, Check } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { Phone, Navigation, ArrowUpRight, Copy, Check, Clock } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/barbershopData';
 import './VisitAndBookSection.css';
 import { BookingPlanner } from './BookingPlanner';
 
-const PLACE_ID = 'ChIJDz3mzNO1WTkR7HhDiGWnnB4';
-const DIRECTIONS = `https://www.google.com/maps/dir/?api=1&destination=Classic+Cut+Salon+Rajkot&destination_place_id=${PLACE_ID}`;
+const JoieSalonMap = dynamic(
+  () => import('./JoieSalonMap').then((mod) => mod.JoieSalonMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[360px] sm:min-h-[410px] rounded-xl bg-black/5 animate-pulse flex items-center justify-center text-xs uppercase tracking-widest opacity-60">
+        Loading interactive map...
+      </div>
+    ),
+  }
+);
+
+const DIRECTIONS_URL = BUSINESS_INFO.googleMapsUrl;
 
 export const VisitAndBookSection: React.FC = () => {
-  const [zoom, setZoom] = useState(1);
   const [copied, setCopied] = useState(false);
 
   const copyAddress = async () => {
@@ -32,15 +44,15 @@ export const VisitAndBookSection: React.FC = () => {
             </h2>
           </div>
           <p className="salon-visit__lede">
-            A familiar corner. A fresh new look.
+            Jyoti Nagar Main Road · Behind Crystal Mall.
             <br />
-            Find your chair at Classic Cut Salon, Rajkot.
+            Find your chair at Joie Salon, Rajkot.
           </p>
         </div>
 
         <div className="salon-visit__grid">
           <div className="salon-visit__info">
-            <p className="salon-visit__eyebrow">OUR LITTLE CORNER OF RAJKOT</p>
+            <p className="salon-visit__eyebrow">JYOTI NAGAR · RAJKOT 360005</p>
             <h3>
               Great hair.
               <br />
@@ -48,8 +60,13 @@ export const VisitAndBookSection: React.FC = () => {
             </h3>
             <p className="salon-visit__address-text">{BUSINESS_INFO.fullAddress}</p>
 
+            <div className="mt-3 inline-flex items-center gap-2 text-xs font-medium opacity-80">
+              <Clock size={14} aria-hidden="true" />
+              <span>Mon – Sun · 10:00 AM – 8:00 PM</span>
+            </div>
+
             <div className="salon-visit__info-actions">
-              <a className="salon-visit__button" href={DIRECTIONS} target="_blank" rel="noopener noreferrer">
+              <a className="salon-visit__button" href={DIRECTIONS_URL} target="_blank" rel="noopener noreferrer">
                 <Navigation size={15} aria-hidden="true" />
                 Get directions
                 <ArrowUpRight size={15} aria-hidden="true" />
@@ -67,55 +84,8 @@ export const VisitAndBookSection: React.FC = () => {
           </div>
 
           <figure className="salon-visit__map">
-            <div className="salon-visit__map-frame" style={{ transform: `scale(${zoom})` }}>
-              <SkeletonImage
-                src="/assets/location/classic-cut-neighborhood.webp"
-                alt="Miniature architectural illustration inspired by Classic Cut Salon’s ivory storefront, gold arched entrance and potted palms"
-                loading="lazy"
-                decoding="async"
-                draggable={false}
-              />
-            </div>
-
-            <a
-              className="salon-visit__pin"
-              href={DIRECTIONS}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Get directions to Classic Cut Salon"
-            >
-              <span className="salon-visit__pin-label">
-                CLASSIC CUT <span>YOUR CHAIR IS HERE</span>
-              </span>
-              <MapPin aria-hidden="true" />
-              <span className="salon-visit__pin-ring" />
-            </a>
-
-            <div className="salon-visit__zoom" role="group" aria-label="Illustration zoom">
-              <button
-                type="button"
-                aria-label="Zoom in illustration"
-                disabled={zoom >= 1.4}
-                onClick={() => setZoom((value) => Math.min(1.4, +(value + 0.1).toFixed(1)))}
-              >
-                <Plus size={16} />
-              </button>
-              <button
-                type="button"
-                aria-label="Zoom out illustration"
-                disabled={zoom <= 1}
-                onClick={() => setZoom((value) => Math.max(1, +(value - 0.1).toFixed(1)))}
-              >
-                <Minus size={16} />
-              </button>
-              <button type="button" aria-label="Reset illustration view" onClick={() => setZoom(1)}>
-                <RotateCcw size={14} />
-              </button>
-            </div>
-
-            <figcaption className="salon-visit__caption">Storefront-inspired illustration</figcaption>
+            <JoieSalonMap />
           </figure>
-
         </div>
 
         <BookingPlanner />

@@ -44,7 +44,7 @@ export const WhyChooseUsSection: React.FC = () => {
           <div className="inline-flex items-center justify-center gap-2.5 mb-3">
             <span className="h-[1px] w-6 bg-[#E5B96F]" />
             <p className="font-mono text-xs uppercase tracking-[0.26em] text-[#E5B96F]">
-              THE CLASSIC CUT STANDARD
+              THE JOIE SALON STANDARD
             </p>
             <span className="h-[1px] w-6 bg-[#E5B96F]" />
           </div>

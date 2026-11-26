@@ -23,13 +23,17 @@ test('filterServicesByCategory returns all 6 items for "all" and filters subsets
   const all = filterServicesByCategory(SERVICE_ITEMS, 'all');
   assert.equal(all.length, 6);
 
-  const haircuts = filterServicesByCategory(SERVICE_ITEMS, 'haircuts');
-  assert.equal(haircuts.length, 2);
-  assert.ok(haircuts.every((s) => s.category === 'haircuts'));
+  const hair = filterServicesByCategory(SERVICE_ITEMS, 'hair');
+  assert.equal(hair.length, 2);
+  assert.ok(hair.every((s) => s.category === 'hair'));
 
-  const beard = filterServicesByCategory(SERVICE_ITEMS, 'beard');
-  assert.equal(beard.length, 2);
-  assert.ok(beard.every((s) => s.category === 'beard'));
+  const skin = filterServicesByCategory(SERVICE_ITEMS, 'skin');
+  assert.equal(skin.length, 2);
+  assert.ok(skin.every((s) => s.category === 'skin'));
+
+  const bridal = filterServicesByCategory(SERVICE_ITEMS, 'bridal');
+  assert.equal(bridal.length, 2);
+  assert.ok(bridal.every((s) => s.category === 'bridal'));
 });
 
 test('validatePublicCopyCompliance passes for official Toronto data and catches unconfirmed prices or Jordan domain', () => {
@@ -69,10 +73,10 @@ test('clampHeroCropConfig constrains scale, offset, and overlap within safe resp
   assert.equal(DEFAULT_HERO_CROP.cutoutMode, 'vector_studio_cutout');
 });
 
-test('buildHairSalonSchemaJsonLd includes verified Classic Cut Salon Rajkot fields without fabricated ratings or hours', () => {
+test('buildHairSalonSchemaJsonLd includes verified Joie Salon Rajkot fields without fabricated ratings or hours', () => {
   const schema = buildHairSalonSchemaJsonLd(BUSINESS_INFO) as Record<string, unknown>;
   assert.equal(schema['@type'], 'HairSalon');
-  assert.equal(schema.name, 'Classic Cut Salon');
+  assert.equal(schema.name, 'Joie Salon');
   assert.equal(schema.telephone, '+91-82828-48453');
   assert.equal('aggregateRating' in schema, false);
   assert.equal('openingHours' in schema, false);
@@ -113,7 +117,7 @@ test('getNextThemeMode and getThemePaletteTokens toggle cleanly between dark and
   const darkTokens = getThemePaletteTokens('dark');
   const lightTokens = getThemePaletteTokens('light');
   assert.equal(darkTokens.canvasBg, '#0C0907');
-  assert.equal(lightTokens.canvasBg, '#FAF6EE');
+  assert.equal(lightTokens.canvasBg, '#F5F6F7');
   assert.notEqual(darkTokens.textPrimary, lightTokens.textPrimary);
 });
 

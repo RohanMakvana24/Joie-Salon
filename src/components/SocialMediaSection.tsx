@@ -10,14 +10,14 @@ import './SocialMediaSection.css';
 
 // Temporary search destinations approved by the owner until exact profiles are supplied.
 const FACEBOOK_URL = 'https://www.facebook.com/search/top?q=Classic%20Cut%20Salon%20Rajkot';
-const YOUTUBE_URL = 'https://www.youtube.com/results?search_query=Classic+Cut+Salon+Rajkot';
+const YOUTUBE_URL = 'https://www.youtube.com/results?search_query=Joie+Salon+Rajkot';
 const featuredReview = FAITHFUL_REVIEWS.find(review => review.reviewerName === 'Bharat Makawana');
 const CARD_REVIEW = featuredReview ? { name: featuredReview.reviewerName, quote: featuredReview.verbatimQuote } : undefined;
 const PROFILES = [
   { id: 'instagram', platform: 'Instagram', Icon: FaInstagram, handle: BUSINESS_INFO.instagramHandle, category: 'THE DAILY EDIT', headline: 'Your next look starts here.', description: 'Fresh cuts, style inspiration, and life behind the chair.', action: 'Follow on Instagram', href: BUSINESS_INFO.instagramUrl },
-  { id: 'facebook', platform: 'Facebook', Icon: FaFacebookF, handle: 'Classic Cut · Rajkot', category: 'THE LOCAL CONNECTION', headline: 'Good company. Great cuts.', description: 'Salon updates and familiar faces from your neighbourhood.', action: 'Follow on Facebook', href: FACEBOOK_URL },
+  { id: 'facebook', platform: 'Facebook', Icon: FaFacebookF, handle: 'Joie Salon · Rajkot', category: 'THE LOCAL CONNECTION', headline: 'Good company. Great cuts.', description: 'Salon updates and familiar faces from your neighbourhood.', action: 'Follow on Facebook', href: FACEBOOK_URL },
   { id: 'google', platform: 'Google', Icon: FcGoogle, handle: 'Arya Nagar, Rajkot', category: 'REAL CLIENT STORIES', headline: 'Your words mean a lot.', description: 'Tell us about your visit. We would love to hear it.', action: 'Review us on Google', href: BUSINESS_INFO.googleReviewsUrl },
-  { id: 'youtube', platform: 'YouTube', Icon: FaYoutube, handle: 'Classic Cut Salon', category: 'STYLE IN MOTION', headline: 'A closer look at the craft.', description: 'The details, the process, and the finishing touches.', action: 'Subscribe on YouTube', href: YOUTUBE_URL },
+  { id: 'youtube', platform: 'YouTube', Icon: FaYoutube, handle: 'Joie Salon', category: 'STYLE IN MOTION', headline: 'A closer look at the craft.', description: 'The details, the process, and the finishing touches.', action: 'Subscribe on YouTube', href: YOUTUBE_URL },
 ];
 
 function CardClip() {
@@ -69,12 +69,12 @@ export function SocialMediaSection() {
     <section id="social" className="salon-social" aria-labelledby="social-heading">
       <div className="salon-social__inner">
         <header className="salon-social__header">
-          <div><p className="salon-social__eyebrow"><span />THE CLASSIC CUT SOCIAL CLUB</p><h2 id="social-heading">Good style.<br /><span>Better company.</span></h2></div>
-          <div className="salon-social__intro"><p>The conversation continues beyond the chair.<br />Find your inspiration. Share your experience.<br />Stay part of the Classic Cut circle.</p><a href={BUSINESS_INFO.instagramUrl} target="_blank" rel="noopener noreferrer">{BUSINESS_INFO.instagramHandle}<ArrowUpRight size={15} aria-hidden="true" /></a></div>
+          <div><p className="salon-social__eyebrow"><span />THE JOIE SALON SOCIAL CLUB</p><h2 id="social-heading">Good style.<br /><span>Better company.</span></h2></div>
+          <div className="salon-social__intro"><p>The conversation continues beyond the chair.<br />Find your inspiration. Share your experience.<br />Stay part of the Joie Salon circle.</p><a href={BUSINESS_INFO.instagramUrl} target="_blank" rel="noopener noreferrer">{BUSINESS_INFO.instagramHandle}<ArrowUpRight size={15} aria-hidden="true" /></a></div>
         </header>
 
         <div className="community-deck">
-          <div ref={stageRef} className="community-deck__stage" role="group" aria-label="Classic Cut social profiles" onKeyDown={event => {
+          <div ref={stageRef} className="community-deck__stage" role="group" aria-label="Joie Salon social profiles" onKeyDown={event => {
             if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
             event.preventDefault();
             const next = event.key === 'Home' ? 0 : event.key === 'End' ? PROFILES.length - 1 : (active + (event.key === 'ArrowRight' ? 1 : -1) + PROFILES.length) % PROFILES.length;
@@ -94,7 +94,7 @@ export function SocialMediaSection() {
                   <article className="community-card" aria-labelledby={`social-${profile.id}-title`}>
                     <CardClip />
                     <div className="community-card__top"><span><profile.Icon aria-hidden="true" />{profile.platform}</span><span>0{index + 1}</span></div>
-                    <div className="community-card__identity"><span><img src="/assets/brand/classic-cut-icon-cropped.webp" width="27" height="30" alt="" loading="lazy" /></span><div><h3 id={`social-${profile.id}-title`}>Classic Cut Salon</h3><p>{profile.handle}</p></div></div>
+                    <div className="community-card__identity"><span><img src="/assets/brand/joie-salon-icon-gold.webp" width="27" height="30" alt="Joie Salon" loading="lazy" /></span><div><h3 id={`social-${profile.id}-title`}>Joie Salon</h3><p>{profile.handle}</p></div></div>
                     <div className={`community-card__preview community-card__preview--${profile.id}`}>
                       {profile.id === 'instagram' && <div className="community-card__photos">{['modern-quiff', 'textured-crop', 'classic-side-part'].map((name, i) => <span key={name}><SkeletonImage src={`/assets/hairstyles/${name}.webp`} alt={['Modern quiff inspiration', 'Textured crop inspiration', 'Classic side part inspiration'][i]} loading="lazy" /></span>)}</div>}
                       {profile.id === 'facebook' && <div className="community-card__community"><FaFacebookF aria-hidden="true" /><span>OUR KIND OF COMMUNITY</span><strong>Rooted in Rajkot.<br />Connected by style.</strong><span><MapPin size={10} aria-hidden="true" />Arya Nagar, Rajkot</span></div>}
@@ -102,7 +102,7 @@ export function SocialMediaSection() {
                       {profile.id === 'youtube' && <div className="community-card__video"><SkeletonImage src="/assets/hairstyles/slick-back-ai.webp" alt="Slicked-back hairstyle inspiration" loading="lazy" /><span><Play size={12} fill="currentColor" aria-hidden="true" /></span><small>INSIDE THE CHAIR</small></div>}
                     </div>
                     <div className="community-card__editorial"><span>{profile.category}</span><h4>{profile.headline}</h4><p>{profile.description}</p></div>
-                    <a className="community-card__follow" href={profile.href} target="_blank" rel="noopener noreferrer" aria-label={`${profile.action} — Classic Cut Salon`}>{profile.action}<ArrowUpRight size={15} aria-hidden="true" /></a>
+                    <a className="community-card__follow" href={profile.href} target="_blank" rel="noopener noreferrer" aria-label={`${profile.action} — Joie Salon`}>{profile.action}<ArrowUpRight size={15} aria-hidden="true" /></a>
                   </article>
                   </SocialLanyardCard>
                 </div>

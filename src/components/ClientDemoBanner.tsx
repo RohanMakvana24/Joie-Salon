@@ -48,7 +48,7 @@ export const ClientDemoBanner: React.FC = () => {
       </div>
 
       <p className="mt-2 text-xs leading-relaxed text-[#D2C5B6]">
-        <strong>Classic Cut Salon Demo:</strong> The layout, speed, and local Rajkot SEO are fully optimized. All images, services, and team details will be updated with your original salon photos and official rates upon your approval!
+        <strong>Joie Salon Demo:</strong> The layout, speed, and local Rajkot SEO are fully optimized. All images, services, and team details will be updated with your original salon photos and official rates upon your approval!
       </p>
 
       <div className="mt-3 pt-2.5 border-t border-[#DFAF63]/20 flex items-center justify-between">

@@ -16,6 +16,7 @@ import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { ServicesSection } from './components/ServicesSection';
 import { GroomingPackagesSection } from './components/GroomingPackagesSection';
+import { OurBridalsSection } from './components/OurBridalsSection';
 import { WhyChooseUsSection } from './components/WhyChooseUsSection';
 import { ProductsSection } from './components/ProductsSection';
 import { MeetYourBarberSection } from './components/MeetYourBarberSection';
@@ -33,6 +34,7 @@ const SiteSections = memo(function SiteSections() {
     <>
       <ServicesSection />
       <GroomingPackagesSection />
+      <OurBridalsSection />
       <WhyChooseUsSection />
       <ProductsSection />
       <MeetYourBarberSection />
@@ -83,7 +85,7 @@ export default function App() {
     <div
       className={`min-h-screen flex flex-col transition-colors duration-300 ${
         theme === 'light'
-          ? 'bg-[#FAF6EE] text-[#1A130E]'
+          ? 'bg-[#F5F6F7] text-[#232C3B]'
           : 'bg-[#0C0907] text-[#F7F1E8]'
       }`}
     >
@@ -102,11 +104,7 @@ export default function App() {
       />
 
       <main id="main-content" className="flex-1">
-        <HeroSection
-          cropConfig={cropConfig}
-          customCutoutUrl={customCutoutUrl}
-          onOpenInspector={handleOpenInspector}
-        />
+        <HeroSection />
 
         <SiteSections />
       </main>

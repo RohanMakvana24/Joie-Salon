@@ -16,24 +16,69 @@ import {
 } from '../data/barbershopData';
 import './ServicesSection.css';
 import { SalonServiceIcon } from './SalonServiceIcon';
+import { useTheme } from '../hooks/useActivity';
 
 const CATEGORY_TABS: { id: ServiceCategoryFilter; label: string }[] = [
   { id: 'all', label: 'All Services (6)' },
-  { id: 'haircuts', label: 'Haircuts & Fades' },
-  { id: 'beard', label: 'Beard & Grooming' },
-  { id: 'specialty', label: 'Kids & Groom Packages' },
+  { id: 'hair', label: 'Hair & Colour' },
+  { id: 'skin', label: 'Skin & Beauty' },
+  { id: 'bridal', label: 'Bridal & Nails' },
 ];
 
 const SERVICE_VISUALS: Record<string, { image: string; alt: string; title: string; detail: string; tags: string[]; word: string }> = {
-  'classic-modern-haircuts': { image: 'haircut', alt: '3D man showing a freshly styled textured quiff', title: 'Haircuts & Restyling', detail: 'A cut shaped around your face, your texture and your everyday style.', tags: ['Scissor craft', 'Styled finish'], word: 'FRESH' },
-  'skin-taper-fades': { image: 'fade', alt: '3D man showing a clean skin fade and textured top', title: 'Fades & Tapers', detail: 'Seamless blends, crisp edges and a fade that looks sharp from every angle.', tags: ['Skin fade', 'Clean lineup'], word: 'SHARP' },
-  'beard-trim-grooming': { image: 'beard', alt: '3D man with a sculpted beard holding a beard comb', title: 'Beard & Royal Shave', detail: 'A balanced beard, a precise lineup and a little hot-towel luxury.', tags: ['Beard sculpt', 'Hot towel'], word: 'REFINED' },
-  'haircut-beard-combo': { image: 'combo', alt: '3D man with a coordinated fresh haircut and shaped beard', title: 'The Complete Look', detail: 'Haircut, fade and beard detailing, brought together in one fresh session.', tags: ['Cut + beard', 'Full refresh'], word: 'COMPLETE' },
-  'kids-family-cuts': { image: 'kids', alt: 'Cheerful 3D boy with a neat short haircut giving a thumbs up', title: 'Little Legends', detail: 'Patient hands, happy faces and school-ready styles for our younger guests.', tags: ['Kids & teens', 'Gentle styling'], word: 'HAPPY' },
-  'consultation-lineup': { image: 'facial', alt: '3D man enjoying a charcoal facial treatment and holding a towel', title: 'Skin & Groom Rituals', detail: 'De-tan, charcoal facials and thoughtful grooming for your next big moment.', tags: ['Skin refresh', 'Groom prep'], word: 'GLOW' },
+  'ladies-haircuts-styling': {
+    image: '/assets/characters/services/ladies-haircut.png',
+    alt: '3D woman showing glossy layered hair and a fresh bouncy blowout',
+    title: 'Haircuts & Blow-Dry',
+    detail: 'Layer, feather and step cuts shaped around your face with a silky salon blow-dry.',
+    tags: ['Layer & feather', 'Blow-dry finish'],
+    word: 'CHIC',
+  },
+  'hair-color-keratin': {
+    image: '/assets/characters/services/ladies-color.png',
+    alt: '3D woman with caramel balayage highlights and smooth shiny hair',
+    title: 'Colour, Balayage & Keratin',
+    detail: 'Dimensional balayage, root touch-ups, keratin smoothing and nourishing hair spa.',
+    tags: ['Balayage & colour', 'Keratin spa'],
+    word: 'RADIANT',
+  },
+  'facials-skin-rituals': {
+    image: '/assets/characters/services/ladies-facial.png',
+    alt: '3D woman with glowing skin holding a luxury facial serum dropper',
+    title: 'Facials & Hydra Glow',
+    detail: 'Clean-ups, hydra-glow facials and gentle de-tan rituals for luminous skin.',
+    tags: ['Hydra facial', 'De-tan glow'],
+    word: 'GLOW',
+  },
+  'threading-waxing-care': {
+    image: '/assets/characters/services/ladies-threading.png',
+    alt: '3D woman with neatly shaped eyebrows holding a sleek salon mirror',
+    title: 'Threading & Waxing',
+    detail: 'Precision brow shaping, Rica & chocolate waxing, and soothing post-care hydration.',
+    tags: ['Brow shaping', 'Rica waxing'],
+    word: 'SMOOTH',
+  },
+  'bridal-party-makeup': {
+    image: '/assets/characters/services/ladies-bridal.png',
+    alt: '3D Indian bride-to-be in maroon and gold lehenga with soft glam bridal makeup',
+    title: 'Bridal & Party Makeup',
+    detail: 'HD & airbrush bridal glam, floral bun styling and traditional saree draping.',
+    tags: ['HD & airbrush', 'Hair & draping'],
+    word: 'BRIDAL',
+  },
+  'manicure-pedicure-nails': {
+    image: '/assets/characters/services/ladies-nails.png',
+    alt: '3D woman admiring her freshly manicured glossy nails',
+    title: 'Mani-Pedi & Nail Art',
+    detail: 'Spa manicure & pedicure, gel polish, French tips and custom festive nail art.',
+    tags: ['Spa mani-pedi', 'Gel & nail art'],
+    word: 'GLAM',
+  },
 };
 
 export const ServicesSection: React.FC = () => {
+  const theme = useTheme();
+  const isLight = theme === 'light';
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategoryFilter>('all');
   const [activeCard, setActiveCard] = useState(0);
   const deckRef = React.useRef<HTMLDivElement>(null);
@@ -71,7 +116,7 @@ export const ServicesSection: React.FC = () => {
             <div className="inline-flex items-center gap-2.5 mb-3">
               <span className="h-[1px] w-7 bg-[#E5B96F]" />
               <p className="font-mono text-xs uppercase tracking-[0.26em] text-[#E5B96F]">
-                CRAFT &amp; GROOMING MENU · RAJKOT, GUJARAT
+                HAIR, SKIN &amp; BRIDAL MENU · RAJKOT, GUJARAT
               </p>
             </div>
             <h2
@@ -79,7 +124,13 @@ export const ServicesSection: React.FC = () => {
               className="font-display uppercase text-4xl sm:text-5xl md:text-[3.5rem] text-[#F7F1E8] tracking-[-0.01em] leading-none"
             >
               OUR{' '}
-              <span className="bg-gradient-to-b from-[#FFF2C6] via-[#E5B96F] to-[#C28B37] bg-clip-text text-transparent">
+              <span
+                className={`bg-gradient-to-b bg-clip-text text-transparent ${
+                  isLight
+                    ? 'from-[#5C392E] via-[#4C2E26] to-[#2A170F]'
+                    : 'from-[#FFF2C6] via-[#E5B96F] to-[#C28B37]'
+                }`}
+              >
                 SERVICES
               </span>
             </h2>
@@ -89,8 +140,10 @@ export const ServicesSection: React.FC = () => {
             {/* Sleek Category Filter Bar — 2x2 Rounded Grid on Mobile, Pill Bar on sm+ */}
             <div
               role="tablist"
-              aria-label="Filter barbershop services by category"
-              className="grid grid-cols-2 sm:inline-flex sm:flex-wrap items-center gap-1.5 rounded-2xl sm:rounded-full border border-[#DFAF63]/25 bg-[#140F0C] p-1.5 w-full sm:w-auto self-start lg:self-auto"
+              aria-label="Filter salon services by category"
+              className={`grid grid-cols-2 sm:inline-flex sm:flex-wrap items-center gap-1.5 rounded-2xl sm:rounded-full border p-1.5 w-full sm:w-auto self-start lg:self-auto ${
+                isLight ? 'border-[#232C3B]/15 bg-white' : 'border-[#DFAF63]/25 bg-[#140F0C]'
+              }`}
             >
               {CATEGORY_TABS.map((tab) => {
                 const isActive = selectedCategory === tab.id;
@@ -103,7 +156,11 @@ export const ServicesSection: React.FC = () => {
                     onClick={() => { setSelectedCategory(tab.id); setActiveCard(0); resetDrag(); }}
                     className={`px-3 py-2.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-full text-[11px] sm:text-xs font-semibold tracking-[0.03em] sm:tracking-[0.06em] text-center transition-all cursor-pointer focus-ring ${
                       isActive
-                        ? 'bg-gradient-to-r from-[#E8C27A] via-[#DFAF63] to-[#C58E3D] text-[#090705] shadow-[0_4px_16px_rgba(223,175,99,0.3)]'
+                        ? isLight
+                          ? 'bg-gradient-to-r from-[#363D49] via-[#2E3440] to-[#232C3B] text-[#F5F7FA] shadow-[0_4px_16px_rgba(35,44,59,0.25)]'
+                          : 'bg-gradient-to-r from-[#E8C27A] via-[#DFAF63] to-[#C58E3D] text-[#090705] shadow-[0_4px_16px_rgba(223,175,99,0.3)]'
+                        : isLight
+                        ? 'text-[#4B5563] hover:text-[#232C3B]'
                         : 'text-[#C9B8A6] hover:text-[#F7F1E8]'
                     }`}
                   >
@@ -175,8 +232,8 @@ export const ServicesSection: React.FC = () => {
                 <div className="service-character-card__stage">
                   <div className="service-character-card__arch" aria-hidden="true"><span>{visual.word}</span></div>
                   <span className="service-character-card__spark" aria-hidden="true"><SalonServiceIcon serviceId={service.id} /></span>
-                  <SkeletonImage skeletonClassName="image-skeleton--portrait" src={`/assets/characters/services/${visual.image}.webp`} alt={visual.alt} loading="lazy" decoding="async" draggable={false} width="1024" height="1024" />
-                  {isFeatured && <span className="service-character-card__signature">THE SIGNATURE CUT</span>}
+                  <SkeletonImage skeletonClassName="image-skeleton--portrait" src={visual.image} alt={visual.alt} loading="lazy" decoding="async" draggable={false} width="1024" height="1024" />
+                  {isFeatured && <span className="service-character-card__signature">THE SIGNATURE LOOK</span>}
                 </div>
                 <div className="service-character-card__body">
                   <div className="service-character-card__eyebrow">
@@ -193,7 +250,7 @@ export const ServicesSection: React.FC = () => {
                   <h3>{visual.title}</h3>
                   <p>{visual.detail}</p>
                   <div className="service-character-card__tags">{visual.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
-                  <div className="service-character-card__actions"><a href={`${BUSINESS_INFO.bookingUrl}?text=${encodeURIComponent('Hi Classic Cut Salon, I would like to book ' + visual.title + '.')}`} target="_blank" rel="noopener noreferrer">Book this look <ArrowUpRight size={16} /></a><a href={BUSINESS_INFO.phoneHref} aria-label={`Call for ${visual.title} pricing`}>Call for pricing</a></div>
+                  <div className="service-character-card__actions"><a href={`${BUSINESS_INFO.bookingUrl}?text=${encodeURIComponent('Hi Joie Salon, I would like to book ' + visual.title + '.')}`} target="_blank" rel="noopener noreferrer">Book this look <ArrowUpRight size={16} /></a><a href={BUSINESS_INFO.phoneHref} aria-label={`Call for ${visual.title} pricing`}>Call for pricing</a></div>
                 </div>
               </article>
 
@@ -219,10 +276,10 @@ export const ServicesSection: React.FC = () => {
         <div className="luxury-card-shadow mt-10 sm:mt-12 rounded-2xl border border-[#DFAF63]/25 bg-[#140F0C] p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="max-w-2xl">
             <p className="text-base sm:text-lg font-bold text-[#F7F1E8]">
-              Looking for a custom makeover, wedding groom package, or kids haircut timing in Rajkot?
+              Looking for a custom haircut, bridal makeup trial, or skin ritual in Rajkot?
             </p>
             <p className="text-xs sm:text-sm text-[#C9B8A6] mt-1 leading-relaxed">
-              Every session at Classic Cut Salon is tailored to your hair texture and consultation. Message us on WhatsApp or call our Arya Nagar, Rajkot salon directly.
+              Every session at Joie Salon is tailored to your hair texture, skin type, and occasion. Message us on WhatsApp or call our Rajkot ladies salon directly.
             </p>
           </div>
 

@@ -25,8 +25,8 @@ export const MeetYourBarberSection: React.FC = () => {
   };
   const selectedServices = CONSULTATION_TOPICS.filter(topic => selectedTopics.includes(topic.id));
   const bookingNote = selectedServices.length
-    ? `Hi Classic Cut Salon, I would like to book ${selectedServices.map(topic => topic.summary).join(' and ')}.`
-    : 'Hi Classic Cut Salon, I would like to book an appointment.';
+    ? `Hi Joie Salon, I would like to book ${selectedServices.map(topic => topic.summary).join(' and ')}.`
+    : 'Hi Joie Salon, I would like to book an appointment.';
   const bookingUrl = `${BUSINESS_INFO.bookingUrl}?text=${encodeURIComponent(bookingNote)}`;
   const copyNote = async () => {
     try { await navigator.clipboard.writeText(bookingNote); setCopyStatus('copied'); }
@@ -38,12 +38,12 @@ export const MeetYourBarberSection: React.FC = () => {
       <div className="meet-salon__inner">
         <header className="meet-salon__header">
           <div><p className="meet-salon__eyebrow">A LITTLE ABOUT YOUR NEXT FAVOURITE PLACE</p><h2 id="about-heading">Meet Your <span>Salon.</span></h2></div>
-          <a className="meet-salon__instagram" href={BUSINESS_INFO.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Visit Classic Cut Salon on Instagram"><Instagram size={15} /><span>{BUSINESS_INFO.instagramHandle}</span><ArrowUpRight size={16} /></a>
+          <a className="meet-salon__instagram" href={BUSINESS_INFO.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Visit Joie Salon on Instagram"><Instagram size={15} /><span>{BUSINESS_INFO.instagramHandle}</span><ArrowUpRight size={16} /></a>
         </header>
 
         <div className="meet-salon__story">
           <div className="meet-salon__copy">
-            <span className="meet-salon__place"><span /> CLASSIC CUT · ARYA NAGAR</span>
+            <span className="meet-salon__place"><span /> JOIE SALON · ARYA NAGAR</span>
             <h3>Big style.<br /><span>Little legends.</span></h3>
             <p>A fresh fade for him. A first big-boy cut for the little one. A good conversation before every snip.</p>
             <p>We shape every look around your face, your routine and what makes you, you.</p>
@@ -56,7 +56,7 @@ export const MeetYourBarberSection: React.FC = () => {
             <span className="meet-salon__orbit meet-salon__orbit--one" aria-hidden="true" />
             <span className="meet-salon__orbit meet-salon__orbit--two" aria-hidden="true" />
             <div className="meet-salon__floor" aria-hidden="true" />
-            <SkeletonImage skeletonClassName="image-skeleton--portrait" src="/assets/characters/men-and-kids-3d.webp" alt="Friendly 3D adult and child characters with freshly styled hair, standing together" loading="lazy" decoding="async" width="1254" height="1254" />
+            <SkeletonImage skeletonClassName="image-skeleton--portrait" src="/assets/characters/women-salon-3d.webp" alt="Three stylish 3D women characters with freshly styled hair, glowing skin, and festive bridal elegance standing together" loading="lazy" decoding="async" width="1024" height="1024" />
             <span className="meet-salon__sticker"><Scissors size={14} /> A little confidence<br /><strong>looks good on everyone.</strong></span>
             <span className="meet-salon__stage-caption">MEN’S GROOMING <span>✂</span> KIDS’ CUTS</span>
           </div>

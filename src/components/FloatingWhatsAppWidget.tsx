@@ -19,7 +19,7 @@ export const FloatingWhatsAppWidget: React.FC = () => {
   }, []);
 
   const whatsappMessage = encodeURIComponent(
-    'Hi Classic Cut Salon! I would like to book an appointment at your Arya Nagar, Rajkot salon.'
+    'Hi Joie Salon! I would like to book an appointment at your Arya Nagar, Rajkot salon.'
   );
   const whatsappUrl = `${BUSINESS_INFO.bookingUrl}?text=${whatsappMessage}`;
 

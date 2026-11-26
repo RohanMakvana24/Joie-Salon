@@ -157,7 +157,7 @@ export const ProductsSection: React.FC = () => {
   return (
     <section
       id="products"
-      className="relative border-b border-[#B88235]/28 bg-[var(--color-background)] py-16 text-[var(--color-foreground)] sm:py-20"
+      className="relative bg-[var(--color-background)] py-16 text-[var(--color-foreground)] sm:py-20"
     >
       <div className="site-container relative z-10">
         <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -178,7 +178,7 @@ export const ProductsSection: React.FC = () => {
               </span>
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
-              Counter-sold grooming formulas used on every chair at Classic Cut. Explore
+              Counter-sold grooming formulas used on every chair at Joie Salon. Explore
               the collection and find your everyday essentials.
             </p>
           </div>
@@ -187,7 +187,7 @@ export const ProductsSection: React.FC = () => {
             <div
               role="tablist"
               aria-label="Filter salon products by category"
-              className="grid w-full grid-cols-2 items-center gap-1.5 rounded-2xl border border-[#B88235]/28 bg-[var(--color-card)] p-1.5 sm:inline-flex sm:w-auto sm:rounded-full"
+              className="grid w-full grid-cols-2 items-center gap-1.5 rounded-2xl bg-[var(--color-card)] p-1.5 sm:inline-flex sm:w-auto sm:rounded-full"
             >
               {CATEGORY_TABS.map((tab) => {
                 const isActive = selectedCategory === tab.id;
@@ -224,7 +224,7 @@ export const ProductsSection: React.FC = () => {
           onToggleWishlist={toggleWishlist}
           loop={false}
           scrollWithPage={false}
-          height="clamp(480px, 46vw, 600px)"
+          height="clamp(520px, 54vw, 720px)"
           stickyTop="var(--salon-header-h)"
           style={
             {
@@ -235,7 +235,7 @@ export const ProductsSection: React.FC = () => {
             } as React.CSSProperties
           }
           itemNoun="product"
-          ariaLabel="Classic Cut Salon product collection"
+          ariaLabel="Joie Salon product collection"
           primaryActionLabel="See the result"
           secondaryActionLabel="Order on WhatsApp"
           overviewLabel="Overview"
@@ -247,7 +247,7 @@ export const ProductsSection: React.FC = () => {
         />
 
         {/* Bottom Featured & Booking Strip */}
-        <div className="mt-10 flex flex-col justify-between gap-6 rounded-2xl border border-[#B88235]/28 bg-[var(--color-card)] p-6 shadow-sm sm:mt-12 sm:p-8 lg:flex-row lg:items-center">
+        <div className="mt-10 flex flex-col justify-between gap-6 rounded-2xl bg-[var(--color-card)] p-6 shadow-sm sm:mt-12 sm:p-8 lg:flex-row lg:items-center">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F59E0B]/12 text-[#D9A34B]">

@@ -22,7 +22,7 @@
 .signature-package__stage:before{content:'';position:absolute;width:80%;height:140%;left:-22%;top:-30%;border-radius:50%;background:#fff8;transform:rotate(-35deg)}
 .signature-package__stage:after{content:'';position:absolute;width:65%;height:130%;right:-38%;top:-20%;border:1px solid #ffffff8a;border-radius:50%;box-shadow:0 0 0 20px #ffffff17,0 0 0 40px #ffffff12;transform:rotate(35deg)}
 .signature-package__edition{position:absolute;top:23px;left:26px;font-family:var(--font-display);font-size:12px;letter-spacing:.1em;color:#51412d;z-index:4}
-.signature-package__edition:after{content:' / CLASSIC CUT';font-size:7px;letter-spacing:.13em;opacity:.6}
+.signature-package__edition:after{content:' / JOIE SALON';font-size:7px;letter-spacing:.13em;opacity:.6}
 .signature-package__motto{position:absolute;top:115px;left:20px;right:20px;text-align:center;font-family:var(--font-display);font-size:72px;line-height:1;font-weight:800;letter-spacing:-.055em;color:#fff7;white-space:nowrap;z-index:0}
 .signature-package__stage>img{position:absolute;left:50%;top:32px;width:85%;height:600px;object-fit:contain;object-position:center top;transform:translateX(-50%);z-index:2;filter:drop-shadow(8px 10px 10px #5a3a2425);transition:transform .5s}
 .signature-package--family .signature-package__stage>img{width:90%;height:470px;top:25px}

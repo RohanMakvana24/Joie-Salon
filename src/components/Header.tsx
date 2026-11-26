@@ -15,6 +15,7 @@ interface HeaderProps {
 const NAV_LINKS = [
   { label: 'Home', href: '#top' },
   { label: 'Services', href: '#services' },
+  { label: 'Bridal', href: '#bridals' },
   { label: 'Packages', href: '#packages' },
   { label: 'Products', href: '#products' },
   { label: 'The Shop', href: '#gallery' },
@@ -41,6 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
   const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
   const navigationCleanupRef = useRef<(() => void) | null>(null);
   const isLight = theme === 'light';
+  const isHeroNav = !isScrolled && !isInteriorPage;
   // In the Hero section (before scrolling), keep the navbar 100% transparent with dark/gold foreground against hero artwork.
   // When scrolled, seamlessly match the user's selected theme (dark studio glass or warm light glass).
   const surfaceTheme: ThemeMode = isScrolled || isInteriorPage ? theme : 'dark';
@@ -187,15 +189,19 @@ export const Header: React.FC<HeaderProps> = ({
       onClick={handleSectionNavigation}
       className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300 ${
         !isScrolled && !isInteriorPage
-          ? 'bg-transparent border-b border-transparent shadow-none'
+          ? 'joie-hero-nav bg-transparent border-b border-transparent shadow-none'
           : useLightSurface
-          ? 'bg-[#FAF6EE]/92 backdrop-blur-md border-b border-[#C28B37]/25 shadow-[0_4px_20px_rgba(20,14,10,0.08)]'
+          ? 'bg-[#F5F6F7]/94 backdrop-blur-md border-b border-[#232C3B]/15 shadow-[0_4px_20px_rgba(35,44,59,0.08)]'
           : 'bg-[#0C0907]/92 backdrop-blur-md border-b border-[#DFAF63]/20 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
       }`}
     >
-      <div ref={headerBarRef} className="site-container flex items-center justify-between gap-4 sm:gap-6 py-2 sm:py-2.5">
+      <div ref={headerBarRef} className="joie-hero-nav__bar site-container flex items-center justify-between gap-4 sm:gap-6 py-2 sm:py-2.5">
         {/* Zone 1: Redesigned Luxury Barber Crest & Wordmark */}
-        <BrandLogo theme={useLightSurface ? 'light' : 'dark'} href={isInteriorPage ? '/' : '#top'} />
+        <BrandLogo
+          theme={useLightSurface || (isHeroNav && isLight) ? 'light' : 'dark'}
+          href={isInteriorPage ? '/' : '#top'}
+          className="translate-y-[1.5px]"
+        />
 
         {/* Zone 2: Center Navigation Links */}
         <nav
@@ -212,10 +218,10 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`relative py-1 transition-colors whitespace-nowrap shrink-0 focus-ring ${
                   isActive
                     ? useLightSurface
-                      ? 'text-[#B87314] font-semibold'
+                      ? 'text-[#232C3B] font-semibold'
                       : 'text-[#E5B96F] font-semibold'
                     : useLightSurface
-                    ? 'text-[#1A130E]/85 hover:text-[#B87314]'
+                    ? 'text-[#232C3B]/75 hover:text-[#232C3B]'
                     : 'text-[#F7F1E8]/85 hover:text-[#E5B96F]'
                 }`}
               >
@@ -224,7 +230,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <span
                     aria-hidden="true"
                     className={`absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full transition-all duration-300 ${
-                      useLightSurface ? 'bg-[#B87314]' : 'bg-[#E5B96F]'
+                      useLightSurface ? 'bg-[#232C3B]' : 'bg-[#E5B96F]'
                     }`}
                   />
                 )}
@@ -243,18 +249,18 @@ export const Header: React.FC<HeaderProps> = ({
             title={isLight ? 'Switch to Dark Studio theme' : 'Switch to Warm Light theme'}
             className={`inline-flex items-center justify-center gap-1.5 w-9 h-9 lg:w-auto lg:px-3.5 rounded-full border text-xs font-medium tracking-[0.04em] transition-all cursor-pointer focus-ring ${
               useLightSurface
-                ? 'border-[#C28B37]/50 bg-[#F2EAE0] text-[#1A130E] hover:bg-[#E6D9C6]'
+                ? 'border-[#232C3B]/25 bg-[#EAEDF0] text-[#232C3B] hover:bg-[#DFE4EA]'
                 : 'border-[#DFAF63]/50 bg-[#120E0B]/60 text-[#F7F1E8] hover:border-[#E5B96F] hover:text-[#E5B96F]'
             }`}
           >
             {isLight ? (
               <>
-                <Moon className={`w-4 h-4 shrink-0 ${useLightSurface ? 'text-[#9A6519]' : 'text-[#E5B96F]'}`} />
+                <Moon className={`w-4 h-4 shrink-0 ${useLightSurface ? 'text-[#232C3B]' : 'text-[#E5B96F]'}`} />
                 <span className="hidden lg:inline">Dark</span>
               </>
             ) : (
               <>
-                <Sun className={`w-4 h-4 shrink-0 ${useLightSurface ? 'text-[#9A6519]' : 'text-[#E5B96F]'}`} />
+                <Sun className={`w-4 h-4 shrink-0 ${useLightSurface ? 'text-[#232C3B]' : 'text-[#E5B96F]'}`} />
                 <span className="hidden lg:inline">Light</span>
               </>
             )}
@@ -266,7 +272,7 @@ export const Header: React.FC<HeaderProps> = ({
             rel="noopener noreferrer"
             className={`relative overflow-hidden hidden sm:inline-flex items-center justify-center gap-2 h-9 px-4 rounded-full border text-xs font-semibold tracking-[0.06em] transition-all group focus-ring ${
               useLightSurface
-                ? 'border-[#B87314] bg-[#1A130E] text-[#FAF6EE] hover:bg-[#B87314] hover:text-[#0C0907] shadow-[0_4px_16px_rgba(26,19,14,0.15)]'
+                ? 'border-[#232C3B] bg-[#232C3B] text-[#F5F7FA] hover:bg-[#363D49] hover:text-white shadow-[0_4px_16px_rgba(35,44,59,0.18)]'
                 : 'border-[#DFAF63]/60 bg-[#120E0B]/80 hover:bg-[#DFAF63] text-[#F7F1E8] hover:text-[#0C0907] shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
             }`}
           >

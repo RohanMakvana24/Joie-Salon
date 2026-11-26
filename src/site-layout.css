@@ -33,16 +33,8 @@
 #main-content .signature-packages__grid {
   max-width: none;
 }
-#main-content #faq > .site-container > div:last-child {
-  max-width: 880px;
-  margin-inline: auto;
-}
 #main-content #gallery .gallery-immersive-stage {
   overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-}
-#main-content #products .dsh-root {
   border: 1px solid var(--border);
   border-radius: 20px;
 }
@@ -61,8 +53,7 @@
 @media (max-width: 639px) {
   :root { --site-gutter: 20px; --site-section-space: 56px; }
   #main-content #top > .relative { padding-block: 100px 52px; }
-  #main-content #gallery .gallery-immersive-stage,
-  #main-content #products .dsh-root { border-radius: 14px; }
+  #main-content #gallery .gallery-immersive-stage { border-radius: 14px; }
   #main-content .community-deck__track {
     --social-mobile-card: min(340px, calc(100vw - 80px));
     gap: 24px;

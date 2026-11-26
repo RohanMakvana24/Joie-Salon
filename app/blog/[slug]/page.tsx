@@ -11,8 +11,8 @@ export function generateStaticParams() { return BLOG_POSTS.map(({ slug }) => ({ 
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getBlogPost((await params).slug);
-  if (!post) return { title: 'Article not found | Classic Cut Salon', robots: { index: false, follow: true } };
-  const title = `${post.title} | Classic Cut Salon Rajkot`;
+  if (!post) return { title: 'Article not found | Joie Salon', robots: { index: false, follow: true } };
+  const title = `${post.title} | Joie Salon Rajkot`;
   const url = SITE_URL ? `${SITE_URL}/blog/${post.slug}` : undefined;
   return { title, description: post.description,
     alternates: { canonical: url ?? null },
@@ -31,7 +31,7 @@ export default async function ArticlePage({ params }: Props) {
     <article className="journal-article">
       <header className="journal-article__header"><span className="journal-eyebrow">{post.category}</span><h1>{post.title}</h1><p>{post.description}</p><div className="journal-meta"><time dateTime={post.publishedAt}>{formatBlogDate(post.publishedAt)}</time><span>{readingMinutes(post)} min read</span></div></header>
       <figure className="journal-cover"><img src={post.image} alt={post.imageAlt} width={1200} height={700} fetchPriority="high" /><figcaption>Style illustration · not a photograph of a salon customer.</figcaption></figure>
-      <div className="journal-reading"><aside className="journal-toc"><h2>In this story</h2><nav aria-label="Article contents">{post.sections.map((section) => <a key={section.id} href={`#${section.id}`}>{section.heading}</a>)}</nav><Link href="/blog">← All stories</Link></aside><div className="journal-prose"><p className="journal-lead">{post.intro}</p>{post.sections.map((section) => <section key={section.id} id={section.id}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.tips && <ul>{section.tips.map((tip) => <li key={tip}>{tip}</li>)}</ul>}</section>)}<div className="journal-article-note">Published by Classic Cut Salon. Guides prepared with AI assistance; discuss your preferred style with your barber.</div></div></div>
+      <div className="journal-reading"><aside className="journal-toc"><h2>In this story</h2><nav aria-label="Article contents">{post.sections.map((section) => <a key={section.id} href={`#${section.id}`}>{section.heading}</a>)}</nav><Link href="/blog">← All stories</Link></aside><div className="journal-prose"><p className="journal-lead">{post.intro}</p>{post.sections.map((section) => <section key={section.id} id={section.id}><h2>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}{section.tips && <ul>{section.tips.map((tip) => <li key={tip}>{tip}</li>)}</ul>}</section>)}<div className="journal-article-note">Published by Joie Salon. Guides prepared with AI assistance; discuss your preferred style with your barber.</div></div></div>
     </article>
     <section className="journal-cta"><span className="journal-eyebrow">Your next look starts here</span><h2>Let’s talk about your next cut.</h2><p>Message us with your preferred service and time. Your appointment is confirmed when the salon replies.</p><a className="journal-button" href={BUSINESS_INFO.bookingUrl} target="_blank" rel="noopener noreferrer">Enquire on WhatsApp ↗</a></section>
     <section className="journal-related"><h2>Keep exploring</h2><div className="journal-grid">{BLOG_POSTS.filter((item) => item.slug !== post.slug).slice(0, 2).map((item) => <BlogCard key={item.slug} post={item} />)}</div></section>
