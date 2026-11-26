@@ -950,7 +950,7 @@ const Lanyard = ({
       const s = settingsRef.current;
       const aspect = view.width / view.height;
       let viewHeight = layout.height / clamp(s.size, 0.15, 0.9);
-      const minimumWidth = layout.width / 0.72;
+      const minimumWidth = layout.width / (s.getStage ? 0.86 : 0.72);
       if (viewHeight * aspect < minimumWidth) viewHeight = minimumWidth / aspect;
       const viewWidth = viewHeight * aspect;
       camera.aspect = aspect;
@@ -1025,7 +1025,7 @@ const Lanyard = ({
       const finish = FINISHES[s.finish] || FINISHES.glossy;
       const card = parseColor(s.cardColor, [1, 1, 1]);
       [frontMaterial, backMaterial].forEach(material => {
-        material.normalScale.setScalar(s.finish === 'matte' ? 0 : 0.06);
+        material.normalScale.setScalar(s.finish === 'matte' ? 0 : 0.015);
         material.roughness = finish.roughness;
         material.metalness = finish.metalness;
         material.clearcoat = finish.clearcoat;

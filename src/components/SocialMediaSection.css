@@ -11,10 +11,11 @@ html[data-theme='dark'] .salon-social { --social-bg:#100d0a; --social-ink:#f5f6f
 .salon-social__intro a { display:inline-flex; gap:16px; align-items:center; color:var(--social-ink); text-decoration:none; font-size:11px; border-bottom:1px solid var(--social-line); padding-bottom:7px; }
 .salon-social__intro svg { color:var(--social-gold); }
 .community-deck { margin-top:46px; }
-.community-deck__stage { position:relative; height:620px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; }
+.community-deck__stage { position:relative; height:636px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; }
 .community-deck__stage::-webkit-scrollbar { display:none; }
 .community-deck__stage { touch-action:pan-x pan-y pinch-zoom; }
 .community-deck__stage[data-touch-scrolling='true'] { scroll-snap-type:none; }
+.lanyard-stage-canvas { position:absolute; top:0; left:0; pointer-events:none; z-index:3; }
 .community-deck__track { position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; width:100%; padding:18px 28px 14px; }
 /* A flat matte support, with a fine brass edge and flush end caps. */
 .community-deck__support { position:absolute; inset:18px 9px auto; height:12px; border:1px solid #3b3128; border-radius:4px; background:linear-gradient(#574b3e,#302820 32%,#27211c 76%,#42362a); box-shadow:0 1px 0 #c3a67966 inset,0 5px 8px -3px #3224163d; }

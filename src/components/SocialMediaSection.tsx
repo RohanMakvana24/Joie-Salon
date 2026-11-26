@@ -9,14 +9,14 @@ import { useTheme } from '../hooks/useActivity';
 import './SocialMediaSection.css';
 
 // Temporary search destinations approved by the owner until exact profiles are supplied.
-const FACEBOOK_URL = 'https://www.facebook.com/search/top?q=Classic%20Cut%20Salon%20Rajkot';
+const FACEBOOK_URL = 'https://www.facebook.com/search/top?q=Joie%20Salon%20Rajkot';
 const YOUTUBE_URL = 'https://www.youtube.com/results?search_query=Joie+Salon+Rajkot';
 const featuredReview = FAITHFUL_REVIEWS.find(review => review.reviewerName === 'Bharat Makawana');
 const CARD_REVIEW = featuredReview ? { name: featuredReview.reviewerName, quote: featuredReview.verbatimQuote } : undefined;
 const PROFILES = [
-  { id: 'instagram', platform: 'Instagram', Icon: FaInstagram, handle: BUSINESS_INFO.instagramHandle, category: 'THE DAILY EDIT', headline: 'Your next look starts here.', description: 'Fresh cuts, style inspiration, and life behind the chair.', action: 'Follow on Instagram', href: BUSINESS_INFO.instagramUrl },
-  { id: 'facebook', platform: 'Facebook', Icon: FaFacebookF, handle: 'Joie Salon · Rajkot', category: 'THE LOCAL CONNECTION', headline: 'Good company. Great cuts.', description: 'Salon updates and familiar faces from your neighbourhood.', action: 'Follow on Facebook', href: FACEBOOK_URL },
-  { id: 'google', platform: 'Google', Icon: FcGoogle, handle: 'Arya Nagar, Rajkot', category: 'REAL CLIENT STORIES', headline: 'Your words mean a lot.', description: 'Tell us about your visit. We would love to hear it.', action: 'Review us on Google', href: BUSINESS_INFO.googleReviewsUrl },
+  { id: 'instagram', platform: 'Instagram', Icon: FaInstagram, handle: BUSINESS_INFO.instagramHandle, category: 'THE DAILY EDIT', headline: 'Your next look starts here.', description: 'Fresh glam, style inspiration, and life behind the chair.', action: 'Follow on Instagram', href: BUSINESS_INFO.instagramUrl },
+  { id: 'facebook', platform: 'Facebook', Icon: FaFacebookF, handle: 'Joie Salon · Rajkot', category: 'THE LOCAL CONNECTION', headline: 'Good company. Great style.', description: 'Salon updates and familiar faces from your neighbourhood.', action: 'Follow on Facebook', href: FACEBOOK_URL },
+  { id: 'google', platform: 'Google', Icon: FcGoogle, handle: 'Jyoti Nagar, Rajkot', category: 'REAL CLIENT STORIES', headline: 'Your words mean a lot.', description: 'Tell us about your visit. We would love to hear it.', action: 'Review us on Google', href: BUSINESS_INFO.googleReviewsUrl },
   { id: 'youtube', platform: 'YouTube', Icon: FaYoutube, handle: 'Joie Salon', category: 'STYLE IN MOTION', headline: 'A closer look at the craft.', description: 'The details, the process, and the finishing touches.', action: 'Subscribe on YouTube', href: YOUTUBE_URL },
 ];
 
@@ -96,10 +96,10 @@ export function SocialMediaSection() {
                     <div className="community-card__top"><span><profile.Icon aria-hidden="true" />{profile.platform}</span><span>0{index + 1}</span></div>
                     <div className="community-card__identity"><span><img src="/assets/brand/joie-salon-icon-gold.webp" width="27" height="30" alt="Joie Salon" loading="lazy" /></span><div><h3 id={`social-${profile.id}-title`}>Joie Salon</h3><p>{profile.handle}</p></div></div>
                     <div className={`community-card__preview community-card__preview--${profile.id}`}>
-                      {profile.id === 'instagram' && <div className="community-card__photos">{['modern-quiff', 'textured-crop', 'classic-side-part'].map((name, i) => <span key={name}><SkeletonImage src={`/assets/hairstyles/${name}.webp`} alt={['Modern quiff inspiration', 'Textured crop inspiration', 'Classic side part inspiration'][i]} loading="lazy" /></span>)}</div>}
-                      {profile.id === 'facebook' && <div className="community-card__community"><FaFacebookF aria-hidden="true" /><span>OUR KIND OF COMMUNITY</span><strong>Rooted in Rajkot.<br />Connected by style.</strong><span><MapPin size={10} aria-hidden="true" />Arya Nagar, Rajkot</span></div>}
+                      {profile.id === 'instagram' && <div className="community-card__photos">{['sangeet-caramel-glam', 'reception-couture-blowout', 'haldi-dewy-glow'].map((name, i) => <span key={name}><SkeletonImage src={`/assets/bridals/${name}.png`} alt={['Sangeet glam look', 'Couture blowout styling', 'Haldi dewy glow look'][i]} loading="lazy" /></span>)}</div>}
+                      {profile.id === 'facebook' && <div className="community-card__community"><FaFacebookF aria-hidden="true" /><span>OUR KIND OF COMMUNITY</span><strong>Rooted in Rajkot.<br />Connected by style.</strong><span><MapPin size={10} aria-hidden="true" />Jyoti Nagar, Rajkot</span></div>}
                       {profile.id === 'google' && <div className="community-card__review"><Quote size={19} strokeWidth={1.3} aria-hidden="true" /><blockquote>{featuredReview?.verbatimQuote}</blockquote><span><i aria-hidden="true">B</i>{featuredReview?.reviewerName}<span>Google review</span></span></div>}
-                      {profile.id === 'youtube' && <div className="community-card__video"><SkeletonImage src="/assets/hairstyles/slick-back-ai.webp" alt="Slicked-back hairstyle inspiration" loading="lazy" /><span><Play size={12} fill="currentColor" aria-hidden="true" /></span><small>INSIDE THE CHAIR</small></div>}
+                      {profile.id === 'youtube' && <div className="community-card__video"><SkeletonImage src="/assets/bridals/royal-maroon-bridal.png" alt="Joie Salon bridal styling showcase" loading="lazy" /><span><Play size={12} fill="currentColor" aria-hidden="true" /></span><small>INSIDE THE CHAIR</small></div>}
                     </div>
                     <div className="community-card__editorial"><span>{profile.category}</span><h4>{profile.headline}</h4><p>{profile.description}</p></div>
                     <a className="community-card__follow" href={profile.href} target="_blank" rel="noopener noreferrer" aria-label={`${profile.action} — Joie Salon`}>{profile.action}<ArrowUpRight size={15} aria-hidden="true" /></a>
@@ -110,7 +110,7 @@ export function SocialMediaSection() {
               </div>)}
             </div>
           </div>
-          <div className="community-deck__footer"><p><span />Swipe to explore. Tap to turn.</p><div><span><strong>0{active + 1}</strong> / 04</span><button type="button" aria-label="Previous social card" onClick={() => select(active - 1)}><ChevronLeft size={17} /></button><button type="button" aria-label="Next social card" onClick={() => select(active + 1)}><ChevronRight size={17} /></button></div></div>
+          <div className="community-deck__footer"><p><span />Drag to swing. Tap card to turn.</p><div><span><strong>0{active + 1}</strong> / 04</span><button type="button" aria-label="Previous social card" onClick={() => select(active - 1)}><ChevronLeft size={17} /></button><button type="button" aria-label="Next social card" onClick={() => select(active + 1)}><ChevronRight size={17} /></button></div></div>
         </div>
       </div>
     </section>
