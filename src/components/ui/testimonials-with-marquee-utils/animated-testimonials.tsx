@@ -110,7 +110,7 @@ const TestimonialCard = ({
 }) => {
   const theme = useTheme();
   const isLight = theme === 'light';
-  const stars = testimonial.rating ?? 5;
+  const stars = testimonial.rating;
 
   return (
     <article
@@ -184,22 +184,19 @@ const TestimonialCard = ({
       {/* Review Quote Body */}
       <p
         className={cn(
-          'mt-4 text-[13.5px] sm:text-sm leading-relaxed line-clamp-4',
+          'mt-4 text-[13.5px] sm:text-sm leading-relaxed',
           isLight ? 'text-[#363D49]' : 'text-[#D6CEC5]'
         )}
       >
         &ldquo;{testimonial.description}&rdquo;
       </p>
 
-      {/* Bottom Footer: Verified Rating Stars + Google Label */}
-      <div
-        className={cn(
-          'mt-5 flex items-center justify-between gap-2 border-t pt-3.5',
-          isLight ? 'border-[#232C3B]/10' : 'border-white/10'
-        )}
-      >
+      {stars !== undefined && (
         <div
-          className="flex items-center gap-0.5"
+          className={cn(
+            'mt-5 flex items-center gap-0.5 border-t pt-3.5',
+            isLight ? 'border-[#232C3B]/10' : 'border-white/10'
+          )}
           aria-label={`${stars} out of 5 stars`}
         >
           {Array.from({ length: stars }).map((_, idx) => (
@@ -213,15 +210,7 @@ const TestimonialCard = ({
             />
           ))}
         </div>
-        <span
-          className={cn(
-            'font-mono text-[10px] font-semibold uppercase tracking-[0.14em]',
-            isLight ? 'text-[#5A6475]' : 'text-[#A89B8C]'
-          )}
-        >
-          Verified Review
-        </span>
-      </div>
+      )}
     </article>
   );
 };

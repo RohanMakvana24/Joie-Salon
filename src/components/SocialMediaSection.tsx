@@ -11,7 +11,7 @@ import './SocialMediaSection.css';
 // Temporary search destinations approved by the owner until exact profiles are supplied.
 const FACEBOOK_URL = 'https://www.facebook.com/search/top?q=Joie%20Salon%20Rajkot';
 const YOUTUBE_URL = 'https://www.youtube.com/results?search_query=Joie+Salon+Rajkot';
-const featuredReview = FAITHFUL_REVIEWS.find(review => review.reviewerName === 'Priya Patel') ?? FAITHFUL_REVIEWS[0];
+const featuredReview = FAITHFUL_REVIEWS[0];
 const CARD_REVIEW = featuredReview ? { name: featuredReview.reviewerName, quote: featuredReview.verbatimQuote } : undefined;
 const PROFILES = [
   { id: 'instagram', platform: 'Instagram', Icon: FaInstagram, handle: BUSINESS_INFO.instagramHandle, category: 'THE DAILY EDIT', headline: 'Your next look starts here.', description: 'Fresh glam, style inspiration, and life behind the chair.', action: 'Follow on Instagram', href: BUSINESS_INFO.instagramUrl },
