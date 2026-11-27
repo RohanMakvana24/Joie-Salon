@@ -27,6 +27,7 @@ import { SocialMediaSection } from './components/SocialMediaSection';
 import { VisitAndBookSection } from './components/VisitAndBookSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsAppWidget } from './components/FloatingWhatsAppWidget';
+import { LiquidInkPreloader } from './components/LiquidInkPreloader';
 const DesignSystemPreviewModal = lazy(() => import('./components/DesignSystemPreviewModal').then(module => ({ default: module.DesignSystemPreviewModal })));
 
 const SiteSections = memo(function SiteSections() {
@@ -53,6 +54,11 @@ export default function App() {
   const [customCutoutUrl, setCustomCutoutUrl] = useState<string | null>(null);
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const [inspectorTab, setInspectorTab] = useState<'layers' | 'tokens' | 'docs'>('layers');
+  const [showIntro, setShowIntro] = useState(true);
+
+  const handleIntroComplete = useCallback(() => {
+    setShowIntro(false);
+  }, []);
 
   useEffect(() => {
     try {
@@ -89,6 +95,8 @@ export default function App() {
           : 'bg-[#0C0907] text-[#F7F1E8]'
       }`}
     >
+      {showIntro && <LiquidInkPreloader onComplete={handleIntroComplete} />}
+
       {/* Skip-to-content accessibility link */}
       <a
         href="#main-content"
