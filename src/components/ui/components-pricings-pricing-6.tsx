@@ -250,26 +250,98 @@ export default function Pricing6({
 }) {
   const [activeTab, setActiveTab] = useState<TabKey>(defaultTab);
   const [activeSlide, setActiveSlide] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const innerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const plans = activeTab === "individuals" ? individualPlans : teamsPlans;
 
-  const updateActiveSlide = useCallback(() => {
+  const apply3DScrollEffect = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    const scrollLeft = track.scrollLeft;
-    let closestIndex = 0;
-    let minDiff = Number.POSITIVE_INFINITY;
+    const isCarousel = window.innerWidth < 1024;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-    cardRefs.current.forEach((card, idx) => {
-      if (!card) return;
-      const diff = Math.abs(card.offsetLeft - track.offsetLeft - scrollLeft);
-      if (diff < minDiff) {
-        minDiff = diff;
+    const trackRect = track.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || 800;
+    const trackMidY = trackRect.top + trackRect.height * 0.45;
+    // Normalized vertical position in viewport: +1 near bottom, 0 at center, -1 near top
+    const verticalOffset = Math.max(
+      -1,
+      Math.min(1, (trackMidY - viewportHeight * 0.5) / (viewportHeight * 0.65)),
+    );
+
+    if (!isCarousel) {
+      cardRefs.current.forEach((slot, idx) => {
+        const inner = innerRefs.current[idx];
+        if (!slot || !inner) return;
+        slot.style.zIndex = "";
+
+        if (reducedMotion) {
+          inner.style.transform = "";
+          inner.style.opacity = "";
+          return;
+        }
+
+        // Subtle staggered 3D depth pitch as user scrolls vertically on desktop
+        const colOffset = idx - 1; // -1, 0, +1
+        const pitchX = verticalOffset * 6.5;
+        const yawY = -colOffset * Math.abs(verticalOffset) * 3.5;
+        const shiftY = verticalOffset * (14 + idx * 5);
+        const depthZ = -Math.abs(verticalOffset) * 24;
+        const scale = 1 - Math.abs(verticalOffset) * 0.025;
+
+        inner.style.transform = `perspective(1200px) translate3d(0, ${shiftY.toFixed(1)}px, ${depthZ.toFixed(1)}px) rotateX(${pitchX.toFixed(2)}deg) rotateY(${yawY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        inner.style.opacity = "";
+      });
+      return;
+    }
+
+    const trackCenterX = trackRect.left + trackRect.width / 2;
+    let closestIndex = 0;
+    let minDistance = Number.POSITIVE_INFINITY;
+
+    cardRefs.current.forEach((slot, idx) => {
+      const inner = innerRefs.current[idx];
+      if (!slot || !inner) return;
+
+      const rect = slot.getBoundingClientRect();
+      const cardCenterX = rect.left + rect.width / 2;
+      const distance = cardCenterX - trackCenterX;
+      const absDistance = Math.abs(distance);
+
+      if (absDistance < minDistance) {
+        minDistance = absDistance;
         closestIndex = idx;
       }
+
+      const basis = Math.max(rect.width * 0.92, 260);
+      const offset = Math.max(-1.35, Math.min(1.35, distance / basis));
+      const absOffset = Math.abs(offset);
+
+      slot.style.zIndex = String(20 - Math.round(absOffset * 10));
+
+      if (reducedMotion) {
+        inner.style.transform = "";
+        inner.style.opacity = String(Math.max(0.75, 1 - absOffset * 0.2));
+        return;
+      }
+
+      // Combine smooth horizontal 3D coverflow tilt with subtle vertical scroll depth
+      const rotateY = -offset * 16;
+      const rotateX = verticalOffset * 6 + absOffset * 2.5;
+      const rotateZ = offset * 1.4;
+      const translateZ = -absOffset * 52 - Math.abs(verticalOffset) * 16;
+      const translateY = absOffset * 10 + verticalOffset * 10;
+      const scale = Math.max(0.88, 1 - absOffset * 0.085);
+      const opacity = Math.max(0.62, 1 - absOffset * 0.34);
+
+      inner.style.transform = `perspective(1100px) translate3d(0, ${translateY.toFixed(1)}px, ${translateZ.toFixed(1)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) rotateZ(${rotateZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      inner.style.opacity = opacity.toFixed(3);
     });
 
     setActiveSlide(closestIndex);
@@ -282,8 +354,11 @@ export default function Pricing6({
       const targetCard = cardRefs.current[clamped];
       if (!track || !targetCard) return;
 
+      const targetLeft =
+        targetCard.offsetLeft - (track.clientWidth - targetCard.clientWidth) / 2;
+
       track.scrollTo({
-        left: Math.max(0, targetCard.offsetLeft - track.offsetLeft),
+        left: Math.max(0, targetLeft),
         behavior,
       });
       setActiveSlide(clamped);
@@ -296,22 +371,26 @@ export default function Pricing6({
     if (!track) return;
 
     let rafId = 0;
-    const onScroll = () => {
+    const scheduleUpdate = () => {
       if (rafId) return;
       rafId = window.requestAnimationFrame(() => {
         rafId = 0;
-        updateActiveSlide();
+        apply3DScrollEffect();
       });
     };
 
-    track.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    apply3DScrollEffect();
+
+    track.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
     return () => {
-      track.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      track.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
       if (rafId) window.cancelAnimationFrame(rafId);
     };
-  }, [updateActiveSlide]);
+  }, [apply3DScrollEffect, activeTab]);
 
   const handleTabChange = (nextTab: TabKey) => {
     setActiveTab(nextTab);
@@ -319,11 +398,12 @@ export default function Pricing6({
     if (trackRef.current) {
       trackRef.current.scrollTo({ left: 0, behavior: "auto" });
     }
+    window.requestAnimationFrame(() => apply3DScrollEffect());
   };
 
   return (
-    <div className="w-full space-y-8 md:space-y-10">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+    <div ref={sectionRef} className="w-full space-y-8 md:space-y-10">
+      <div className="flex flex-col items-center text-center gap-5 sm:flex-row sm:items-end sm:justify-between sm:text-left">
         <div className="space-y-2 max-w-2xl">
           {eyebrow && (
             <p className="font-mono text-xs uppercase tracking-[0.26em] text-muted-foreground">
@@ -376,33 +456,67 @@ export default function Pricing6({
         </div>
       </div>
 
-      {/* Package Track: horizontal scroll on mobile/tablet, 3-column grid on desktop */}
-      <div
-        ref={trackRef}
-        aria-label="Salon packages"
-        className="flex items-stretch gap-5 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain scroll-smooth lg:grid lg:grid-cols-3 lg:overflow-visible lg:snap-none lg:pb-0"
-      >
-        {plans.map((plan, idx) => (
+      {/* Full-bleed wrapper on mobile/tablet so cards snap dead-center with symmetric 3D side peeks */}
+      <div className="relative -mx-[var(--site-gutter,20px)] lg:mx-0">
+        <div
+          ref={trackRef}
+          aria-label="Salon packages"
+          className={cn(
+            "[--pkg-card-w:min(82vw,340px)] sm:[--pkg-card-w:400px] md:[--pkg-card-w:430px]",
+            "flex items-stretch gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory py-4",
+            "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain",
+            "lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:snap-none lg:py-2",
+          )}
+        >
           <div
-            key={plan.id}
-            ref={(el) => {
-              cardRefs.current[idx] = el;
-            }}
-            className="w-[84vw] max-w-[360px] sm:w-[400px] sm:max-w-none md:w-[440px] lg:w-full shrink-0 snap-start lg:snap-align-none"
-          >
-            <PlanCard plan={plan} />
-          </div>
-        ))}
+            aria-hidden="true"
+            className="w-[max(0px,calc((100%-var(--pkg-card-w))/2-1rem))] sm:w-[max(0px,calc((100%-var(--pkg-card-w))/2-1.25rem))] shrink-0 lg:hidden"
+          />
+          {plans.map((plan, idx) => {
+            const isMobileCurrent = idx === activeSlide;
+            return (
+              <div
+                key={plan.id}
+                ref={(el) => {
+                  cardRefs.current[idx] = el;
+                }}
+                onClick={() => {
+                  if (
+                    typeof window !== "undefined" &&
+                    window.innerWidth < 1024 &&
+                    !isMobileCurrent
+                  ) {
+                    scrollToSlide(idx);
+                  }
+                }}
+                className="relative w-[var(--pkg-card-w)] shrink-0 snap-center snap-always lg:w-full lg:shrink lg:snap-align-none"
+              >
+                <div
+                  ref={(el) => {
+                    innerRefs.current[idx] = el;
+                  }}
+                  className="h-full will-change-transform [transform-style:preserve-3d]"
+                >
+                  <PlanCard plan={plan} />
+                </div>
+              </div>
+            );
+          })}
+          <div
+            aria-hidden="true"
+            className="w-[max(0px,calc((100%-var(--pkg-card-w))/2-1rem))] sm:w-[max(0px,calc((100%-var(--pkg-card-w))/2-1.25rem))] shrink-0 lg:hidden"
+          />
+        </div>
       </div>
 
       {/* Carousel Controls & Slide Indicators (mobile/tablet only) */}
       <div className="flex items-center justify-between gap-4 pt-1 lg:hidden">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground tabular-nums">
-          0{activeSlide + 1} / 0{plans.length} · Scroll or swipe packages
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground tabular-nums">
+          0{activeSlide + 1} / 0{plans.length} · Swipe cards
         </p>
 
-        <div className="flex items-center gap-2.5">
-          <div className="hidden sm:flex items-center gap-1.5 mr-1">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 mr-1">
             {plans.map((plan, idx) => {
               const isCurrent = idx === activeSlide;
               return (
@@ -410,14 +524,19 @@ export default function Pricing6({
                   key={plan.id}
                   type="button"
                   aria-label={`View ${plan.name}`}
+                  aria-pressed={isCurrent}
                   onClick={() => scrollToSlide(idx)}
-                  className={cn(
-                    "h-2 cursor-pointer rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                    isCurrent
-                      ? "w-7 bg-foreground"
-                      : "w-2 bg-foreground/25 hover:bg-foreground/45",
-                  )}
-                />
+                  className="flex h-11 items-center justify-center px-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full"
+                >
+                  <span
+                    className={cn(
+                      "block h-2 rounded-full transition-all duration-200",
+                      isCurrent
+                        ? "w-7 bg-foreground"
+                        : "w-2 bg-foreground/25 hover:bg-foreground/45",
+                    )}
+                  />
+                </button>
               );
             })}
           </div>

@@ -57,13 +57,13 @@ export const TransformationGallerySection = () => {
           </a>
         </header>
 
-        <div ref={stageRef} className="lookbook-gallery-stage relative min-h-[540px] pb-5 sm:min-h-[620px] sm:pb-7">
+        <div ref={stageRef} className="lookbook-gallery-stage relative min-h-[600px] pb-5 sm:min-h-[660px] sm:pb-7">
           {nearby ? (
-            <Suspense fallback={<div className="relative h-[420px] sm:h-[520px]"><GallerySkeleton /></div>}>
+            <Suspense fallback={<div className="relative h-[480px] sm:h-[560px]"><GallerySkeleton /></div>}>
               <LookbookGallery3D theme={theme} />
             </Suspense>
           ) : (
-            <div className="relative h-[420px] sm:h-[520px]">
+            <div className="relative h-[480px] sm:h-[560px]">
               <GallerySkeleton />
             </div>
           )}

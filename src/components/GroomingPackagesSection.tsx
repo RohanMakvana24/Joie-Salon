@@ -13,7 +13,7 @@ export const GroomingPackagesSection: React.FC = () => {
     <section
       id="packages"
       aria-labelledby="packages-heading"
-      className={`relative w-full py-16 md:py-24 border-b transition-colors duration-300 ${
+      className={`relative w-full overflow-x-clip py-16 md:py-24 border-b transition-colors duration-300 ${
         isLight
           ? 'bg-[#F5F6F7] border-[#232C3B]/14'
           : 'bg-[#0C0907] border-white/10'

@@ -234,14 +234,14 @@ function FallbackEditorialReader({
           <canvas
             ref={leftCanvasRef}
             onClick={goPrev}
-            className={`min-w-0 max-h-[452px] w-auto cursor-pointer rounded-l-sm shadow-2xl border ${borderColor}`}
+            className={`min-w-0 max-h-[510px] w-auto cursor-pointer rounded-l-sm shadow-2xl border ${borderColor}`}
             aria-label={volume.pages[visiblePages[0]]?.alt}
           />
         )}
         <canvas
           ref={rightCanvasRef}
           onClick={continueReading}
-          className={`min-w-0 max-h-[485px] w-auto cursor-pointer rounded-r-sm shadow-2xl border sm:max-h-[452px] ${borderColor}`}
+          className={`min-w-0 max-h-[540px] w-auto cursor-pointer rounded-r-sm shadow-2xl border sm:max-h-[510px] ${borderColor}`}
           aria-label={volume.pages[visiblePages[visiblePages.length - 1]]?.alt}
         />
       </div>
@@ -393,7 +393,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
         pageCount: nextBook.volume.pages.length,
       });
 
-      const targetWidth = shelfModeRef.current === 'single' ? 620 : 800;
+      const targetWidth = shelfModeRef.current === 'single' ? 720 : 800;
       const saved = savedPagesRef.current[nextIdx] ?? 0;
 
       // Prioritise textures for newly active book
@@ -534,7 +534,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
     });
 
     const initialMode = shelfModeRef.current;
-    const initialTexWidth = initialMode === 'single' ? 620 : 800;
+    const initialTexWidth = initialMode === 'single' ? 720 : 800;
 
     const runtimes: BookRuntime[] = LOOKBOOK_VOLUMES.map((volume, idx) => {
       const slot = new THREE.Group();
@@ -643,7 +643,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
           const minV = visiblePages[0] ?? page;
           const maxV = visiblePages[visiblePages.length - 1] ?? page;
           const toLoad = [minV - 2, minV - 1, minV, maxV, maxV + 1, maxV + 2, maxV + 3];
-          const tw = shelfModeRef.current === 'single' ? 620 : 800;
+          const tw = shelfModeRef.current === 'single' ? 720 : 800;
           void textureBank.renderPages(toLoad, tw, true);
         }
         requestDraw();
@@ -692,7 +692,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
         if (mode === 'single') {
           rt.target = {
             visible: isActive,
-            x: 0.12,
+            x: 0.08,
             y: 0,
             z: 0,
             rotX: 0,
@@ -799,7 +799,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mode === 'single' ? 2 : 2.25));
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.zoom = mode === 'single' ? 1.14 : 1.05;
+      camera.zoom = mode === 'single' ? 1.16 : 1.06;
 
       const fovRad = THREE.MathUtils.degToRad(camera.fov);
       const tanHalfV = Math.tan(fovRad / 2);
@@ -808,10 +808,10 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       // Bounding stage width & height in world space per layout mode
       const stageSpan =
         mode === 'trio'
-          ? { w: 5.15, h: PAGE_ASPECT * 1.32 }
+          ? { w: 5.15, h: PAGE_ASPECT * 1.28 }
           : mode === 'duo'
-            ? { w: 3.45, h: PAGE_ASPECT * 1.38 }
-            : { w: 1.92, h: PAGE_ASPECT * 1.46 };
+            ? { w: 3.4, h: PAGE_ASPECT * 1.32 }
+            : { w: 1.58, h: PAGE_ASPECT * 1.36 };
 
       const distH = stageSpan.h / (2 * tanHalfV);
       const distW = stageSpan.w / (2 * tanHalfH);
@@ -1106,7 +1106,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       {/* 3D Interactive Book Canvas Stage */}
       <div
         ref={canvasHostRef}
-        className="relative mx-auto h-[420px] w-full sm:h-[470px] lg:h-[530px]"
+        className="relative mx-auto h-[480px] w-full sm:h-[520px] lg:h-[580px]"
       />
 
       {/* Side-book hover label cue on desktop/tablet */}

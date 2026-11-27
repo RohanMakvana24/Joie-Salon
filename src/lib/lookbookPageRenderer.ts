@@ -349,8 +349,17 @@ export async function renderLookbookPageToCanvas(
     ctx.fillRect(plateX - mat, plateY - mat, plateW + mat * 2, plateH + mat * 2);
 
     const coverImg = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-    if (coverImg) {
-      drawPageImage(ctx, coverImg, plateX, plateY, plateW, plateH, 0.22, volume.preservePhotoFraming);
+    if (coverImg && page.primaryItem) {
+      drawPageImage(
+        ctx,
+        coverImg,
+        plateX,
+        plateY,
+        plateW,
+        plateH,
+        0.22,
+        Boolean(volume.preservePhotoFraming && page.primaryItem.image.endsWith('.png')),
+      );
     } else {
       ctx.fillStyle = volume.coverClothDeep;
       ctx.fillRect(plateX, plateY, plateW, plateH);
@@ -426,8 +435,17 @@ export async function renderLookbookPageToCanvas(
     const imgY = height * 0.092;
 
     const img = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-    if (img) {
-      drawPageImage(ctx, img, imgX, imgY, imgW, imgH, 0.2, volume.preservePhotoFraming);
+    if (img && page.primaryItem) {
+      drawPageImage(
+        ctx,
+        img,
+        imgX,
+        imgY,
+        imgW,
+        imgH,
+        0.2,
+        Boolean(volume.preservePhotoFraming && page.primaryItem.image.endsWith('.png')),
+      );
     }
     ctx.strokeStyle = 'rgba(35, 28, 22, 0.16)';
     ctx.lineWidth = 1;
@@ -468,7 +486,16 @@ export async function renderLookbookPageToCanvas(
       if (!slot.item) return;
       const img = loadedImages.get(slot.item.image);
       if (img) {
-        drawPageImage(ctx, img, slot.x, slot.y, slot.w, slot.h, 0.24, volume.preservePhotoFraming);
+        drawPageImage(
+          ctx,
+          img,
+          slot.x,
+          slot.y,
+          slot.w,
+          slot.h,
+          0.24,
+          Boolean(volume.preservePhotoFraming && slot.item.image.endsWith('.png')),
+        );
       } else {
         ctx.fillStyle = '#EAE3D8';
         ctx.fillRect(slot.x, slot.y, slot.w, slot.h);
@@ -513,7 +540,16 @@ export async function renderLookbookPageToCanvas(
       const y = height * 0.165 + Math.floor(idx / 2) * rowHeight;
       const img = loadedImages.get(item.image);
       if (img) {
-        drawPageImage(ctx, img, x, y, tileW, tileH, 0.23, volume.preservePhotoFraming);
+        drawPageImage(
+          ctx,
+          img,
+          x,
+          y,
+          tileW,
+          tileH,
+          0.23,
+          Boolean(volume.preservePhotoFraming && item.image.endsWith('.png')),
+        );
       } else {
         ctx.fillStyle = '#EAE3D8';
         ctx.fillRect(x, y, tileW, tileH);
