@@ -3,18 +3,36 @@ import { ImageOff } from 'lucide-react';
 import { useElementInView } from '../../hooks/useActivity';
 import './skeleton-image.css';
 
-type SkeletonImageProps = ImgHTMLAttributes<HTMLImageElement> & { skeletonClassName?: string };
+type SkeletonVariant = 'box' | 'standing-girl' | 'standing-bride';
+
+type SkeletonImageProps = ImgHTMLAttributes<HTMLImageElement> & {
+  skeletonClassName?: string;
+  skeletonVariant?: SkeletonVariant;
+};
 
 /** Keeps the existing image element/layout; only the placeholder is an overlay. */
-export function SkeletonImage({ src, srcSet, alt = '', className = '', skeletonClassName = '', onLoad, onError, loading, decoding = 'async', ...props }: SkeletonImageProps) {
+export function SkeletonImage({
+  src,
+  srcSet,
+  alt = '',
+  className = '',
+  skeletonClassName = '',
+  skeletonVariant = 'box',
+  onLoad,
+  onError,
+  loading,
+  decoding = 'async',
+  ...props
+}: SkeletonImageProps) {
   const imageRef = useRef<HTMLImageElement>(null);
-  const nearby = useElementInView(imageRef, { once: true, rootMargin: '400px', enabled: loading === 'lazy' });
+  const nearby = useElementInView(imageRef, { once: true, rootMargin: '650px', enabled: loading === 'lazy' });
   const shouldLoad = loading !== 'lazy' || nearby;
   const requestKey = `${src ?? ''}|${srcSet ?? ''}`;
   const requestRef = useRef(requestKey);
   requestRef.current = requestKey;
   const [result, setResult] = useState<{ key: string; state: 'loaded' | 'error' } | null>(null);
   const state = result && result.key === requestKey ? result.state : 'loading';
+  const isFigure = skeletonVariant === 'standing-girl' || skeletonVariant === 'standing-bride';
 
   useLayoutEffect(() => {
     const image = imageRef.current;
@@ -22,7 +40,18 @@ export function SkeletonImage({ src, srcSet, alt = '', className = '', skeletonC
   }, [requestKey, shouldLoad]);
 
   return <>
-    {state === 'loading' && <span className={`image-skeleton ${skeletonClassName}`} aria-hidden="true" />}
+    {state === 'loading' && (
+      isFigure ? (
+        <span
+          className={`image-skeleton image-skeleton--figure image-skeleton--${skeletonVariant} ${skeletonClassName}`}
+          aria-hidden="true"
+        >
+          <span className="image-skeleton__figure-silhouette" />
+        </span>
+      ) : (
+        <span className={`image-skeleton ${skeletonClassName}`} aria-hidden="true" />
+      )
+    )}
     {state === 'error' && <span className={`image-skeleton image-skeleton--error ${skeletonClassName}`} role="img" aria-label={alt || 'Image unavailable'}><ImageOff size={20} strokeWidth={1.4} aria-hidden="true" /></span>}
     <img {...props} ref={imageRef} src={shouldLoad ? src : undefined} srcSet={shouldLoad ? srcSet : undefined} loading={loading} decoding={decoding} alt={alt} className={`skeleton-image ${className}`} data-image-state={state} aria-busy={state === 'loading'} aria-hidden={state === 'error' ? true : props['aria-hidden']}
       onLoad={event => {

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BRIDAL_LOOKS, buildBridalWhatsAppUrl } from '../data/bridalLookbookData';
 import { useTheme } from '../hooks/useActivity';
 import { BlurRevealHeading } from './ui/blur-reveal-heading';
+import { SkeletonImage } from './ui/skeleton-image';
 import './OurBridalsSection.css';
 
 const N = BRIDAL_LOOKS.length;
@@ -826,10 +827,12 @@ export const OurBridalsSection: React.FC = () => {
                 >
                   <div className="bridal-model__fig">
                     <span className="bridal-model__shadow" aria-hidden="true" />
-                    <img
+                    <SkeletonImage
+                      skeletonVariant="standing-bride"
                       className="bridal-model__pic"
                       src={look.image}
                       alt={look.name}
+                      loading={i === 0 ? 'eager' : 'lazy'}
                       draggable={false}
                       decoding="async"
                     />

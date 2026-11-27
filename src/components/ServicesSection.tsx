@@ -233,7 +233,16 @@ export const ServicesSection: React.FC = () => {
               <article className="service-character-card" data-featured={isFeatured}>
                 <div className="service-character-card__stage">
                   <div className="service-character-card__arch" aria-hidden="true"><span>{visual.word}</span></div>
-                  <SkeletonImage skeletonClassName="image-skeleton--portrait" src={visual.image} alt={visual.alt} loading="lazy" decoding="async" draggable={false} width="1024" height="1024" />
+                  <SkeletonImage
+                    skeletonVariant={service.id === 'bridal-party-makeup' ? 'standing-bride' : 'standing-girl'}
+                    src={visual.image}
+                    alt={visual.alt}
+                    loading={Math.abs(position) <= 1 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    draggable={false}
+                    width="1024"
+                    height="1024"
+                  />
                   {isFeatured && <span className="service-character-card__signature">THE SIGNATURE LOOK</span>}
                 </div>
                 <div className="service-character-card__body">

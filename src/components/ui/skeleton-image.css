@@ -13,6 +13,66 @@
 html[data-theme='light'] .image-skeleton { --skeleton-base: #eae1d4; --skeleton-sheen: #fffdf8b0; }
 .image-skeleton::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 20%, var(--skeleton-sheen) 50%, transparent 80%); transform: translateX(-100%); animation: image-skeleton-shimmer 1.5s ease-in-out infinite; }
 .image-skeleton--portrait { inset: 22px 24px 0; border-radius: 180px 180px 14px 14px; }
+.image-skeleton--figure {
+  background: transparent !important;
+  overflow: visible;
+  border-radius: 0;
+  filter: drop-shadow(0 8px 12px rgba(15, 23, 42, 0.24));
+}
+.image-skeleton--figure::after {
+  display: none;
+}
+.image-skeleton__figure-silhouette {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 34% at 48% 22%, rgba(255, 240, 214, 0.26), transparent 70%),
+    linear-gradient(180deg, #5c4b3a 0%, #483a2d 42%, #362b21 76%, #2a2119 100%);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+html[data-theme='light'] .image-skeleton__figure-silhouette {
+  background:
+    radial-gradient(62% 36% at 46% 20%, rgba(255, 255, 255, 0.52), transparent 72%),
+    linear-gradient(180deg, #d7dde6 0%, #e4e9f0 34%, #cfd7e2 68%, #bcc5d2 100%);
+}
+.image-skeleton__figure-silhouette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    108deg,
+    transparent 16%,
+    rgba(255, 244, 224, 0.34) 47%,
+    rgba(255, 248, 234, 0.14) 56%,
+    transparent 82%
+  );
+  transform: translateX(-100%);
+  animation: image-skeleton-shimmer 1.55s ease-in-out infinite;
+}
+html[data-theme='light'] .image-skeleton__figure-silhouette::after {
+  background: linear-gradient(
+    108deg,
+    transparent 16%,
+    rgba(255, 255, 255, 0.78) 48%,
+    rgba(255, 255, 255, 0.28) 57%,
+    transparent 82%
+  );
+}
+.image-skeleton--standing-girl .image-skeleton__figure-silhouette {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 400'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M122 10C146 10 158 24 158 46C162 62 166 76 158 92C150 96 144 96 142 102C158 106 170 116 176 134C182 148 182 158 174 168C168 175 160 180 158 184C164 198 166 218 162 246C158 276 152 316 148 364C152 372 158 380 156 388C154 395 140 397 126 395C120 394 118 388 120 380L116 368C112 378 108 388 100 392C92 394 86 386 88 374C90 364 94 358 96 352C98 318 106 286 104 260C94 234 86 206 92 184C96 172 100 162 100 156C84 156 70 148 66 136C62 124 68 106 74 90C70 80 74 70 82 70C90 70 92 82 88 94C84 108 82 120 86 126C92 122 98 112 102 104C88 102 82 88 86 72C80 56 84 32 98 18C106 11 114 10 122 10ZM152 132C160 138 166 148 162 158C158 164 152 166 148 162C148 150 150 140 152 132Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 400'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M122 10C146 10 158 24 158 46C162 62 166 76 158 92C150 96 144 96 142 102C158 106 170 116 176 134C182 148 182 158 174 168C168 175 160 180 158 184C164 198 166 218 162 246C158 276 152 316 148 364C152 372 158 380 156 388C154 395 140 397 126 395C120 394 118 388 120 380L116 368C112 378 108 388 100 392C92 394 86 386 88 374C90 364 94 358 96 352C98 318 106 286 104 260C94 234 86 206 92 184C96 172 100 162 100 156C84 156 70 148 66 136C62 124 68 106 74 90C70 80 74 70 82 70C90 70 92 82 88 94C84 108 82 120 86 126C92 122 98 112 102 104C88 102 82 88 86 72C80 56 84 32 98 18C106 11 114 10 122 10ZM152 132C160 138 166 148 162 158C158 164 152 166 148 162C148 150 150 140 152 132Z'/%3E%3C/svg%3E");
+}
+.image-skeleton--standing-bride .image-skeleton__figure-silhouette {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 400'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M124 10C146 10 158 24 158 46C158 64 152 78 144 86C142 94 144 100 152 104C168 108 178 118 186 132C196 124 200 106 198 90C198 78 208 74 214 82C218 90 214 106 208 122C204 140 196 154 184 158C174 160 166 154 162 150C164 166 168 178 178 198C202 246 228 312 248 378C250 388 238 394 216 394C182 397 130 398 76 395C42 394 16 390 14 380C28 314 52 246 74 186C84 154 92 124 102 106C92 102 82 90 84 74C78 58 84 36 98 20C106 12 114 10 124 10ZM164 128C172 132 178 140 174 146C170 150 162 146 160 138C160 132 162 128 164 128Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 400'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M124 10C146 10 158 24 158 46C158 64 152 78 144 86C142 94 144 100 152 104C168 108 178 118 186 132C196 124 200 106 198 90C198 78 208 74 214 82C218 90 214 106 208 122C204 140 196 154 184 158C174 160 166 154 162 150C164 166 168 178 178 198C202 246 228 312 248 378C250 388 238 394 216 394C182 397 130 398 76 395C42 394 16 390 14 380C28 314 52 246 74 186C84 154 92 124 102 106C92 102 82 90 84 74C78 58 84 36 98 20C106 12 114 10 124 10ZM164 128C172 132 178 140 174 146C170 150 162 146 160 138C160 132 162 128 164 128Z'/%3E%3C/svg%3E");
+}
 .image-skeleton--hero { --skeleton-base: #19140e !important; --skeleton-sheen: #e0bc7915 !important; }
 .image-skeleton--error { display: grid; place-items: center; color: #9d876c; }
 .image-skeleton--error::after { animation: none; background: none; }
@@ -23,4 +83,4 @@ html[data-theme='light'] .image-skeleton { --skeleton-base: #eae1d4; --skeleton-
 @keyframes image-skeleton-shimmer { to { transform: translateX(100%); } }
 @keyframes skeleton-image-reveal { from { opacity: 0; } to { opacity: 1; } }
 @media (max-width: 639px) { .product-bag-item .image-skeleton { top: 18px; width: 65px; height: 86px; } }
-@media (prefers-reduced-motion: reduce) { .image-skeleton::after, .skeleton-image[data-image-state='loaded'] { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .image-skeleton::after, .image-skeleton__figure-silhouette::after, .skeleton-image[data-image-state='loaded'] { animation: none; } }

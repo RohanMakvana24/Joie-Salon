@@ -12,6 +12,7 @@ html[data-theme='light'] .service-character-card__signature { background: #232C3
 .service-character-card__stage::before { content: ''; position: absolute; z-index: 2; bottom: -8px; left: 24%; right: 24%; height: 18px; background: #49301d30; border-radius: 50%; filter: blur(5px); }
 .service-character-card__stage::after { content: ''; position: absolute; left: 10px; right: 10px; height: 16px; bottom: -7px; background: var(--service-panel); border: 1px solid var(--service-line); border-radius: 50%; }
 .service-character-card__stage > img { position: absolute; left: 50%; bottom: -8px; width: 100%; height: 273px; object-fit: contain; object-position: center bottom; transform: translateX(-50%); z-index: 3; filter: drop-shadow(0 6px 4px #34200e20); transition: transform .5s cubic-bezier(.22, 1, .36, 1); }
+.service-character-card__stage > .image-skeleton--figure { position: absolute; inset: auto auto -8px 50%; width: 100%; height: 273px; transform: translateX(-50%); z-index: 3; }
 .service-character-card__spark { position: absolute; top: 49px; right: 22px; display: grid; place-items: center; width: 33px; height: 33px; border-radius: 11px; border: 1px solid var(--service-line); color: var(--service-gold); background: var(--service-panel); transform: rotate(9deg); z-index: 4; }
 .service-character-card__signature { position: absolute; z-index: 4; left: 8px; top: 155px; background: #fff2d9; color: #805824; font-size: 6px; letter-spacing: .14em; font-weight: 600; padding: 9px; border-radius: 7px; transform: rotate(-7deg); box-shadow: 0 4px 18px #36210e15; }
 .service-character-card__body { position: relative; z-index: 1; display: flex; flex-direction: column; flex: 1; padding: 24px 25px 21px; border: 1px solid var(--service-line); border-radius: 19px; background: var(--service-panel); box-shadow: 0 8px 22px #00000009; }
@@ -63,13 +64,15 @@ html[data-theme='light'] .service-character-card__signature { background: #232C3
     opacity: 1;
     cursor: grab;
   }
-  #services .service-deck-card[data-active='true'] .service-character-card__stage > img {
+  #services .service-deck-card[data-active='true'] .service-character-card__stage > img,
+  #services .service-deck-card[data-active='true'] .service-character-card__stage > .image-skeleton--figure {
     transform: translateX(-50%) translateY(-4px) scale(1.03);
   }
   #services .service-deck[data-dragging='true'] .service-deck-card { transition: none; }
   #services .service-character-card { transform: none !important; }
   .service-character-card__stage { height: 242px; }
   .service-character-card__stage > img { height: 254px; }
+  .service-character-card__stage > .image-skeleton--figure { height: 254px; }
   .service-character-card__arch { inset: 24px 22px 9px; }
   .service-character-card__body { padding: 23px 22px 20px; }
   .service-character-card__body h3 { font-size: 26px; }
