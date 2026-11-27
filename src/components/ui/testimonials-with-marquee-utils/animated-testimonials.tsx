@@ -19,6 +19,7 @@ interface CanopyProps extends React.HTMLAttributes<HTMLDivElement> {
   repeat?: number;
   reverse?: boolean;
   pauseOnHover?: boolean;
+  paused?: boolean;
   applyMask?: boolean;
   duration?: string;
 }
@@ -28,6 +29,7 @@ const Canopy = ({
   vertical = false,
   repeat = 2,
   pauseOnHover = true,
+  paused = false,
   reverse = false,
   className,
   applyMask = true,
@@ -58,6 +60,7 @@ const Canopy = ({
         <div
           key={`canopy-track-${index}`}
           aria-hidden={index > 0 ? true : undefined}
+          style={paused ? { animationPlayState: 'paused' } : undefined}
           className={cn(
             'flex shrink-0 items-stretch [gap:var(--gap)]',
             vertical ? 'flex-col animate-canopy-y' : 'flex-row animate-canopy-x',
@@ -226,6 +229,25 @@ export const AnimatedTestimonials = ({
   className,
   cardClassName,
 }: AnimatedTestimonialsProps) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [inView, setInView] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setInView(entries[entries.length - 1]?.isIntersecting ?? false);
+      },
+      { rootMargin: '120px 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   if (!data.length) return null;
 
   const midpoint = Math.ceil(data.length / 2);
@@ -234,7 +256,7 @@ export const AnimatedTestimonials = ({
   const rows = secondRow.length > 0 ? [firstRow, secondRow] : [firstRow];
 
   return (
-    <div className={cn('w-full overflow-x-clip py-2 space-y-4', className)}>
+    <div ref={containerRef} className={cn('w-full overflow-x-clip py-2 space-y-4', className)}>
       {rows.map((rowItems, rowIndex) => {
         const isReverse = rowIndex % 2 === 1;
         const duration = isReverse ? '68s' : '60s';
@@ -243,6 +265,7 @@ export const AnimatedTestimonials = ({
             key={`testimonial-row-${rowIndex}`}
             reverse={isReverse}
             pauseOnHover
+            paused={!inView}
             applyMask
             duration={duration}
           >

@@ -65,44 +65,50 @@ export const Header: React.FC<HeaderProps> = ({
       setActiveSection(pathname.startsWith('/blog') ? '/blog' : '');
       return;
     }
-    let frameId = 0;
-    const checkScrollAndSection = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 24);
 
-      // Track active section for Scroll Spy
-      const sections = [...NAV_LINKS].reverse().map((link) => link.href).filter((href) => href.startsWith('#'));
-      const scrollPosition = (headerBarRef.current?.getBoundingClientRect().height ?? 60) + 24;
-
-      for (const sectionId of sections) {
-        if (sectionId === '#top') {
-          setActiveSection('#top');
-          break;
-        }
-        const element = document.querySelector(sectionId);
-        if (element instanceof HTMLElement) {
-          const top = element.getBoundingClientRect().top;
-          if (scrollPosition >= top) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
-      }
-      frameId = 0;
-    };
+    let lastScrolled = window.scrollY > 24;
+    setIsScrolled(lastScrolled);
 
     const handleScroll = () => {
-      if (frameId) return;
-      frameId = window.requestAnimationFrame(checkScrollAndSection);
+      const nextScrolled = window.scrollY > 24;
+      if (nextScrolled !== lastScrolled) {
+        lastScrolled = nextScrolled;
+        setIsScrolled(nextScrolled);
+      }
+      if (window.scrollY < 80) {
+        setActiveSection((prev) => (prev === '#top' ? prev : '#top'));
+      }
     };
 
-    checkScrollAndSection();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+
+    const sectionIds = NAV_LINKS.map((link) => link.href).filter(
+      (href) => href.startsWith('#') && href !== '#top',
+    );
+    const observed = sectionIds
+      .map((href) => document.querySelector(href))
+      .filter((el): el is HTMLElement => el instanceof HTMLElement);
+
+    let observer: IntersectionObserver | null = null;
+    if (observed.length && typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible[0]?.target.id) {
+            const nextId = `#${visible[0].target.id}`;
+            setActiveSection((prev) => (prev === nextId ? prev : nextId));
+          }
+        },
+        { rootMargin: '-18% 0px -60% 0px', threshold: [0, 0.25, 0.5] },
+      );
+      observed.forEach((el) => observer?.observe(el));
+    }
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-      if (frameId) window.cancelAnimationFrame(frameId);
+      observer?.disconnect();
     };
   }, [isInteriorPage, pathname]);
 
@@ -191,8 +197,8 @@ export const Header: React.FC<HeaderProps> = ({
             ? 'bg-gradient-to-b from-[#F5F6F7]/85 via-[#F5F6F7]/35 to-transparent border-b border-transparent shadow-none'
             : 'bg-gradient-to-b from-[#0C0907]/85 via-[#0C0907]/35 to-transparent border-b border-transparent shadow-none'
           : useLightSurface
-          ? 'bg-[#F5F6F7]/94 backdrop-blur-md border-b border-[#232C3B]/15 shadow-[0_4px_20px_rgba(35,44,59,0.08)]'
-          : 'bg-[#0C0907]/92 backdrop-blur-md border-b border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
+          ? 'bg-[#F5F6F7]/98 lg:bg-[#F5F6F7]/94 lg:backdrop-blur-md border-b border-[#232C3B]/15 shadow-[0_4px_20px_rgba(35,44,59,0.08)]'
+          : 'bg-[#0C0907]/98 lg:bg-[#0C0907]/92 lg:backdrop-blur-md border-b border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.65)]'
       }`}
     >
       <div

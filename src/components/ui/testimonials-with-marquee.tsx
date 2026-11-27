@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/testimonials-with-marquee-utils/animated-testimonials';
 import { useTheme } from '@/hooks/useActivity';
 import { cn } from '@/lib/utils';
+import { BlurRevealHeading } from '@/components/ui/blur-reveal-heading';
 
 export interface TestimonialsMarqueeProps {
   id?: string;
@@ -33,7 +34,6 @@ export function TestimonialsMarquee({
 }: TestimonialsMarqueeProps) {
   const theme = useTheme();
   const isLight = theme === 'light';
-  const titleWords = title.trim().split(/\s+/);
 
   return (
     <section
@@ -81,36 +81,14 @@ export function TestimonialsMarquee({
             </motion.div>
           )}
 
-          <h2
+          <BlurRevealHeading
             id={`${id}-heading`}
+            text={title}
             className={cn(
               'font-display uppercase text-3xl sm:text-5xl md:text-[3.5rem] font-semibold tracking-[-0.02em] leading-[1.06]',
               isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
             )}
-          >
-            {titleWords.map((word, index) => {
-              const isLast = index === titleWords.length - 1;
-              return (
-                <motion.span
-                  key={`title-${word}-${index}`}
-                  initial={{ opacity: 0, filter: 'blur(6px)', y: 12 }}
-                  whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.4,
-                    delay: index * 0.07,
-                    ease: 'easeInOut',
-                  }}
-                  className={cn(
-                    'mr-2.5 inline-block last:mr-0',
-                    isLast && (isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]')
-                  )}
-                >
-                  {word}
-                </motion.span>
-              );
-            })}
-          </h2>
+          />
 
           {subtitle && (
             <motion.p

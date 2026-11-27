@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BRIDAL_LOOKS, buildBridalWhatsAppUrl } from '../data/bridalLookbookData';
 import { useTheme } from '../hooks/useActivity';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 import './OurBridalsSection.css';
 
 const N = BRIDAL_LOOKS.length;
@@ -765,17 +766,16 @@ export const OurBridalsSection: React.FC = () => {
             <span className={`h-px w-7 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
           </div>
 
-          <h2
+          <BlurRevealHeading
             id="bridals-heading"
             className={`font-display uppercase text-4xl sm:text-5xl md:text-[3.5rem] tracking-[-0.01em] leading-tight ${
               isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
             }`}
-          >
-            OUR{' '}
-            <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
-              BRIDALS
-            </span>
-          </h2>
+            segments={[
+              { text: 'OUR' },
+              { text: 'BRIDALS', className: isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]' },
+            ]}
+          />
 
           <p className={`mt-3 text-sm sm:text-base leading-relaxed ${isLight ? 'text-[#4B5563]' : 'text-[#C9B8A6]'}`}>
             Explore bridal looks for your wedding celebrations. Select a look to see the makeup and styling details.

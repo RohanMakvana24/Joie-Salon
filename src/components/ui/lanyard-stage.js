@@ -57,8 +57,9 @@ class LanyardStage {
     const track = this.element.querySelector('.community-deck__track');
     const width = Math.max(1, this.element.clientWidth, track?.offsetWidth || 0);
     const height = Math.max(1, this.element.clientHeight);
-    // Cap DPR at 1.5 and total stage buffer budget to keep interaction silky smooth.
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(4500000 / (width * height)));
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    // Cap DPR and total stage buffer budget to keep mobile scrolling & interaction silky smooth.
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5, Math.sqrt((isMobile ? 2500000 : 4500000) / (width * height)));
     if (width === this.width && height === this.height && dpr === this.dpr) return;
     this.width = width; this.height = height; this.dpr = dpr;
     this.renderer.setPixelRatio(dpr);
@@ -78,15 +79,16 @@ class LanyardStage {
     if (rig.target?.width === width && rig.target?.height === height) return;
     if (rig.target) rig.target.setSize(width, height);
     else {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
       rig.target = new THREE.WebGLRenderTarget(width, height, {
-        type: THREE.HalfFloatType,
+        type: isMobile ? THREE.UnsignedByteType : THREE.HalfFloatType,
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         depthBuffer: true,
         stencilBuffer: false,
         samples: 0,
       });
-      rig.target.texture.colorSpace = THREE.LinearSRGBColorSpace;
+      rig.target.texture.colorSpace = isMobile ? THREE.SRGBColorSpace : THREE.LinearSRGBColorSpace;
       rig.material.map = rig.target.texture;
       rig.material.needsUpdate = true;
     }

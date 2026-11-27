@@ -3,6 +3,7 @@
 import React from 'react';
 import { Scissors, UserCheck, MapPin } from 'lucide-react';
 import { useTheme } from '../hooks/useActivity';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 
 const PILLARS = [
   {
@@ -55,17 +56,20 @@ export const WhyChooseUsSection: React.FC = () => {
             <span className={`h-[1px] w-6 ${isLight ? 'bg-[#232C3B]' : 'bg-[#CBD5E1]'}`} />
           </div>
 
-          <h2
+          <BlurRevealHeading
             id="why-choose-heading"
             className={`font-display text-4xl sm:text-5xl md:text-[3.5rem] tracking-[-0.01em] leading-tight ${
               isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
             }`}
-          >
-            Luxury care.{' '}
-            <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
-              Close to home.
-            </span>
-          </h2>
+            segments={[
+              { text: 'Luxury care.' },
+              {
+                text: 'Close to home.',
+                className: isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]',
+                breakBefore: true,
+              },
+            ]}
+          />
 
           <p
             className={`mt-4 text-sm sm:text-base leading-relaxed ${

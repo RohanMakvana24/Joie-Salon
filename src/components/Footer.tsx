@@ -258,7 +258,8 @@ export const Footer: React.FC<FooterProps> = ({ theme = 'dark' }) => {
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const isMobile = window.innerWidth < 768;
+      dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5);
       width = Math.max(1, Math.floor(rect.width));
       height = Math.max(1, Math.floor(rect.height));
       canvas.width = width * dpr;
@@ -362,9 +363,14 @@ export const Footer: React.FC<FooterProps> = ({ theme = 'dark' }) => {
       }
     };
 
+    let frameCount = 0;
     const tick = () => {
-      time += 0.016;
-      drawFrame();
+      frameCount += 1;
+      const isMobile = window.innerWidth < 768;
+      if (!isMobile || frameCount % 2 === 0) {
+        time += isMobile ? 0.032 : 0.016;
+        drawFrame();
+      }
       if (inView && !prefersReducedMotion) {
         rafId = window.requestAnimationFrame(tick);
       }

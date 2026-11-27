@@ -8,6 +8,7 @@ import {
   buildProductWhatsAppUrl,
 } from '../data/barbershopData';
 import { useTheme } from '../hooks/useActivity';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 
 const CATEGORY_TABS: { id: ProductCategoryFilter; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -175,17 +176,16 @@ export const ProductsSection: React.FC = () => {
                 SALON ESSENTIALS · RAJKOT, GUJARAT
               </p>
             </div>
-            <h2
+            <BlurRevealHeading
               id="products-heading"
               className={`font-display text-4xl uppercase leading-none tracking-[-0.01em] sm:text-5xl md:text-[3.5rem] ${
                 isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
               }`}
-            >
-              OUR{' '}
-              <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
-                PRODUCTS
-              </span>
-            </h2>
+              segments={[
+                { text: 'OUR' },
+                { text: 'PRODUCTS', className: isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]' },
+              ]}
+            />
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
               Counter-sold hair and skin formulas used at every Joie Salon ritual. Explore
               the collection and find your everyday essentials.

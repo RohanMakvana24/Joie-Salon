@@ -24,6 +24,7 @@ export function SocialLanyardCard({
   theme,
   review,
   isSelected,
+  enable3D = true,
   children,
   getStage,
 }: {
@@ -33,6 +34,7 @@ export function SocialLanyardCard({
   review?: { name: string; quote: string };
   children: ReactNode;
   isSelected: boolean;
+  enable3D?: boolean;
   getStage: () => HTMLElement | null;
 }) {
   const [back, setBack] = useState(false);
@@ -52,6 +54,7 @@ export function SocialLanyardCard({
   const reviewQuote = review?.quote;
 
   useEffect(() => {
+    if (!enable3D) return;
     let cancelled = false;
     const iconSvg = PLATFORM_ICON_SVGS[profile.id] ?? PLATFORM_ICON_SVGS.instagram;
     createSocialCardTextures(
@@ -71,7 +74,7 @@ export function SocialLanyardCard({
     return () => {
       cancelled = true;
     };
-  }, [profile, index, theme, reviewName, reviewQuote]);
+  }, [enable3D, profile, index, theme, reviewName, reviewQuote]);
 
   const handleReady = useCallback(() => setStatus('ready'), []);
   const handleError = useCallback(() => setStatus('fallback'), []);
@@ -123,7 +126,7 @@ export function SocialLanyardCard({
         <i />
       </div>
 
-      {status !== 'fallback' && textures && (
+      {enable3D && status !== 'fallback' && textures && (
         <div className="social-lanyard__canvas">
           <Lanyard
             frontImage={textures.front}

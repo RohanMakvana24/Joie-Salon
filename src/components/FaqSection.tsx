@@ -6,6 +6,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { SALON_FAQS, SalonFaqItem } from '../data/salonFaqs';
 import { BUSINESS_INFO } from '../data/barbershopData';
 import { useTheme } from '../hooks/useActivity';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 
 type FaqCategory = 'all' | SalonFaqItem['category'];
 
@@ -72,17 +73,16 @@ export const FaqSection: React.FC = () => {
               </p>
             </div>
 
-            <h2
+            <BlurRevealHeading
               id="faq-heading"
               className={`font-display uppercase text-4xl sm:text-5xl md:text-[3.25rem] tracking-[-0.01em] leading-[1.02] ${
                 isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
               }`}
-            >
-              FREQUENTLY ASKED{' '}
-              <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
-                QUESTIONS
-              </span>
-            </h2>
+              segments={[
+                { text: 'FREQUENTLY ASKED' },
+                { text: 'QUESTIONS', className: isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]' },
+              ]}
+            />
 
             <p
               className={`mt-4 text-sm sm:text-base leading-relaxed max-w-md ${

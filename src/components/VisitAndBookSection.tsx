@@ -6,6 +6,7 @@ import { Phone, Navigation, ArrowUpRight, Copy, Check, Clock } from 'lucide-reac
 import { BUSINESS_INFO } from '../data/barbershopData';
 import './VisitAndBookSection.css';
 import { BookingPlanner } from './BookingPlanner';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 
 const JoieSalonMap = dynamic(
   () => import('./JoieSalonMap').then((mod) => mod.JoieSalonMap),
@@ -39,9 +40,13 @@ export const VisitAndBookSection: React.FC = () => {
         <div className="salon-visit__heading">
           <div>
             <p className="salon-visit__eyebrow">YOUR NEXT GOOD HAIR DAY STARTS HERE</p>
-            <h2 id="contact-heading">
-              VISIT &amp; <span>BOOK</span>
-            </h2>
+            <BlurRevealHeading
+              id="contact-heading"
+              segments={[
+                { text: 'VISIT &' },
+                { text: 'BOOK', accent: true },
+              ]}
+            />
           </div>
           <p className="salon-visit__lede">
             Jyoti Nagar Main Road · Behind Crystal Mall.

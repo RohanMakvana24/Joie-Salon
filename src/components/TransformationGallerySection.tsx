@@ -4,7 +4,7 @@ import { BUSINESS_INFO } from '../data/barbershopData';
 import { GALLERY_ITEMS } from '../data/lookbookBooks';
 import { useElementInView, useTheme } from '../hooks/useActivity';
 import { GallerySkeleton } from './ui/gallery-skeleton';
-import { RisingInk } from './ui/rising-ink';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 
 export { GALLERY_ITEMS };
 
@@ -32,15 +32,15 @@ export const TransformationGallerySection = () => {
             >
               Ladies Lookbook · Rajkot
             </p>
-            <RisingInk
-              as="h2"
+            <BlurRevealHeading
               id="gallery-heading"
-              text="BEAUTY IN MOTION"
-              color={isLight ? '#232C3B' : '#F5F6F7'}
-              colors={isLight ? ['#232C3B', '#475569'] : ['#F5F6F7', '#C9B8A6']}
-              lift={0.48}
-              radius={1.5}
-              className="font-display text-[clamp(26px,7.4vw,39px)] leading-none sm:text-5xl md:text-[3.5rem]"
+              className={`font-display uppercase text-[clamp(26px,7.4vw,39px)] leading-none sm:text-5xl md:text-[3.5rem] ${
+                isLight ? 'text-[#232C3B]' : 'text-[#F5F6F7]'
+              }`}
+              segments={[
+                { text: 'BEAUTY IN' },
+                { text: 'MOTION', className: isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]' },
+              ]}
             />
             <p className={`mt-4 max-w-xl text-sm leading-relaxed sm:text-base ${isLight ? 'text-[#535a63]' : 'text-[#C9B8A6]'}`}>
               Explore signature hairstyles, balayage colour, hydra-glow facials, nail art, and bridal looks crafted at Joie Salon.

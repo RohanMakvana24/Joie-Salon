@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { ArrowUpRight, Calendar, Check, Copy, Instagram, Scissors, Users, MessageCircle } from 'lucide-react';
 import { SkeletonImage } from './ui/skeleton-image';
 import { BUSINESS_INFO } from '../data/barbershopData';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 import './MeetYourBarberSection.css';
 
 const CONSULTATION_TOPICS = [
@@ -56,7 +57,16 @@ export const MeetYourBarberSection: React.FC = () => {
     <section id="about" aria-labelledby="about-heading" className="meet-salon">
       <div className="meet-salon__inner">
         <header className="meet-salon__header">
-          <div><p className="meet-salon__eyebrow">A LITTLE ABOUT YOUR NEXT FAVOURITE PLACE</p><h2 id="about-heading">Meet Your <span>Salon.</span></h2></div>
+          <div>
+            <p className="meet-salon__eyebrow">A LITTLE ABOUT YOUR NEXT FAVOURITE PLACE</p>
+            <BlurRevealHeading
+              id="about-heading"
+              segments={[
+                { text: 'Meet Your' },
+                { text: 'Salon.', accent: true },
+              ]}
+            />
+          </div>
           <a className="meet-salon__instagram" href={BUSINESS_INFO.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Visit Joie Salon on Instagram"><Instagram size={15} /><span>{BUSINESS_INFO.instagramHandle}</span><ArrowUpRight size={16} /></a>
         </header>
 

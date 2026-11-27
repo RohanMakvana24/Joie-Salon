@@ -6,6 +6,7 @@ import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Avatar from "@/components/ui/components-primitives-avatar";
+import { BlurRevealHeading } from "@/components/ui/blur-reveal-heading";
 
 export type Palette6 = "blue" | "purple" | "amber" | "teal" | "rose" | "slate";
 
@@ -254,6 +255,8 @@ export default function Pricing6({
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const innerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const inViewRef = useRef<boolean>(false);
+  const reducedMotionRef = useRef<boolean>(false);
 
   const plans = activeTab === "individuals" ? individualPlans : teamsPlans;
 
@@ -262,9 +265,7 @@ export default function Pricing6({
     if (!track) return;
 
     const isCarousel = window.innerWidth < 1024;
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reducedMotion = reducedMotionRef.current;
 
     const trackRect = track.getBoundingClientRect();
     const viewportHeight = window.innerHeight || 800;
@@ -344,7 +345,7 @@ export default function Pricing6({
       inner.style.opacity = opacity.toFixed(3);
     });
 
-    setActiveSlide(closestIndex);
+    setActiveSlide((prev) => (prev === closestIndex ? prev : closestIndex));
   }, []);
 
   const scrollToSlide = useCallback(
@@ -368,7 +369,12 @@ export default function Pricing6({
 
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    const section = sectionRef.current;
+    if (!track || !section) return;
+
+    reducedMotionRef.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     let rafId = 0;
     const scheduleUpdate = () => {
@@ -379,14 +385,30 @@ export default function Pricing6({
       });
     };
 
+    const scheduleWindowScroll = () => {
+      if (!inViewRef.current) return;
+      scheduleUpdate();
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isVisible = entries[entries.length - 1]?.isIntersecting ?? false;
+        inViewRef.current = isVisible;
+        if (isVisible) scheduleUpdate();
+      },
+      { rootMargin: "140px 0px" },
+    );
+    observer.observe(section);
+
     apply3DScrollEffect();
 
     track.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("scroll", scheduleWindowScroll, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
     return () => {
+      observer.disconnect();
       track.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("scroll", scheduleWindowScroll);
       window.removeEventListener("resize", scheduleUpdate);
       if (rafId) window.cancelAnimationFrame(rafId);
     };
@@ -410,12 +432,11 @@ export default function Pricing6({
               {eyebrow}
             </p>
           )}
-          <h2
+          <BlurRevealHeading
             id={headingId}
             className="font-display text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-tight text-foreground text-balance"
-          >
-            {title}
-          </h2>
+            text={title}
+          />
           {subtitle && (
             <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
               {subtitle}

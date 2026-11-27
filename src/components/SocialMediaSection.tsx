@@ -5,7 +5,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { BUSINESS_INFO, FAITHFUL_REVIEWS } from '../data/barbershopData';
 import { SocialLanyardCard } from './SocialLanyardCard';
 import { SkeletonImage } from './ui/skeleton-image';
-import { useTheme } from '../hooks/useActivity';
+import { useElementInView, useTheme } from '../hooks/useActivity';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 import './SocialMediaSection.css';
 
 // Temporary search destinations approved by the owner until exact profiles are supplied.
@@ -37,6 +38,8 @@ function CardClip() {
 export function SocialMediaSection() {
   const [active, setActive] = useState(0);
   const theme = useTheme();
+  const sectionRef = useRef<HTMLElement>(null);
+  const nearby = useElementInView(sectionRef, { once: true, rootMargin: '280px' });
   const stageRef = useRef<HTMLDivElement>(null);
   const getStage = useCallback(() => stageRef.current, []);
   const slots = useRef<(HTMLDivElement | null)[]>([]);
@@ -66,10 +69,19 @@ export function SocialMediaSection() {
     }, 140);
   };
   return (
-    <section id="social" className="salon-social" aria-labelledby="social-heading">
+    <section ref={sectionRef} id="social" className="salon-social" aria-labelledby="social-heading">
       <div className="salon-social__inner">
         <header className="salon-social__header">
-          <div><p className="salon-social__eyebrow"><span />THE JOIE SALON SOCIAL CLUB</p><h2 id="social-heading">Good style.<br /><span>Better company.</span></h2></div>
+          <div>
+            <p className="salon-social__eyebrow"><span />THE JOIE SALON SOCIAL CLUB</p>
+            <BlurRevealHeading
+              id="social-heading"
+              segments={[
+                { text: 'Good style.' },
+                { text: 'Better company.', accent: true, breakBefore: true },
+              ]}
+            />
+          </div>
           <div className="salon-social__intro"><p>The conversation continues beyond the chair.<br />Find your inspiration. Share your experience.<br />Stay part of the Joie Salon circle.</p><a href={BUSINESS_INFO.instagramUrl} target="_blank" rel="noopener noreferrer">{BUSINESS_INFO.instagramHandle}<ArrowUpRight size={15} aria-hidden="true" /></a></div>
         </header>
 
@@ -89,7 +101,7 @@ export function SocialMediaSection() {
               <div className="community-deck__support" aria-hidden="true"><span /><span /></div>
               {PROFILES.map((profile, index) => <div className="community-deck__slot" key={profile.id} data-platform={profile.id} data-active={active === index} ref={node => { slots.current[index] = node; }} onPointerEnter={event => { if (event.pointerType === 'mouse') setActive(index); }} onFocusCapture={() => setActive(index)}>
                 <div className="community-deck__assembly">
-                  <SocialLanyardCard profile={profile} index={index} theme={theme} review={CARD_REVIEW} isSelected={active === index} getStage={getStage}>
+                  <SocialLanyardCard profile={profile} index={index} theme={theme} review={CARD_REVIEW} isSelected={active === index} enable3D={nearby} getStage={getStage}>
                   <div className="community-deck__connector" aria-hidden="true"><i /><span /></div>
                   <article className="community-card" aria-labelledby={`social-${profile.id}-title`}>
                     <CardClip />

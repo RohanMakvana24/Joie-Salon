@@ -17,6 +17,7 @@ import {
 import './ServicesSection.css';
 import { SalonServiceIcon } from './SalonServiceIcon';
 import { useTheme } from '../hooks/useActivity';
+import { BlurRevealHeading } from './ui/blur-reveal-heading';
 
 const CATEGORY_TABS: { id: ServiceCategoryFilter; label: string }[] = [
   { id: 'all', label: 'All Services (6)' },
@@ -128,15 +129,14 @@ export const ServicesSection: React.FC = () => {
                 HAIR, SKIN &amp; BRIDAL MENU · RAJKOT, GUJARAT
               </p>
             </div>
-            <h2
+            <BlurRevealHeading
               id="services-heading"
               className="font-display uppercase text-4xl sm:text-5xl md:text-[3.5rem] text-[#F7F1E8] tracking-[-0.01em] leading-none"
-            >
-              OUR{' '}
-              <span className={isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]'}>
-                SERVICES
-              </span>
-            </h2>
+              segments={[
+                { text: 'OUR' },
+                { text: 'SERVICES', className: isLight ? 'text-[#232C3B]' : 'text-[#CBD5E1]' },
+              ]}
+            />
           </div>
 
           <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">

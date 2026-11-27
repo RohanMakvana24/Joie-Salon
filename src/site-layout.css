@@ -100,5 +100,4 @@ html[data-theme="light"] #experience h2 > span {
   #main-content .signature-packages__intro { margin-inline: 0; font-size: 13px; }
   #main-content .signature-packages__filters { gap: 0 16px; }
   #main-content .signature-packages__filters button { font-size: 11px; }
-  #experience h2 > span { display: block; margin-top: 4px; }
 }

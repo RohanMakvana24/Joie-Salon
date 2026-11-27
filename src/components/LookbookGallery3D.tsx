@@ -439,7 +439,8 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const dprCap = shelfModeRef.current === 'single' ? 2 : 2.25;
+    const isSingleInit = shelfModeRef.current === 'single';
+    const dprCap = isSingleInit ? 1.5 : 2;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
@@ -478,8 +479,9 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       themeRef.current === 'light' ? 1.75 : 2.05,
     );
     sun.position.set(...sunPos);
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(2048, 2048);
+    sun.castShadow = !isSingleInit;
+    const shadowRes = isSingleInit ? 512 : 1024;
+    sun.shadow.mapSize.set(shadowRes, shadowRes);
     Object.assign(sun.shadow.camera, {
       left: -4.2,
       right: 4.2,
@@ -666,9 +668,10 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       const leftIdx = (active + 2) % 3;
       const rightIdx = (active + 1) % 3;
 
-      // Toggle floor visibility: spread lays flat on z=0; single rolls pages behind spine
+      // Toggle floor & shadow pass: spread lays flat on z=0; single rolls pages behind spine
       floorMesh.position.z = mode === 'single' ? -0.45 : -0.002;
       floorMesh.visible = mode !== 'single';
+      sun.castShadow = mode !== 'single';
 
       runtimes.forEach((rt, idx) => {
         const targetLayout = mode === 'single' ? 'single' : 'spread';
@@ -796,7 +799,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       const height = Math.max(1, mount.clientHeight);
       const mode = shelfModeRef.current;
 
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mode === 'single' ? 2 : 2.25));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mode === 'single' ? 1.5 : 2));
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.zoom = mode === 'single' ? 1.16 : 1.06;
@@ -833,7 +836,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
         isVisibleInViewport = entries[entries.length - 1]?.isIntersecting ?? true;
         if (isVisibleInViewport) requestDraw();
       },
-      { rootMargin: '250px 0px' },
+      { rootMargin: '120px 0px' },
     );
     intersectionObserver.observe(mount);
 
@@ -1002,7 +1005,9 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       }
 
       if (moving || needsRender) {
-        renderer.shadowMap.needsUpdate = true;
+        if (floorMesh.visible) {
+          renderer.shadowMap.needsUpdate = true;
+        }
         renderer.render(scene, camera);
         needsRender = false;
       }

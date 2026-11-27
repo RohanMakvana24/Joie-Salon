@@ -264,6 +264,14 @@ html[data-theme="light"] .js-footer {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+@media (max-width: 767px) {
+  .js-footer__card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transform-style: flat;
+  }
+}
+
 html[data-theme="light"] .js-footer__card {
   box-shadow:
     0 16px 36px -14px rgba(35, 44, 59, 0.12),
