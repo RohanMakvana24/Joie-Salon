@@ -9,92 +9,92 @@ export interface GalleryLookItem {
  */
 export const GALLERY_ITEMS: GalleryLookItem[] = [
   {
-    image: '/assets/gallery/feather-layers-blowout.jpg',
+    image: '/assets/gallery/feather-layers-blowout.webp',
     title: 'Feather Layers & Blowout',
     description: 'Face-framing feather layers with a bouncy salon blow-dry.',
   },
   {
-    image: '/assets/gallery/caramel-balayage-waves.jpg',
+    image: '/assets/gallery/caramel-balayage-waves.webp',
     title: 'Caramel Honey Balayage',
     description: 'Sun-lit hand-painted balayage curls with glossy keratin shine.',
   },
   {
-    image: '/assets/gallery/curtain-bangs-soft-waves.jpg',
+    image: '/assets/gallery/curtain-bangs-soft-waves.webp',
     title: 'Curtain Bangs & Waves',
     description: 'Wispy soft curtain bangs paired with silky chocolate waves.',
   },
   {
-    image: '/assets/gallery/silk-keratin-gloss.jpg',
+    image: '/assets/gallery/silk-keratin-gloss.webp',
     title: 'Silk Keratin Glass Hair',
     description: 'Mirror-shine smoothing keratin ritual with frizz-free velvet sleekness.',
   },
   {
-    image: '/assets/gallery/espresso-butterfly-layers.jpg',
+    image: '/assets/gallery/espresso-butterfly-layers.webp',
     title: 'Butterfly Layers & Gloss',
     description: 'Voluminous butterfly layering with warm mocha-chestnut dimensional tones.',
   },
   {
-    image: '/assets/gallery/mogra-gajra-bridal-bun.jpg',
+    image: '/assets/gallery/mogra-gajra-bridal-bun.webp',
     title: 'Mogra Gajra Bridal Bun',
     description: 'Sculpted bridal chignon adorned with fresh jasmine and gold pins.',
   },
   {
-    image: '/assets/gallery/pastel-blush-bridal.jpg',
+    image: '/assets/gallery/pastel-blush-bridal.webp',
     title: 'Pastel Blush Lehenga Bridal',
     description: 'Soft-focus HD bridal makeup, floral low bun & antique-gold dupatta draping.',
   },
   {
-    image: '/assets/gallery/emerald-velvet-reception.jpg',
+    image: '/assets/gallery/emerald-velvet-reception.webp',
     title: 'Emerald Velvet Reception',
     description: 'Champagne-bronze smokey eyes with sculpted glossy Hollywood waves.',
   },
   {
-    image: '/assets/gallery/hydra-glow-glass-skin.jpg',
+    image: '/assets/gallery/hydra-glow-glass-skin.webp',
     title: 'Hydra-Glow Facial & Brows',
     description: 'Dewy glass-skin radiance with cleanly shaped eyebrows.',
   },
   {
-    image: '/assets/gallery/gold-radiance-facial.jpg',
+    image: '/assets/gallery/gold-radiance-facial.webp',
     title: '24K Gold Radiance Ritual',
     description: 'Restorative botanical hydration facial for calm, lit-from-within luminosity.',
   },
   {
-    image: '/assets/gallery/rose-chrome-nail-couture.jpg',
+    image: '/assets/gallery/rose-chrome-nail-couture.webp',
     title: 'Rose & Gold Nail Couture',
     description: 'Almond rose-nude gel extensions with delicate gold-leaf artistry.',
   },
   {
-    image: '/assets/gallery/french-pearl-nails.jpg',
+    image: '/assets/gallery/french-pearl-nails.webp',
     title: 'Pearl Glaze & Gold Foil Nails',
     description: 'Sheer pearl-glazed micro French extensions finished with 24K foil accents.',
   },
   {
-    image: '/assets/bridals/royal-maroon-bridal.png',
+    image: '/assets/bridals/royal-maroon-bridal.webp',
     title: 'Royal Maroon Bridal',
     description: 'HD airbrush bridal makeup, mogra bun & timeless lehenga draping.',
   },
   {
-    image: '/assets/bridals/sangeet-caramel-glam.png',
+    image: '/assets/bridals/sangeet-caramel-glam.webp',
     title: 'Sangeet Caramel Glam',
     description: 'Soft bronze smokey eyes and glossy Hollywood waves.',
   },
   {
-    image: '/assets/bridals/reception-couture-blowout.png',
+    image: '/assets/bridals/reception-couture-blowout.webp',
     title: 'Reception Couture Blowout',
     description: 'Lifted crown volume with sleek face-framing layers.',
   },
   {
-    image: '/assets/bridals/haldi-dewy-glow.png',
+    image: '/assets/bridals/haldi-dewy-glow.webp',
     title: 'Haldi Dewy Glow',
     description: 'Breathable sunlit makeup with floral-ready messy bun.',
   },
   {
-    image: '/assets/bridals/mehndi-nail-couture.png',
+    image: '/assets/bridals/mehndi-nail-couture.webp',
     title: 'Mehndi Nail Couture',
     description: 'Festive gel polish paired with half-up romantic curls.',
   },
   {
-    image: '/assets/bridals/engagement-sculpt.png',
+    image: '/assets/bridals/engagement-sculpt.webp',
     title: 'Engagement Brow Sculpt',
     description: 'Precision brow framing and camera-ready satin skin finish.',
   },
@@ -146,26 +146,26 @@ const byImage = (suffix: string): GalleryLookItem => {
   return found;
 };
 
-const featherLayers = byImage('feather-layers-blowout.jpg');
-const caramelBalayage = byImage('caramel-balayage-waves.jpg');
-const curtainBangs = byImage('curtain-bangs-soft-waves.jpg');
-const silkKeratin = byImage('silk-keratin-gloss.jpg');
-const butterflyLayers = byImage('espresso-butterfly-layers.jpg');
-const receptionBlowout = byImage('reception-couture-blowout.png');
+const featherLayers = byImage('feather-layers-blowout.webp');
+const caramelBalayage = byImage('caramel-balayage-waves.webp');
+const curtainBangs = byImage('curtain-bangs-soft-waves.webp');
+const silkKeratin = byImage('silk-keratin-gloss.webp');
+const butterflyLayers = byImage('espresso-butterfly-layers.webp');
+const receptionBlowout = byImage('reception-couture-blowout.webp');
 
-const royalMaroon = byImage('royal-maroon-bridal.png');
-const pastelBlushBridal = byImage('pastel-blush-bridal.jpg');
-const emeraldReception = byImage('emerald-velvet-reception.jpg');
-const mograGajra = byImage('mogra-gajra-bridal-bun.jpg');
-const sangeetGlam = byImage('sangeet-caramel-glam.png');
-const haldiGlow = byImage('haldi-dewy-glow.png');
+const royalMaroon = byImage('royal-maroon-bridal.webp');
+const pastelBlushBridal = byImage('pastel-blush-bridal.webp');
+const emeraldReception = byImage('emerald-velvet-reception.webp');
+const mograGajra = byImage('mogra-gajra-bridal-bun.webp');
+const sangeetGlam = byImage('sangeet-caramel-glam.webp');
+const haldiGlow = byImage('haldi-dewy-glow.webp');
 
-const hydraGlow = byImage('hydra-glow-glass-skin.jpg');
-const goldRadianceFacial = byImage('gold-radiance-facial.jpg');
-const roseNails = byImage('rose-chrome-nail-couture.jpg');
-const frenchPearlNails = byImage('french-pearl-nails.jpg');
-const mehndiNails = byImage('mehndi-nail-couture.png');
-const engagementSculpt = byImage('engagement-sculpt.png');
+const hydraGlow = byImage('hydra-glow-glass-skin.webp');
+const goldRadianceFacial = byImage('gold-radiance-facial.webp');
+const roseNails = byImage('rose-chrome-nail-couture.webp');
+const frenchPearlNails = byImage('french-pearl-nails.webp');
+const mehndiNails = byImage('mehndi-nail-couture.webp');
+const engagementSculpt = byImage('engagement-sculpt.webp');
 
 export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
   {

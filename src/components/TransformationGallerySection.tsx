@@ -1,7 +1,8 @@
-import { lazy, Suspense, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { Instagram } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/barbershopData';
-import { GALLERY_ITEMS } from '../data/lookbookBooks';
+import { GALLERY_ITEMS, LOOKBOOK_VOLUMES } from '../data/lookbookBooks';
+import { getLookbookPageImageSources, loadGalleryImage } from '../lib/lookbookImages';
 import { useElementInView, useTheme } from '../hooks/useActivity';
 import { GallerySkeleton } from './ui/gallery-skeleton';
 import { BlurRevealHeading } from './ui/blur-reveal-heading';
@@ -14,7 +15,12 @@ export const TransformationGallerySection = () => {
   const theme = useTheme();
   const isLight = theme === 'light';
   const stageRef = useRef<HTMLDivElement>(null);
-  const nearby = useElementInView(stageRef, { once: true, rootMargin: '260px' });
+  const nearby = useElementInView(stageRef, { once: true, rootMargin: '1000px' });
+
+  useEffect(() => {
+    const sources = new Set(LOOKBOOK_VOLUMES.flatMap((volume) => volume.pages.flatMap(getLookbookPageImageSources)));
+    void Promise.allSettled([...sources].map(loadGalleryImage));
+  }, []);
 
   return (
     <section

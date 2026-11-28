@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { LeafThroughObject, withSoftBasicShadows } from 'leafthrough';
 import { BookOpen, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
+import { GallerySkeleton } from './ui/gallery-skeleton';
 import { LOOKBOOK_VOLUMES, type LookbookVolume } from '../data/lookbookBooks';
 import {
   LookbookTextureBank,
@@ -308,6 +309,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
   });
   const [hoveredSideIdx, setHoveredSideIdx] = useState<number | null>(null);
   const [webglReady, setWebglReady] = useState<boolean>(true);
+  const [pagesReady, setPagesReady] = useState(false);
   const [reversing, setReversing] = useState(false);
 
   const shelfModeRef = useRef<ShelfMode>('trio');
@@ -397,7 +399,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
       const saved = savedPagesRef.current[nextIdx] ?? 0;
 
       // Prioritise textures for newly active book
-      void nextBook.textureBank.renderPages([0, 1, 2, saved, saved + 1], targetWidth, true);
+      void nextBook.textureBank.renderPages([0, 1, 2, saved, saved + 1], targetWidth);
 
       // Restore previous page if reader had already opened this volume
       if (saved > 0) {
@@ -641,24 +643,32 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
           savedPagesRef.current[idx] = page;
           setPageInfo({ page, visiblePages, pageCount });
 
-          // Lazy render adjacent spreads around the active reading position
+          // Sharpen the prepared textures around the active reading position.
           const minV = visiblePages[0] ?? page;
           const maxV = visiblePages[visiblePages.length - 1] ?? page;
           const toLoad = [minV - 2, minV - 1, minV, maxV, maxV + 1, maxV + 2, maxV + 3];
           const tw = shelfModeRef.current === 'single' ? 720 : 800;
-          void textureBank.renderPages(toLoad, tw, true);
+          void textureBank.renderPages(toLoad, tw);
         }
         requestDraw();
       });
-
-      // Hydrate covers immediately, plus first two interior pages for the active hero volume
-      const initPages = isActive ? [0, 1, 2, 3] : [0];
-      void textureBank.renderPages(initPages, initialTexWidth, isActive);
 
       return runtime;
     });
 
     runtimesRef.current = runtimes;
+    setPagesReady(false);
+    void Promise.all(runtimes.map(async ({ textureBank, volume }, idx) => {
+      // Keep every page ready to turn while limiting the initial texture memory.
+      await textureBank.renderPages(volume.pages.map((_, page) => page), 480);
+      if (!isDisposed && idx === activeIdxRef.current) {
+        await textureBank.renderPages([0, 1, 2, 3], initialTexWidth);
+      }
+    })).then(() => {
+      if (!isDisposed) setPagesReady(true);
+    }).catch(() => {
+      if (!isDisposed) setWebglReady(false);
+    });
 
     // Assign world shelf transforms cleanly for Trio (3), Duo (2), or Single (1)
     const syncTargets = (snap = false) => {
@@ -1100,8 +1110,12 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
   }
 
   return (
+    <>
+    {!pagesReady && <GallerySkeleton />}
     <div
       ref={stageHostRef}
+      inert={!pagesReady}
+      style={{ visibility: pagesReady ? undefined : 'hidden' }}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       role="region"
@@ -1221,6 +1235,7 @@ export function LookbookGallery3D({ theme }: LookbookGallery3DProps) {
         })}
       </nav>
     </div>
+    </>
   );
 }
 

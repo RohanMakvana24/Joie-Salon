@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import type { BookPageSpec, GalleryLookItem, LookbookVolume } from '../data/lookbookBooks';
 
+import { getLookbookPageImageSources, loadGalleryImage } from './lookbookImages';
+
 export const PAGE_ASPECT = 1.377;
 
 const imagePromiseCache = new Map<string, Promise<HTMLImageElement>>();
@@ -19,31 +21,6 @@ function ensureFontsReady(): Promise<void> {
   return fontsReadyPromise;
 }
 
-export function loadGalleryImage(src: string): Promise<HTMLImageElement> {
-  const existing = imagePromiseCache.get(src);
-  if (existing) return existing;
-
-  const promise = new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.decoding = 'async';
-    img.onload = () => {
-      if (typeof img.decode === 'function') {
-        img.decode().then(() => resolve(img), () => resolve(img));
-      } else {
-        resolve(img);
-      }
-    };
-    img.onerror = () => {
-      imagePromiseCache.delete(src);
-      reject(new Error(`Failed to load lookbook image: ${src}`));
-    };
-    img.src = src;
-  });
-
-  imagePromiseCache.set(src, promise);
-  return promise;
-}
 
 function drawPageImage(
   ctx: CanvasRenderingContext2D,
@@ -273,24 +250,9 @@ export async function renderLookbookPageToCanvas(
 
   await ensureFontsReady();
 
-  const height = Math.round(width * PAGE_ASPECT);
-  if (canvas.width !== width || canvas.height !== height) {
-    canvas.width = width;
-    canvas.height = height;
-  }
-
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-
-  // Gather unique images required by this page
-  const requiredSrcs = new Set<string>();
-  if (page.primaryItem) requiredSrcs.add(page.primaryItem.image);
-  page.collageItems?.forEach((item) => requiredSrcs.add(item.image));
-  page.indexItems?.forEach((item) => requiredSrcs.add(item.image));
-
   const loadedImages = new Map<string, HTMLImageElement>();
   await Promise.all(
-    Array.from(requiredSrcs).map(async (src) => {
+    getLookbookPageImageSources(page).map(async (src) => {
       try {
         const img = await loadGalleryImage(src);
         loadedImages.set(src, img);
@@ -299,6 +261,15 @@ export async function renderLookbookPageToCanvas(
       }
     }),
   );
+
+  const height = Math.round(width * PAGE_ASPECT);
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
 
   ctx.clearRect(0, 0, width, height);
   const isLeftPage = pageIndex % 2 === 1;
@@ -612,26 +583,13 @@ export class LookbookTextureBank {
     });
   }
 
-  async renderPages(indices: number[], targetWidth: number, isActiveBook: boolean): Promise<void> {
+  async renderPages(indices: number[], targetWidth: number): Promise<void> {
     if (this.disposed) return;
 
     const needed = new Set<number>([0]); // Always keep front cover crisp
     indices.forEach((idx) => {
       if (idx >= 0 && idx < this.volume.pages.length) needed.add(idx);
     });
-
-    // Evict distant interior pages to stay gentle on GPU RAM
-    if (!isActiveBook) {
-      for (let i = 1; i < this.volume.pages.length; i++) {
-        if (!needed.has(i) && this.renderedWidth[i] > 0) {
-          paintPlaceholderCanvas(this.canvases[i], this.volume, i);
-          this.renderedWidth[i] = 0;
-          // Dispose the immutable WebGL2 texStorage2D allocation before resizing back to 16x22.
-          this.textures[i].dispose();
-          this.textures[i].needsUpdate = true;
-        }
-      }
-    }
 
     const tasks = Array.from(needed).map(async (idx) => {
       if (this.renderedWidth[idx] >= targetWidth || this.inflight.has(idx)) return;
