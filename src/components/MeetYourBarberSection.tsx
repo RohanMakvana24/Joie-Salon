@@ -93,7 +93,7 @@ export const MeetYourBarberSection: React.FC = () => {
               <div className="meet-salon__pedestal" aria-hidden="true" />
               <div className="meet-salon__floor" aria-hidden="true" />
               <div className="meet-salon__model">
-                <SkeletonImage skeletonClassName="image-skeleton--portrait" src="/assets/characters/women-salon-3d.webp" alt="Three stylish 3D women characters with freshly styled hair, glowing skin, and festive bridal elegance standing together" loading="lazy" decoding="async" width="1024" height="1024" />
+                <SkeletonImage skeletonClassName="image-skeleton--portrait" src="/assets/characters/women-salon-3d-cutout.webp" alt="Three stylish 3D women characters with freshly styled hair, glowing skin, and festive bridal elegance standing together" loading="lazy" decoding="async" width="1024" height="1024" />
               </div>
               <span className="meet-salon__sticker"><Scissors size={14} aria-hidden="true" /> A little radiance<br /><strong>feels good every day.</strong></span>
             </div>

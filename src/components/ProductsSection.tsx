@@ -22,7 +22,7 @@ const PRODUCT_CUTOUT: Record<string, string> = {
   'argan-rose-hair-elixir': '/assets/products/joie/argan-rose-hair-elixir-transparent.webp',
   'charcoal-detan-face-scrub': '/assets/products/joie/charcoal-detan-face-scrub.png',
   'sea-salt-volume-spray': '/assets/products/joie/sea-salt-volume-spray.png',
-  'rose-glow-soothing-mist': '/assets/products/joie/rose-glow-soothing-mist.jpg',
+  'rose-glow-soothing-mist': '/assets/products/joie/rose-glow-soothing-mist-transparent.webp',
   'keratin-repair-hair-serum': '/assets/products/joie/keratin-repair-hair-serum.png',
 };
 
