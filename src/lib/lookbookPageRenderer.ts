@@ -29,46 +29,18 @@ function drawPageImage(
   y: number,
   w: number,
   h: number,
-  focusY = 0.28,
-  preserveFraming = false,
 ) {
   const iw = img.naturalWidth || img.width;
   const ih = img.naturalHeight || img.height;
   if (!iw || !ih) return;
 
-  if (preserveFraming) {
-    const scale = Math.min(w / iw, h / ih);
-    const fittedW = iw * scale;
-    const fittedH = ih * scale;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(img, x + (w - fittedW) / 2, y + (h - fittedH) / 2, fittedW, fittedH);
-    return;
-  }
-
-  const boxRatio = w / h;
-  const imgRatio = iw / ih;
-  let sx = 0;
-  let sy = 0;
-  let sw = iw;
-  let sh = ih;
-
-  if (imgRatio > boxRatio) {
-    sw = ih * boxRatio;
-    sx = (iw - sw) * 0.5;
-  } else {
-    sh = iw / boxRatio;
-    sy = (ih - sh) * focusY;
-  }
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(x, y, w, h);
-  ctx.clip();
+  // Preserve the entire source photo in every frame, including short cover and index slots.
+  const scale = Math.min(w / iw, h / ih);
+  const fittedW = iw * scale;
+  const fittedH = ih * scale;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
-  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-  ctx.restore();
+  ctx.drawImage(img, x + (w - fittedW) / 2, y + (h - fittedH) / 2, fittedW, fittedH);
 }
 
 function wrapTextLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
@@ -320,17 +292,8 @@ export async function renderLookbookPageToCanvas(
     ctx.fillRect(plateX - mat, plateY - mat, plateW + mat * 2, plateH + mat * 2);
 
     const coverImg = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-    if (coverImg && page.primaryItem) {
-      drawPageImage(
-        ctx,
-        coverImg,
-        plateX,
-        plateY,
-        plateW,
-        plateH,
-        0.22,
-        Boolean(volume.preservePhotoFraming && page.primaryItem.image.endsWith('.png')),
-      );
+    if (coverImg) {
+      drawPageImage(ctx, coverImg, plateX, plateY, plateW, plateH);
     } else {
       ctx.fillStyle = volume.coverClothDeep;
       ctx.fillRect(plateX, plateY, plateW, plateH);
@@ -406,17 +369,8 @@ export async function renderLookbookPageToCanvas(
     const imgY = height * 0.092;
 
     const img = page.primaryItem ? loadedImages.get(page.primaryItem.image) : undefined;
-    if (img && page.primaryItem) {
-      drawPageImage(
-        ctx,
-        img,
-        imgX,
-        imgY,
-        imgW,
-        imgH,
-        0.2,
-        Boolean(volume.preservePhotoFraming && page.primaryItem.image.endsWith('.png')),
-      );
+    if (img) {
+      drawPageImage(ctx, img, imgX, imgY, imgW, imgH);
     }
     ctx.strokeStyle = 'rgba(35, 28, 22, 0.16)';
     ctx.lineWidth = 1;
@@ -457,16 +411,7 @@ export async function renderLookbookPageToCanvas(
       if (!slot.item) return;
       const img = loadedImages.get(slot.item.image);
       if (img) {
-        drawPageImage(
-          ctx,
-          img,
-          slot.x,
-          slot.y,
-          slot.w,
-          slot.h,
-          0.24,
-          Boolean(volume.preservePhotoFraming && slot.item.image.endsWith('.png')),
-        );
+        drawPageImage(ctx, img, slot.x, slot.y, slot.w, slot.h);
       } else {
         ctx.fillStyle = '#EAE3D8';
         ctx.fillRect(slot.x, slot.y, slot.w, slot.h);
@@ -511,16 +456,7 @@ export async function renderLookbookPageToCanvas(
       const y = height * 0.165 + Math.floor(idx / 2) * rowHeight;
       const img = loadedImages.get(item.image);
       if (img) {
-        drawPageImage(
-          ctx,
-          img,
-          x,
-          y,
-          tileW,
-          tileH,
-          0.23,
-          Boolean(volume.preservePhotoFraming && item.image.endsWith('.png')),
-        );
+        drawPageImage(ctx, img, x, y, tileW, tileH);
       } else {
         ctx.fillStyle = '#EAE3D8';
         ctx.fillRect(x, y, tileW, tileH);

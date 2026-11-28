@@ -134,7 +134,6 @@ export interface LookbookVolume {
   coverInk: string;
   paperTone: string;
   darkPageTone: string;
-  preservePhotoFraming?: boolean;
   pages: BookPageSpec[];
 }
 
@@ -326,7 +325,6 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
     coverInk: '#FAF3EA',
     paperTone: '#FBF7F0',
     darkPageTone: '#1E1416',
-    preservePhotoFraming: true,
     pages: [
       {
         id: 'vol2-cover',
@@ -494,7 +492,6 @@ export const LOOKBOOK_VOLUMES: LookbookVolume[] = [
     coverInk: '#FAF5F1',
     paperTone: '#FAF7F3',
     darkPageTone: '#1F1919',
-    preservePhotoFraming: true,
     pages: [
       {
         id: 'vol3-cover',
